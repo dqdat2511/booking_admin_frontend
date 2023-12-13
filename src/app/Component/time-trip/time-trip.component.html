@@ -1,0 +1,153 @@
+<!-- <div class="container text-center" style="margin-top: 20px;">
+    <div class="row">
+      <div class="col-sm-8">
+        <h1 class="title">
+            Thời gian bắt đầu chuyến
+        </h1>
+        <div class="col-sm">
+            Ngày bắt đầu
+          </div>
+          <div class="col-sm">
+            Giowf bắt đầu
+          </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <h1 class="title">
+            Thời gian kết thúc chuyến
+        </h1>
+      </div>
+    </div>
+</div>   -->
+<div class="container text-center" style="border: solid 1px black ; margin-top: 5%;" >
+  <div class="row justify-content-md-center">
+    <div class="col-sm-3" style="border-right: solid 1px black">
+      <h1 class="title col-md-auto">
+        Thời gian bắt đầu chuyến (Thời gian có thể chọn)
+      </h1>
+    </div>
+    <div class="col-sm-9">
+      <div class="row" style="border-top: solid 1px black">
+        <div class="col-8 col-sm-6" style="border-right: solid 1px black">
+          <h2 class="title-sub">Ngày bắt đầu</h2>
+        </div>
+        <div class="col-4 col-sm-6">
+          <h2 class="title-sub">Giờ xuất bến</h2>
+        </div>
+      </div>
+      <div
+        class="row"
+        style="border-top: solid 1px black"
+        *ngFor="let item of timetrip; let i = index"
+      >
+        <div class="col-8 col-sm-6" style="border-right: solid 1px black">
+          <span class="day-content">
+            {{ item.day }}
+          </span>
+        </div>
+
+        <div class="col-4 col-sm-6">
+          <span class="day-content">
+            {{ item.time }}
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="container text-center" style="border: solid 1px black; margin-top: 5%;">
+    <div class="row justify-content-md-center">
+      <div class="col-sm-3" style="border-right: solid 1px black">
+        <h1 class="title col-md-auto">
+          Thời gian kết thúc chuyến (Thời gian có thể chọn)
+        </h1>
+      </div>
+      <div class="col-sm-9">
+        <div class="row" style="border-top: solid 2px black">
+          <div class="col-8 col-sm-6" style="border-right: solid 1px black">
+            <h2 class="title-sub" >Ngày kết thúc</h2>
+          </div>
+          <div class="col-4 col-sm-6">
+            <h2 class="title-sub">Giờ về bến</h2>
+          </div>
+        </div>
+        <div
+          class="row"
+          style="border-top: solid 1px black"
+          *ngFor="let item of timetrip; let i = index"
+        >
+          <div class="col-8 col-sm-6" style="border-right: solid 1px black">
+            <span class="day-content">
+              {{ item.day }}
+            </span>
+          </div>
+  
+          <div class="col-4 col-sm-6">
+            <span class="day-content">
+              {{ item.time }}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="hstack gap-3" style="margin-top: 5%;" >
+    <div class="p-2"></div>
+    <div class="p-2 ms-auto"></div>
+    <div class="p-2">
+        <button type="button" class="btn btn-outline-success" (click)="handleAddTime()">
+            Thêm mới
+        </button>
+    </div>
+  </div>
+  <section class="z-3 position-fixed section-placeholder" *ngIf="isAdd" >
+    <div class="modal_overlay">
+      <div
+        class="modal_inner"
+        style="width: 727px; height: 400px; margin-top: 10%"
+      >
+        <div class="form_heading">
+          <span class="Title"> Tạo thời gian cho hành trình mới </span>
+          <button
+            class="material-symbols-outlined"
+            id="cancel"
+            style="color: #22493b; background-color: #e2f1ef; border: none"
+            type="button"
+            (click)="handleClose()"
+          >
+            close
+          </button>
+        </div>
+        <div class="row" style="margin-top: 5%;">
+            <div class="col" style="margin-left: 20px; border: none">
+                <label for="formGroupExampleInput" class="form-label">Ngày xuất bến</label>
+              <input type="text" class="form-control" placeholder="Chọn theo định dạng ngày" aria-label="First name">
+            </div>
+            <div class="col" style="margin-right: 20px;  border: none">
+                <label for="formGroupExampleInput" class="form-label">Thời gian xuất bến</label>
+              <input type="text" class="form-control" placeholder="Chọn theo định dạng thời gian" aria-label="Last name">
+            </div>
+          </div>
+          <div class="row" style="margin-top: 5%;">
+            <div class="col" style="margin-left: 20px; border: none">
+                <label for="formGroupExampleInput" class="form-label">Ngày xuất bến</label>
+              <input type="text" class="form-control" placeholder="Chọn theo định dạng ngày" aria-label="First name">
+            </div>
+            <div class="col" style="margin-right: 20px;  border: none">
+                <label for="formGroupExampleInput" class="form-label">Thời gian xuất bến</label>
+              <input type="text" class="form-control" placeholder="Chọn theo định dạng thời gian" aria-label="Last name">
+            </div>
+          </div>
+          <div class="float-xxl-end" style="margin-top: 11%;">
+            <div class="hstack gap-3">
+                <div class="p-2 ms-auto">
+                <button type="button" class="btn btn-outline-danger" style="border-color:white ;" (click)="handleClose()">Hủy</button>
+                </div>
+                <div class="p-2"><button type="button" class="btn btn-outline-success">Xác nhận</button>
+                </div>
+              </div>
+        </div><br>    
+      </div>
+    </div>
+  </section>

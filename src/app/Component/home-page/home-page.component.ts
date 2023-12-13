@@ -6,7 +6,7 @@ import { Component } from '@angular/core';
   styleUrls: ['./home-page.component.scss']
 })
 export class HomePageComponent {
-  isGinseng = false;
+  isTime = false;
   isOn = false;
   show = '';
   Type = '';
@@ -58,7 +58,7 @@ export class HomePageComponent {
   }
   ginsengInput(){
     this.reset();
-    this.isGinseng = true;
+    this.isTime = true;
     this.isOn = true;
     document.getElementById("ginseng")?.setAttribute("style","font-weight : bold;");
   }
@@ -69,7 +69,7 @@ export class HomePageComponent {
     document.getElementById("wine")?.setAttribute("style","font-weight : bold;");
   }
   reset(){
-    this.isGinseng = false;
+    this.isTime = false;
     this.isWine = false;
     this.isCertificate = false;
     document.getElementById("ginseng")?.setAttribute("style","font-weight : normal;");  
