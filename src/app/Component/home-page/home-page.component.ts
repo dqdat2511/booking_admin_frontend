@@ -7,6 +7,7 @@ import { Component } from '@angular/core';
 })
 export class HomePageComponent {
   isTime = false;
+  isTrip = false;
   isOn = false;
   show = '';
   Type = '';
@@ -64,13 +65,13 @@ export class HomePageComponent {
   }
   wineInput(){
     this.reset();
-    this.isWine = true;    
+    this.isTrip = true;    
     this.isOn = true;
     document.getElementById("wine")?.setAttribute("style","font-weight : bold;");
   }
   reset(){
     this.isTime = false;
-    this.isWine = false;
+    this.isTrip = false;
     this.isCertificate = false;
     document.getElementById("ginseng")?.setAttribute("style","font-weight : normal;");  
     document.getElementById("wine")?.setAttribute("style","font-weight : normal;");

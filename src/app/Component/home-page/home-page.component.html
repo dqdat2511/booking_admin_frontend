@@ -114,6 +114,7 @@
             />
           </svg>
           <span class="news" id="news-id">In ra danh sách</span>
+          
         </div>
         <div type="button" class="menu-location" (click)="HandleNews($event)">
           <svg
@@ -155,7 +156,8 @@
             {{ Type }}
           </h1>
         </div>
-        <app-time-trip *ngIf="!isTime"></app-time-trip>
+        <app-time-trip *ngIf="isTime"></app-time-trip>
+        <app-trip *ngIf="!isTrip"></app-trip>
         <!-- <app-ginseng-management *ngIf="isGinseng" (data)="HandleEvent($event)"></app-ginseng-management>
              <app-wine-management *ngIf="isWine" (data)="HandleEvent($event)"></app-wine-management> -->
         <!-- <app-certificate-management *ngIf="isCertificate" (data)="HandleEvent($event)"></app-certificate-management>  -->

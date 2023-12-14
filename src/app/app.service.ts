@@ -8,7 +8,7 @@ import { catchError } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class AppService {
-  url = 'https://localhost:5050/api/v1/';
+  url = 'http://localhost:5050/api/v1/';
   constructor(private http: HttpClient) {}
   getUrlTime(){
     return this.url + 'time';
