@@ -16,11 +16,24 @@ export class HomePageComponent {
   iconList = '';
   isWine = false;
   isCertificate = false;
+  hours : any | null = 0;
+  mins : any | null = 0;
+  sec : any | null = 0;
   constructor(){
     this.iconList = 'chevron_right';
-    this.Type = " Chào mừng admin đã đến với trang web quản lý sâm. Phía dưới là video hướng dẫn: ";
+    this.Type = " Chào mừng admin đã đến với trang web quản lý nhà xe. Chúc anh chị có ngày làm việc tốt lành ";
+    if(!this.isTime && !this.isTrip){
+      setInterval(() => {
+        this.updateTime();
+      })
+    }
   }
-
+  updateTime(){
+      let currentTime = new Date();
+      this.hours = (currentTime.getHours() < 10 ?"0":"") + currentTime.getHours();
+      this.mins = (currentTime.getMinutes() < 10 ?"0":"") + currentTime.getMinutes();
+      this.sec = (currentTime.getSeconds() < 10 ?"0":"") + currentTime.getSeconds();
+  }
   HandleNews(element: any){
     const element1 = element;
     console.log(element1);
@@ -83,4 +96,5 @@ export class HomePageComponent {
   certificateInput(){
 
   }
+
 }

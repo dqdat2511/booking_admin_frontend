@@ -156,8 +156,26 @@
             {{ Type }}
           </h1>
         </div>
+        <div *ngIf="!isTime && !isTrip" class="clock">
+            <div class="hero">
+              <div class="container_clock">
+                <div class="clock_inner">
+                  <span id="hours">{{hours}}</span>
+                  <span>:</span>
+                  <span id="mins">{{mins}}</span>
+                  <span>:</span>
+                  <span id="secs">{{sec}}</span><br>
+                  
+                </div>
+                
+              </div>
+              
+              
+            </div>
+        </div>
+
         <app-time-trip *ngIf="isTime"></app-time-trip>
-        <app-trip *ngIf="!isTrip"></app-trip>
+        <app-trip *ngIf="isTrip"></app-trip>
         <!-- <app-ginseng-management *ngIf="isGinseng" (data)="HandleEvent($event)"></app-ginseng-management>
              <app-wine-management *ngIf="isWine" (data)="HandleEvent($event)"></app-wine-management> -->
         <!-- <app-certificate-management *ngIf="isCertificate" (data)="HandleEvent($event)"></app-certificate-management>  -->

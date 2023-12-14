@@ -14,7 +14,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { AppComponent } from './app.component';
 import { HomePageComponent } from './Component/home-page/home-page.component';
 import { TimeTripComponent } from './Component/time-trip/time-trip.component';
-import { DatePipe } from '@angular/common';
+import { DatePipe, registerLocaleData } from '@angular/common';
 import { NgxMaterialTimepicker24HoursFaceComponent } from 'ngx-material-timepicker/src/app/material-timepicker/components/timepicker-24-hours-face/ngx-material-timepicker-24-hours-face.component';
 import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 import { FormsModule } from '@angular/forms'; 
@@ -23,6 +23,11 @@ import { NgToastModule } from 'ng-angular-popup';
 
 import { NgToastService } from 'ng-angular-popup';
 import { TripComponent } from './Component/trip/trip.component';
+import { NZ_I18N } from 'ng-zorro-antd/i18n';
+import { vi_VN } from 'ng-zorro-antd/i18n';
+import vi from '@angular/common/locales/vi';
+
+registerLocaleData(vi);
 @NgModule({
   declarations: [
     AppComponent,
@@ -56,7 +61,7 @@ import { TripComponent } from './Component/trip/trip.component';
     ),
 
   ],
-  providers: [DatePipe, { provide: MAT_DATE_LOCALE, useValue: 'vi-VN' },
+  providers: [DatePipe, { provide: MAT_DATE_LOCALE, useValue: 'vi-VN' }, { provide: NZ_I18N, useValue: vi_VN },
  ],
   bootstrap: [AppComponent]
 })
