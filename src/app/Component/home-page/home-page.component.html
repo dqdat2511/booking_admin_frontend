@@ -139,7 +139,7 @@
         </div>
       </div>
       <div class="all" style="width: 120%">
-        <div *ngIf="!isOn">
+        <div *ngIf="isOn">
           <h1
             style="
               font-size: 30px;
@@ -156,7 +156,7 @@
             {{ Type }}
           </h1>
         </div>
-        <div *ngIf="!isTime && !isTrip" class="clock">
+        <div *ngIf="!isTime && isTrip" class="clock">
             <div class="hero">
               <div class="container_clock">
                 <div class="clock_inner">
@@ -175,7 +175,7 @@
         </div>
 
         <app-time-trip *ngIf="isTime"></app-time-trip>
-        <app-trip *ngIf="isTrip"></app-trip>
+        <app-trip *ngIf="!isTrip"></app-trip>
         <!-- <app-ginseng-management *ngIf="isGinseng" (data)="HandleEvent($event)"></app-ginseng-management>
              <app-wine-management *ngIf="isWine" (data)="HandleEvent($event)"></app-wine-management> -->
         <!-- <app-certificate-management *ngIf="isCertificate" (data)="HandleEvent($event)"></app-certificate-management>  -->

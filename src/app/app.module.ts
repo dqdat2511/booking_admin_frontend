@@ -20,7 +20,7 @@ import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
 import { FormsModule } from '@angular/forms'; 
 import { ToastrModule, ToastrService } from 'ngx-toastr';
 import { NgToastModule } from 'ng-angular-popup';
-
+import {MatTableModule} from '@angular/material/table';
 import { NgToastService } from 'ng-angular-popup';
 import { TripComponent } from './Component/trip/trip.component';
 import { NZ_I18N } from 'ng-zorro-antd/i18n';
@@ -33,7 +33,7 @@ registerLocaleData(vi);
     AppComponent,
     HomePageComponent,
     TimeTripComponent,
-    TripComponent
+    TripComponent,
   ],
   imports: [
     BrowserModule,
@@ -48,6 +48,7 @@ registerLocaleData(vi);
     MatCardModule,
     NgxMaterialTimepickerModule,
     FormsModule,
+    MatTableModule,
     NgToastModule,
     ToastrModule.forRoot({            
     positionClass: 'toast-top-right',
