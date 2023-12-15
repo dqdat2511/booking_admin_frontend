@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import {MatDatepickerModule} from '@angular/material/datepicker';
-
 import {  MatFormFieldModule } from '@angular/material/form-field';
 import {  MatNativeDateModule } from '@angular/material/core';
 import { MatIconModule } from '@angular/material/icon';
@@ -17,7 +16,7 @@ import { TimeTripComponent } from './Component/time-trip/time-trip.component';
 import { DatePipe, registerLocaleData } from '@angular/common';
 import { NgxMaterialTimepicker24HoursFaceComponent } from 'ngx-material-timepicker/src/app/material-timepicker/components/timepicker-24-hours-face/ngx-material-timepicker-24-hours-face.component';
 import { NgxMaterialTimepickerModule } from 'ngx-material-timepicker';
-import { FormsModule } from '@angular/forms'; 
+import {FormBuilder, Validators, FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { ToastrModule, ToastrService } from 'ngx-toastr';
 import { NgToastModule } from 'ng-angular-popup';
 import {MatTableModule} from '@angular/material/table';
@@ -26,7 +25,13 @@ import { TripComponent } from './Component/trip/trip.component';
 import { NZ_I18N } from 'ng-zorro-antd/i18n';
 import { vi_VN } from 'ng-zorro-antd/i18n';
 import vi from '@angular/common/locales/vi';
-
+import {MatDividerModule} from '@angular/material/divider';
+import {MatButtonModule} from '@angular/material/button';
+import {map} from 'rxjs/operators';
+import {NgSwitch, NgSwitchCase, AsyncPipe} from '@angular/common';
+import {Observable} from 'rxjs';
+import {StepperOrientation, MatStepperModule} from '@angular/material/stepper';
+import {BreakpointObserver} from '@angular/cdk/layout';
 registerLocaleData(vi);
 @NgModule({
   declarations: [
@@ -36,6 +41,9 @@ registerLocaleData(vi);
     TripComponent,
   ],
   imports: [
+    NgSwitch,
+    NgSwitchCase,
+    MatStepperModule,
     BrowserModule,
     BrowserAnimationsModule,
     AppRoutingModule,
@@ -50,6 +58,11 @@ registerLocaleData(vi);
     FormsModule,
     MatTableModule,
     NgToastModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    AsyncPipe,
+    MatButtonModule, MatDividerModule,
     ToastrModule.forRoot({            
     positionClass: 'toast-top-right',
     easing: 'ease-in',
