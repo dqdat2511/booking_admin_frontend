@@ -18,6 +18,7 @@ export interface Trip {
         maxslot: number,
         numbers_floor: number,
         convenients: string,
+        number_plate: string,
     };
     finished: boolean ;
 }

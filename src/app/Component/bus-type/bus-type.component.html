@@ -37,6 +37,12 @@
               <th mat-header-cell *matHeaderCellDef>Tên xe</th>
               <td mat-cell *matCellDef="let element">{{ element.name }}</td>
             </ng-container>
+            <ng-container matColumnDef="number" style="font-size: 18px">
+              <th mat-header-cell *matHeaderCellDef>Biển kiểm soát</th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.number_plate }}
+              </td>
+            </ng-container>
             <ng-container matColumnDef="maxslot">
               <th mat-header-cell *matHeaderCellDef>Số chỗ</th>
               <td mat-cell *matCellDef="let element">
@@ -52,7 +58,7 @@
             <ng-container matColumnDef="convenients">
               <th mat-header-cell *matHeaderCellDef>Tiện ích</th>
               <td mat-cell *matCellDef="let element">
-                  {{ element.convenients }} chỗ
+                {{ element.convenients }} chỗ
               </td>
             </ng-container>
 
@@ -77,9 +83,185 @@
       </div>
       <div class="example-button-row">
         <button mat-raised-button (click)="handleAddBusType()">
-          Tạo chuyến mới
+          Tạo xe mới
         </button>
       </div>
     </section>
   </div>
 </div>
+<section class="z-3 position-fixed section-placeholder" *ngIf="isAdd">
+  <div class="modal_overlay">
+    <div
+      class="modal_inner"
+      style="width: 727px; height: 520px; margin-top: 10%"
+    >
+      <div class="form_heading">
+        <span class="Title"> Nhập thông tin xe mới</span>
+        <button
+          class="material-symbols-outlined"
+          id="cancel"
+          style="color: #22493b; background-color: #e2f1ef; border: none"
+          type="button"
+          (click)="handleClose()"
+        >
+          close
+        </button>
+      </div>
+
+      <form class="example-form" (ngSubmit)="handleAdd(name,number_plate, number_seat, number_floor, fearture)" #addForm="ngForm">
+        <div class="row">
+          <div class="d-flex flex-row mb-3" style="padding-left: 0px">
+            <div class="col p-2" style="border: none; width: 100%">
+              <label for="des" class="form-label">Loại xe</label>
+              <div class="inputFiled">
+                <mat-form-field class="example-full-width">
+                  <mat-label>Nhập tên loại xe tương ứng </mat-label>
+                  <input
+                    matInput
+                    type="text"
+                    ngModel
+                    name="name"
+                    #name="ngModel"
+                    required
+                    placeholder="Ví dụ: THACO NEW MOBIHOME PREMIUM "
+                  />
+                  <div *ngIf="name.invalid && (name.dirty || name.touched)" class="error-message">
+                    <div *ngIf="name.errors?.['required']">
+                      Tên loại xe là trường bắt buộc.
+                    </div>
+                  </div>
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="col p-2" style="border: none; width: 100%">
+              <label for="des" class="form-label">Biển kiểm soát</label>
+              <div class="inputFiled">
+                <mat-form-field class="example-full-width">
+                  <mat-label>Nhập biển kiểm soát của xe </mat-label>
+                  <input
+                    matInput
+                    type="text"
+                    ngModel
+                    name="number_plate"
+                    [maxLength]="10"
+                    [minlength]="10"
+                    #number_plate="ngModel"
+                    required
+                    placeholder="Ví dụ: 50F-002.41"
+                  />
+                  <div
+                    *ngIf="number_plate.invalid && ( number_plate.touched)"
+                    class="error-message"
+                  >
+                    <div *ngIf="number_plate.errors?.['required']">
+                      Biển số xe là trường bắt buộc.
+                    </div>
+                    <div *ngIf="number_plate.errors?.['minlength']">
+                      Ví dụ biển số xe là: 50F-002.41
+                    </div>
+                  </div>
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+          <div class="d-flex flex-row mb-3" style="padding-left: 0px">
+            <div class="col p-2" style="border: none; ">
+              <label for="des" class="form-label">Số chỗ ngồi</label>
+              <div class="inputNumber">
+                <mat-form-field class="example-full-width">
+                  <mat-label>Nhập số chỗ </mat-label>
+                  <input
+                    matInput
+                    type="number"
+                    ngModel
+                    name="number_seat"
+                    minlength="10"
+                    #number_seat="ngModel"
+                    [min]="16"
+                    required
+                    placeholder="Ví dụ: THACO NEW MOBIHOME PREMIUM "
+                  />
+                  <div
+                    *ngIf="
+                      number_seat.invalid && (number_seat.dirty || number_seat.touched)
+                    "
+                    class="error-message"
+                  >
+                    <div *ngIf="number_seat.errors?.['required']">
+                      Số chỗ ngồi là trường bắt buộc.
+                    </div>
+                    <div *ngIf="number_seat.errors?.['min']">
+                      Số chỗ ngồi xe khách tối thiểu là 16
+                    </div>
+                  </div>
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="col p-2" style="border: none; margin-left: 0%;" >
+              <label for="des" class="form-label" style="font-weight: 600;">Số tầng</label>
+              <div class="inputNumber-select">
+                <mat-form-field class="example-full-width">
+                  <mat-label >Chọn số tầng</mat-label>
+                    <select matNativeControl required #number_floor>
+                      <option value=0>0 tầng</option>
+                      <option value=1>1 tầng</option>
+                      <option value=2>2 tầng</option>
+                    </select>
+                </mat-form-field>
+              </div>
+            </div>
+            <div class="col p-2" style="border: none; margin-left: 0px; height: 50px;" >
+              <label for="des" class="form-label" style="font-weight: 600;">Những tiện nghi trên xe</label>
+              <div class="inputFeature">
+                <mat-form-field class="example-full-width">
+                  <mat-label >Nhập đầy đủ tiện nghi tại đây</mat-label>
+                  <textarea 
+                    ngModel
+                    name="fearture"
+                    #fearture="ngModel" 
+                    required
+                    style="height: 77px" matInput placeholder="Ví dụ: Nội thất sang trọng với hệ thống đèn trần led chạy dọc xe - ghế ngồi cao cấp cùng các trang bị ... "></textarea>
+                    <div
+                    *ngIf="
+                      fearture.invalid && (fearture.dirty || fearture.touched)
+                    "
+                    class="error-message"
+                  >
+                    <div *ngIf="fearture.errors?.['required']">
+                      Tiện nghi trên xe nên được nhập.
+                    </div>
+                  </div>
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="a" style="margin-top: 8%">
+          <div class="hstack gap-3">
+            <div class="p-2 ms-auto">
+              <button
+                type="button"
+                class="btn btn-outline-danger"
+                style="border-color: white"
+                (click)="handleClose()"
+              >
+                Hủy
+              </button>
+            </div>
+            <div class="p-2">
+              <button
+                type="submit"
+                class="btn btn-outline-success"
+                [disabled]="!addForm.valid"
+              >
+                Xác nhận
+              </button>
+            </div>
+          </div>
+        </div>
+        <br />
+      </form>
+    </div>
+  </div>
+</section>

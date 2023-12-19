@@ -1,6 +1,6 @@
 import { CdkTableDataSourceInput } from '@angular/cdk/table';
 import { Component, ElementRef, Renderer2, ViewChild } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { NgToastService } from 'ng-angular-popup';
 import { BusType } from 'src/app/Model/BusType';
 import { BusTypeService } from 'src/app/Service/bus-type.service';
@@ -15,7 +15,7 @@ export class BusTypeComponent {
   isAdd: boolean = false;
   iSticky = false;
   typeBus: BusType[]|null = [];
-  displayedColumns = ['name', 'maxslot', 'numbers_floor','convenients'];
+  displayedColumns = ['name', 'number', 'maxslot', 'numbers_floor','convenients'];
   dataSource: CdkTableDataSourceInput<BusType> | null = null;
   
   @ViewChild('stickyHeaderRow') stickyHeaderRow!: ElementRef;
@@ -27,8 +27,29 @@ export class BusTypeComponent {
       this.setStickyHeader(true);
       this.init();
     }
+    nameFormControl = new FormControl('',[
+      Validators.required, 
+    ]);
+    numberPlateFormControl = new FormControl('',[
+      Validators.required, 
+      Validators.minLength(10),
+    ]);
+    numberSeatFormControl = new FormControl('',[
+      Validators.required, 
+      Validators.min(25),
+    ]);
+    featureFormControll = new FormControl('',[
+      Validators.required, 
+      Validators.max(3),
+    ]);
+    myForm = new FormGroup({
+      name: this.nameFormControl,
+      number_plate: this.numberPlateFormControl,
+      number_seat: this.numberSeatFormControl,
+      fearture: this.featureFormControll,
+    })
   handleAddBusType(){
-
+    this.isAdd = true;
   }
   init(){
     this.busTypeService.getType().subscribe((data: any) =>{
@@ -40,5 +61,17 @@ export class BusTypeComponent {
       const nativeElement = this.stickyHeaderRow.nativeElement;
       this.renderer2.setProperty(nativeElement, 'sticky', true);
     }
+  }
+  handleClose(){
+    this.isAdd = false;
+  }
+  handleAdd(name: any, number: any, seat: any, floor: any, feature: any){
+      this.busTypeService.addType(name.value, seat.value, floor.value, number.value, feature.value).subscribe((data: any)=>{
+        if(data == 'OK'){
+          this.toast.success({detail:"Thành công",summary:'Đã thêm vào một chiếc xe mới',duration:5000, position:'topRight'});
+          this.init();
+          this.isAdd = false;
+        }
+      })
   }
 }

@@ -3,5 +3,6 @@ export interface BusType {
     name: string,
     maxslot: number,
     numbers_floor : number,
-    convenients: string
+    convenients: string,
+    number_plate: string
 }
