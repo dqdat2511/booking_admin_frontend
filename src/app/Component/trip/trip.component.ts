@@ -8,13 +8,18 @@ import { DatePipe } from '@angular/common';
 import { AppService } from 'src/app/app.service';
 import { TimeService } from 'src/app/Service/time.service';
 import { TimeTrip } from 'src/app/Model/time';
-import {FormBuilder, Validators, FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {FormBuilder, Validators, FormsModule, ReactiveFormsModule, FormControl, FormGroup} from '@angular/forms';
 import { Observable } from 'rxjs';
 import {map} from 'rxjs/operators';
 import {MatButtonModule} from '@angular/material/button';
 import {MatInputModule} from '@angular/material/input';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {NgSwitch, NgSwitchCase, AsyncPipe} from '@angular/common';
+import { BusType } from 'src/app/Model/BusType';
+import { BusTypeService } from 'src/app/Service/bus-type.service';
+import { TripService } from 'src/app/Service/trip.service';
+import { CdkTableDataSourceInput } from '@angular/cdk/table';
+import { NgToastService } from 'ng-angular-popup';
 @Component({
   selector: 'app-trip',
   templateUrl: './trip.component.html',
@@ -25,21 +30,35 @@ export class TripComponent {
   isSticky = false;
   status: any[] | null = [];
   timeArray: TimeTrip[] | null = [];
+  typeBus: BusType[] | null = [];
+  tripList: Trip[] | null = [];
   displayedColumns = ['name', 'timetrip', 'timeend', 'type', 'finish'];
-  dataSource = ELEMENT_DATA1;
+  dataSource: CdkTableDataSourceInput<Trip> | null = null;
   
 
   @ViewChild('stickyHeaderRow') stickyHeaderRow!: ElementRef;
   constructor(public appService: AppService, 
     private renderer2: Renderer2, 
     private timeService: TimeService,
-    private _formBuilder: FormBuilder) {
-    this.format();
+    private _formBuilder: FormBuilder,
+    private typeService: BusTypeService,
+    private tripService: TripService,
+    private toast: NgToastService) {
+    // this.format();
     this.setStickyHeader(true);
     this.getTime();
+    this.init();
+
   }
 
-  
+  nameFormControl = new FormControl('',[
+    Validators.required, 
+    Validators.minLength(10)
+  ]);
+  tripForm = new FormGroup({
+    name: this.nameFormControl,
+
+  })
   getTime(){
     this.timeService.getTime().subscribe((data: any) => {
       this.timeArray = data;
@@ -54,10 +73,13 @@ export class TripComponent {
   format() {
     const currentTime = new Date();
     this.status = []; // Đặt lại mảng status trước khi cập nhật
-
-    for (let i = 0; i < ELEMENT_DATA1?.length; i++) {
+    if(this.tripList == null){
+      alert(1);
+      return ;
+    }
+    for (let i = 0; i < this.tripList.length; i++) {
       const startTime = new Date(
-        `${ELEMENT_DATA1?.[i].timetrip.start_day}T${ELEMENT_DATA1?.[i].timetrip.start_time}`
+        `${this.tripList?.[i].time.start_day}T${this.tripList?.[i].time.start_time}`
       );
       const currentDateTime = new Date(
         currentTime.getFullYear(),
@@ -68,170 +90,62 @@ export class TripComponent {
         currentTime.getSeconds()
       );
 
-      if (currentDateTime > startTime && ELEMENT_DATA1?.[i].finished == false) {
+      if (currentDateTime > startTime && this.tripList?.[i].finished == false) {
         this.status[i] = 'Xe đang trong hành trình';
       } else if (
         currentDateTime > startTime ||
-        ELEMENT_DATA1?.[i].finished == true
+        this.tripList?.[i].finished == true
       ) {
         this.status[i] = 'Xe đã hoàn thành chuyến';
       } else if (
         currentDateTime < startTime &&
-        ELEMENT_DATA1?.[i].finished == false
+        this.tripList?.[i].finished == false
       ) {
         this.status[i] = 'Xe chưa bắt đầu chuyến';
       }
     }
+    console.log(this.status);
   }
   handleAddTrip() {
     this.isAdd = true;
     this.isSticky = false;
+    this.init();
+
+
   }
 
   handleClose() {
     this.isAdd = false;
     this.isSticky = true;
   }
-}
+  init(){
+    this.tripService.getTrip().subscribe((data: any) =>{
 
-const ELEMENT_DATA1: Trip[] = [
-  {
-    id: '1af97fd2-8391-459f-a1d3-1ae4d89b8d77',
-    name: 'Sài Gòn đi Bình Định',
-    timetrip: {
-      id: 5,
-      start_time: '07:00:00',
-      end_time: '13:00:00',
-      start_day: '2023-12-15',
-      end_day: '2023-12-15',
-    },
-    type: {
-      id: 'samco',
-      name: 'samco ghế ngồi',
-      maxslot: 27,
-      numbers_floor: 1,
-      convenients: 'Máy lạnh, giường, quá tốt',
-    },
-    finished: false,
-  },
-  {
-    id: '1af97fd2-8391-459f-a1d3-1ae4d89b8d77',
-    name: 'Sài Gòn đi Bến Tre',
-    timetrip: {
-      id: 5,
-      start_time: '07:00:00',
-      end_time: '10:00:00',
-      start_day: new Date('2023-02-20'),
-      end_day: new Date('2023-02-20'),
-    },
-    type: {
-      id: 'thaco',
-      name: 'Thaco Mobile Home Luxury',
-      maxslot: 32,
-      numbers_floor: 0,
-      convenients:
-        'Có 2 nhà vệ sinh, nội thất sang trọng, xe được trang bị wifi miễn phí có khăn lạnh cho quý khách',
-    },
-    finished: true,
-  },
-  {
-    id: '1af97fd2-8391-459f-a1d3-1ae4d89b8d77',
-    name: 'Sài Gòn đi Bến Tre',
-    timetrip: {
-      id: 5,
-      start_time: '07:00:00',
-      end_time: '10:00:00',
-      start_day: new Date('2023-02-20'),
-      end_day: new Date('2023-02-20'),
-    },
-    type: {
-      id: 'thaco',
-      name: 'Thaco Mobile Home Luxury',
-      maxslot: 32,
-      numbers_floor: 0,
-      convenients:
-        'Có 2 nhà vệ sinh, nội thất sang trọng, xe được trang bị wifi miễn phí có khăn lạnh cho quý khách',
-    },
-    finished: true,
-  },
-  {
-    id: '1af97fd2-8391-459f-a1d3-1ae4d89b8d77',
-    name: 'Sài Gòn đi Bến Tre',
-    timetrip: {
-      id: 5,
-      start_time: '07:00:00',
-      end_time: '10:00:00',
-      start_day: new Date('2023-02-20'),
-      end_day: new Date('2023-02-20'),
-    },
-    type: {
-      id: 'thaco',
-      name: 'Thaco Mobile Home Luxury',
-      maxslot: 32,
-      numbers_floor: 0,
-      convenients:
-        'Có 2 nhà vệ sinh, nội thất sang trọng, xe được trang bị wifi miễn phí có khăn lạnh cho quý khách',
-    },
-    finished: true,
-  },
-  {
-    id: '1af97fd2-8391-459f-a1d3-1ae4d89b8d77',
-    name: 'Sài Gòn đi Bến Tre',
-    timetrip: {
-      id: 5,
-      start_time: '07:00:00',
-      end_time: '10:00:00',
-      start_day: new Date('2023-02-20'),
-      end_day: new Date('2023-02-20'),
-    },
-    type: {
-      id: 'thaco',
-      name: 'Thaco Mobile Home Luxury',
-      maxslot: 32,
-      numbers_floor: 0,
-      convenients:
-        'Có 2 nhà vệ sinh, nội thất sang trọng, xe được trang bị wifi miễn phí có khăn lạnh cho quý khách',
-    },
-    finished: true,
-  },
-  {
-    id: '1af97fd2-8391-459f-a1d3-1ae4d89b8d77',
-    name: 'Sài Gòn đi Bến Tre',
-    timetrip: {
-      id: 5,
-      start_time: '07:00:00',
-      end_time: '10:00:00',
-      start_day: new Date('2023-02-20'),
-      end_day: new Date('2023-02-20'),
-    },
-    type: {
-      id: 'thaco',
-      name: 'Thaco Mobile Home Luxury',
-      maxslot: 32,
-      numbers_floor: 0,
-      convenients:
-        'Có 2 nhà vệ sinh, nội thất sang trọng, xe được trang bị wifi miễn phí có khăn lạnh cho quý khách',
-    },
-    finished: true,
-  },
-  {
-    id: '1af97fd2-8391-459f-a1d3-1ae4d89b8d77',
-    name: 'Sài Gòn đi Bến Tre',
-    timetrip: {
-      id: 5,
-      start_time: '07:00:00',
-      end_time: '10:00:00',
-      start_day: new Date('2023-02-20'),
-      end_day: new Date('2023-02-20'),
-    },
-    type: {
-      id: 'thaco',
-      name: 'Thaco Mobile Home Luxury',
-      maxslot: 32,
-      numbers_floor: 0,
-      convenients:
-        'Có 2 nhà vệ sinh, nội thất sang trọng, xe được trang bị wifi miễn phí có khăn lạnh cho quý khách',
-    },
-    finished: true,
-  },
-];
+      this.tripList = data;
+      this.dataSource = [];
+      if(this.tripList)
+      this.dataSource = this.tripList;
+      console.log(data);   
+      this.format();
+    })
+    this.typeService.getType().subscribe((data: any) =>{
+      this.typeBus = data;
+      
+    })
+   
+    if(this.tripList){
+      this.dataSource = this.tripList;
+    }
+  }
+  handleAdd(name: any, time: any, type: any){
+      console.log(name.value, time.value,  type.value);
+      this.tripService.addTrip(name.value, time.value, type.value).subscribe((data: any) =>{
+        if(data == 'OK'){
+          this.toast.success({detail:"Đã tạo một chuyến xe mới",summary:'Đã tạo chuyến thành công',duration:5000, position:'topRight'});
+          this.init();
+          this.handleClose();
+        }
+        console.log(data);
+      })
+  }
+}

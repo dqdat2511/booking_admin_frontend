@@ -5,7 +5,19 @@ import { BusType } from "./BusType";
 export interface Trip {
     id: string,
     name: string;
-    timetrip: TimeTrip;
-    type: BusType;
+    time: {
+        id: any,
+        start_time: any,
+        end_time: any,
+        start_day: any,
+        end_day: any
+    };
+    seats: {
+        id: string,
+        name: string,
+        maxslot: number,
+        numbers_floor: number,
+        convenients: string,
+    };
     finished: boolean ;
 }

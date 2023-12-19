@@ -1,0 +1,85 @@
+<div>
+  <h1
+    style="
+      font-size: 30px;
+      font-family: Legend;
+      font-weight: bold;
+      font-stretch: normal;
+      font-style: normal;
+      line-height: 1.2;
+      letter-spacing: normal;
+      text-align: left;
+      color: #22493b;
+      justify-content: center;
+      text-align: center;
+      padding-bottom: 20px;
+      padding-top: 20px;
+    "
+  >
+    QUẢN LÝ CÁC LOẠI XE
+  </h1>
+</div>
+<div class="vstack gap-3">
+  <div class="position-relative p-2">
+    <div class="position-absolute top-0 start-0">
+      <section
+        class="example-container mat-elevation-z8"
+        tabindex="0"
+        style="border-bottom: solid 1px gray"
+      >
+        <ng-container *ngIf="dataSource as dataSource">
+          <table
+            mat-table
+            [dataSource]="dataSource"
+            style="border-bottom: solid 1px black"
+          >
+            <ng-container matColumnDef="name" style="font-size: 18px">
+              <th mat-header-cell *matHeaderCellDef>Tên xe</th>
+              <td mat-cell *matCellDef="let element">{{ element.name }}</td>
+            </ng-container>
+            <ng-container matColumnDef="maxslot">
+              <th mat-header-cell *matHeaderCellDef>Số chỗ</th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.maxslot }}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="numbers_floor">
+              <th mat-header-cell *matHeaderCellDef>Số tầng</th>
+              <td mat-cell *matCellDef="let element">
+                {{ element.numbers_floor }}
+              </td>
+            </ng-container>
+            <ng-container matColumnDef="convenients">
+              <th mat-header-cell *matHeaderCellDef>Tiện ích</th>
+              <td mat-cell *matCellDef="let element">
+                  {{ element.convenients }} chỗ
+              </td>
+            </ng-container>
+
+            <tr
+              mat-header-row
+              id="table-sticky"
+              *matHeaderRowDef="displayedColumns; sticky: iSticky"
+            ></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+          </table>
+        </ng-container>
+      </section>
+    </div>
+  </div>
+  <div class="p-2" style="margin-top: 30%">
+    <section>
+      <div
+        class="example-label"
+        style="margin-bottom: 10px; color: #22493b; font-weight: bold"
+      >
+        Thao tác xử lý
+      </div>
+      <div class="example-button-row">
+        <button mat-raised-button (click)="handleAddBusType()">
+          Tạo chuyến mới
+        </button>
+      </div>
+    </section>
+  </div>
+</div>

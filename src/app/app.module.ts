@@ -32,6 +32,7 @@ import {NgSwitch, NgSwitchCase, AsyncPipe} from '@angular/common';
 import {Observable} from 'rxjs';
 import {StepperOrientation, MatStepperModule} from '@angular/material/stepper';
 import {BreakpointObserver} from '@angular/cdk/layout';
+import { BusTypeComponent } from './Component/bus-type/bus-type.component';
 registerLocaleData(vi);
 @NgModule({
   declarations: [
@@ -39,6 +40,7 @@ registerLocaleData(vi);
     HomePageComponent,
     TimeTripComponent,
     TripComponent,
+    BusTypeComponent,
   ],
   imports: [
     NgSwitch,

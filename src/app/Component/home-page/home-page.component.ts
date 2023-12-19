@@ -8,6 +8,7 @@ import { Component } from '@angular/core';
 export class HomePageComponent {
   isTime = false;
   isTrip = false;
+  isBusType = false;
   isOn = false;
   show = '';
   Type = '';
@@ -70,24 +71,32 @@ export class HomePageComponent {
    
     console.log(this.active?.className);
   }
-  ginsengInput(){
+  timeInput(){
     this.reset();
     this.isTime = true;
     this.isOn = true;
-    document.getElementById("ginseng")?.setAttribute("style","font-weight : bold;");
+    document.getElementById("time")?.setAttribute("style","font-weight : bold;");
   }
-  wineInput(){
+  tripInput(){
     this.reset();
     this.isTrip = true;    
     this.isOn = true;
-    document.getElementById("wine")?.setAttribute("style","font-weight : bold;");
+    document.getElementById("trip")?.setAttribute("style","font-weight : bold;");
+  }
+  busInput(){
+    this.reset();
+    this.isBusType = true;
+    this.isOn = true;
+    document.getElementById("bus")?.setAttribute("style","font-weight : bold;");
   }
   reset(){
     this.isTime = false;
     this.isTrip = false;
     this.isCertificate = false;
-    document.getElementById("ginseng")?.setAttribute("style","font-weight : normal;");  
-    document.getElementById("wine")?.setAttribute("style","font-weight : normal;");
+    this.isBusType = false;
+    document.getElementById("time")?.setAttribute("style","font-weight : normal;");  
+    document.getElementById("trip")?.setAttribute("style","font-weight : normal;");
+    document.getElementById("bus")?.setAttribute("style","font-weight : normal;");
   }
   public HandleEvent($event: any) : void{
     this.show = $event;
