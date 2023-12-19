@@ -8,6 +8,7 @@ import { Component } from '@angular/core';
 export class HomePageComponent {
   isTime = false;
   isTrip = false;
+  isList = false;
   isBusType = false;
   isOn = false;
   show = '';
@@ -53,11 +54,12 @@ export class HomePageComponent {
    
     this.active?.classList.add('active');
     console.log(this.active?.className);
-    if(this.active?.className == 'menu-certi active'){
+    if(this.active?.className == 'menu-news active'){
       this.reset();
       this.isCertificate = true;
       this.isOn = true;
-      
+      this.isList = true;
+      this.list();
     }
   }
   HandleList(element: any){
@@ -89,14 +91,22 @@ export class HomePageComponent {
     this.isOn = true;
     document.getElementById("bus")?.setAttribute("style","font-weight : bold;");
   }
+  list(){
+    this.reset();
+    this.isList = true;
+    this.isOn = true;
+    document.getElementById("list")?.setAttribute("style","font-weight : bold;");
+  }
   reset(){
     this.isTime = false;
     this.isTrip = false;
     this.isCertificate = false;
     this.isBusType = false;
+    this.isList = false;
     document.getElementById("time")?.setAttribute("style","font-weight : normal;");  
     document.getElementById("trip")?.setAttribute("style","font-weight : normal;");
     document.getElementById("bus")?.setAttribute("style","font-weight : normal;");
+    document.getElementById("list")?.setAttribute("style","font-weight : normal;");
   }
   public HandleEvent($event: any) : void{
     this.show = $event;
