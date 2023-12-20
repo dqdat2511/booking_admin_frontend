@@ -7,6 +7,9 @@ import { Component } from '@angular/core';
 })
 export class HomePageComponent {
   isTime = false;
+  isTrip = false;
+  isList = false;
+  isBusType = false;
   isOn = false;
   show = '';
   Type = '';
@@ -15,11 +18,24 @@ export class HomePageComponent {
   iconList = '';
   isWine = false;
   isCertificate = false;
+  hours : any | null = 0;
+  mins : any | null = 0;
+  sec : any | null = 0;
   constructor(){
     this.iconList = 'chevron_right';
-    this.Type = " Chào mừng admin đã đến với trang web quản lý sâm. Phía dưới là video hướng dẫn: ";
+    this.Type = " Chào mừng admin đã đến với trang web quản lý nhà xe. Chúc anh chị có ngày làm việc tốt lành ";
+    if(!this.isTime && !this.isTrip){
+      setInterval(() => {
+        this.updateTime();
+      })
+    }
   }
-
+  updateTime(){
+      let currentTime = new Date();
+      this.hours = (currentTime.getHours() < 10 ?"0":"") + currentTime.getHours();
+      this.mins = (currentTime.getMinutes() < 10 ?"0":"") + currentTime.getMinutes();
+      this.sec = (currentTime.getSeconds() < 10 ?"0":"") + currentTime.getSeconds();
+  }
   HandleNews(element: any){
     const element1 = element;
     console.log(element1);
@@ -38,11 +54,12 @@ export class HomePageComponent {
    
     this.active?.classList.add('active');
     console.log(this.active?.className);
-    if(this.active?.className == 'menu-certi active'){
+    if(this.active?.className == 'menu-news active'){
       this.reset();
       this.isCertificate = true;
       this.isOn = true;
-      
+      this.isList = true;
+      this.list();
     }
   }
   HandleList(element: any){
@@ -56,24 +73,40 @@ export class HomePageComponent {
    
     console.log(this.active?.className);
   }
-  ginsengInput(){
+  timeInput(){
     this.reset();
     this.isTime = true;
     this.isOn = true;
-    document.getElementById("ginseng")?.setAttribute("style","font-weight : bold;");
+    document.getElementById("time")?.setAttribute("style","font-weight : bold;");
   }
-  wineInput(){
+  tripInput(){
     this.reset();
-    this.isWine = true;    
+    this.isTrip = true;    
     this.isOn = true;
-    document.getElementById("wine")?.setAttribute("style","font-weight : bold;");
+    document.getElementById("trip")?.setAttribute("style","font-weight : bold;");
+  }
+  busInput(){
+    this.reset();
+    this.isBusType = true;
+    this.isOn = true;
+    document.getElementById("bus")?.setAttribute("style","font-weight : bold;");
+  }
+  list(){
+    this.reset();
+    this.isList = true;
+    this.isOn = true;
+    document.getElementById("list")?.setAttribute("style","font-weight : bold;");
   }
   reset(){
     this.isTime = false;
-    this.isWine = false;
+    this.isTrip = false;
     this.isCertificate = false;
-    document.getElementById("ginseng")?.setAttribute("style","font-weight : normal;");  
-    document.getElementById("wine")?.setAttribute("style","font-weight : normal;");
+    this.isBusType = false;
+    this.isList = false;
+    document.getElementById("time")?.setAttribute("style","font-weight : normal;");  
+    document.getElementById("trip")?.setAttribute("style","font-weight : normal;");
+    document.getElementById("bus")?.setAttribute("style","font-weight : normal;");
+    document.getElementById("list")?.setAttribute("style","font-weight : normal;");
   }
   public HandleEvent($event: any) : void{
     this.show = $event;
@@ -82,4 +115,5 @@ export class HomePageComponent {
   certificateInput(){
 
   }
+
 }

@@ -1,0 +1,131 @@
+.example-container {
+    height: 400px;
+    overflow: auto;
+  }
+  
+  table {
+    width: 100%;
+  }
+.container{
+    justify-content: center;
+    display: relative;
+}
+.example-container{
+    width: 1256px;
+}
+.z-3{
+    position: fixed !important;
+    top: 0 ;
+    right: 0 ;
+    bottom: 0 ;
+    left: 0 ;
+  }
+  .modal_overlay{
+    position: absolute !important;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(30,30,30,0.4);
+  }
+  .modal_inner {
+    position: relative;
+    width: 735px;
+    height: 612px;
+    // margin: 41px 342px 144px 120px;
+    border-radius: 12px;
+    background-color: #fff;
+    margin-top: 3%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: auto;
+    z-index: 3
+  }
+  $radius: 12px;
+  .form_heading  {
+    width: 100%;
+    height: 56px;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 16px;
+    margin: 0 0 16px;
+    padding: 16px;
+    background-color: #e2f1ef;
+    border-top-right-radius: $radius;
+    border-top-left-radius: $radius;
+  }
+  .title{
+    font-size: 20px;
+    color: #22493b;
+    font-weight: bold;
+    text-align: justify;
+    justify-content: center;
+    align-items: center;
+}
+.title-sub{
+    font-size: 18px;
+    color: #22493b;
+    text-align: center;
+    justify-content: center;
+    font-family: 'Times New Roman', Times, serif;
+    font-weight: bold;
+}
+.Title {
+    height: 19px;
+    flex-grow: 1;
+    font-family: Inter;
+    font-size: 16px;
+    font-weight: 700;
+    font-stretch: normal;
+    font-style: normal;
+    line-height: 1.2;
+    letter-spacing: normal;
+    text-align: left;
+    color: #22493b;
+  }
+  .example-form {
+    min-width: 150px;
+    max-width: 500px;
+    width: 100%;
+  }
+  
+  .example-full-width {
+    width: 100%;
+  }
+  .row{
+    justify-content: center;
+    align-items: center;
+    margin-left: 20px;
+
+    margin-top: 2%;
+  }
+  .inputFiled{
+    width: 325px;
+  }
+  .form-select{
+    width: 662px;
+  }
+  .error-message {
+    color: red;
+    font-size: 14px;
+    margin-top: 5px;
+    font-style: italic;
+  }
+  .inputNumber{
+    width: 170px;
+  }
+  .inputNumber-select{
+    width: 139px;
+  }
+  .form-label{
+    font-weight: 600;
+  }
+  .inputFeature{
+    width: 320px;
+    height: 100px;
+    resize: none;
+  }
+  .inputFeature mat-form-field textarea {
+    height: 50px; /* Đặt chiều cao mong muốn */
+    resize: none; /* Ngăn chặn khả năng resize của textarea */
+  }
