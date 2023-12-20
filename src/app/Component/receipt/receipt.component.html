@@ -1,0 +1,22 @@
+<table matSort (matSortChange)="sortData($event)">
+    <tr>
+      <th mat-sort-header="name">Tên khách hàng </th>
+      <th mat-sort-header="calories">Chuyến đi</th>
+      <th mat-sort-header="fat">Thời gian</th>     
+      <th mat-sort-header="protein">Ghế </th>
+      <th mat-sort-header="carbs">Tiền </th>
+    </tr>
+  
+    <tr *ngFor="let receipt of receipt">
+      <td>{{receipt.client}}</td>
+      <td>
+        <span *ngFor="let destination of receipt.destination">{{ destination.place }} </span>
+      </td>
+      <td>
+        <span *ngFor="let destination of receipt.destination">{{ destination.Start_time | date :'short'}}
+           </span></td>
+      <td>{{receipt.seat}}</td>     
+      <td>{{receipt.total}}</td>
+    </tr>
+  </table>
+  
