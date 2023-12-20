@@ -1,4 +1,4 @@
-import { Component, ElementRef, Renderer2, ViewChild } from '@angular/core'
+import { Component, ElementRef, Inject, Renderer2, ViewChild } from '@angular/core'
 import {BreakpointObserver} from '@angular/cdk/layout';
 import {StepperOrientation, MatStepperModule} from '@angular/material/stepper';
 import { NzSegmentedOption } from 'ng-zorro-antd/segmented';
@@ -42,7 +42,7 @@ export class TripComponent {
     private timeService: TimeService,
     private _formBuilder: FormBuilder,
     private typeService: BusTypeService,
-    private tripService: TripService,
+    @Inject(TripService) private tripService: TripService,
     private toast: NgToastService) {
     // this.format();
     this.setStickyHeader(true);
