@@ -236,7 +236,7 @@ body{
 }
 .active-menu {
     width: 238px ;
-    height: 150px ;
+    height: 209px ;
     gap: 8px;
     padding: 8px;
     background-color: #e2f1ef;
@@ -266,4 +266,72 @@ body{
     letter-spacing: normal;
     text-align: left;
     color: #22493b;
+}
+.clock{
+    font-family: 'Poppins', sans-serif;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+.hero{
+    width: 100%;
+    min-height: 94vh;
+    color: #fff;
+    position: relative;
+}
+.container_clock{
+    width: 800px;
+    height: 180px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: red;
+}
+.clock_inner{
+    width: 107%;
+    height: 154%;
+    background: rgba(235, 0, 255, 0.11);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(40px);
+}
+.container_clock::before{
+    content: '';
+    width: 180px;
+    height: 180px;
+    background: #f41b75;
+    border-radius: 5px;
+    position: absolute;
+    left: -7%;
+    top: -50%;
+    z-index: -1;
+}
+.container_clock::after{
+    content: '';
+    width: 180px;
+    height: 180px;
+    background: #419aff;
+    border-radius: 50%;
+    position: absolute;
+    right: -7%;
+    bottom: -50%;
+    z-index: -1;
+}
+.clock_inner span{
+    font-size: 100px;
+    width: 110px;
+    display: inline-block;
+    text-align: center;
+    position: relative;
+}
+.clock_inner span ::after{
+    content: 'HOURS';
+    font-size: 16px;
+    position: absolute;
+    bottom: -5px;
+    left: 50%;
+    transform: translateX(-50%);
 }

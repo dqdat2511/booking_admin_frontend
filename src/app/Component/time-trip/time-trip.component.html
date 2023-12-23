@@ -1,26 +1,10 @@
-<!-- <div class="container text-center" style="margin-top: 20px;">
-    <div class="row">
-      <div class="col-sm-8">
-        <h1 class="title">
-            Thời gian bắt đầu chuyến
-        </h1>
-        <div class="col-sm">
-            Ngày bắt đầu
-          </div>
-          <div class="col-sm">
-            Giowf bắt đầu
-          </div>
-      </div>
-    </div>
-    <div class="row">
-      <div class="col">
-        <h1 class="title">
-            Thời gian kết thúc chuyến
-        </h1>
-      </div>
-    </div>
-</div>   -->
-<div class="container text-center" style="border: solid 1px black ; margin-top: 5%;" >
+
+BẢNG TÀI CHẠY
+
+<div
+  class="container text-center"
+  style="border: solid 1px black; margin-top: 5%"
+>
   <div class="row justify-content-md-center">
     <div class="col-sm-3" style="border-right: solid 1px black">
       <h1 class="title col-md-auto">
@@ -43,111 +27,211 @@
       >
         <div class="col-8 col-sm-6" style="border-right: solid 1px black">
           <span class="day-content">
-            {{ item.day }}
+            {{ formatDateVietNam(item.start_day)}}
           </span>
         </div>
 
         <div class="col-4 col-sm-6">
           <span class="day-content">
-            {{ item.time }}
+            {{ item.start_time }}
           </span>
         </div>
       </div>
     </div>
   </div>
 </div>
-<div class="container text-center" style="border: solid 1px black; margin-top: 5%;">
-    <div class="row justify-content-md-center">
-      <div class="col-sm-3" style="border-right: solid 1px black">
-        <h1 class="title col-md-auto">
-          Thời gian kết thúc chuyến (Thời gian có thể chọn)
-        </h1>
-      </div>
-      <div class="col-sm-9">
-        <div class="row" style="border-top: solid 2px black">
-          <div class="col-8 col-sm-6" style="border-right: solid 1px black">
-            <h2 class="title-sub" >Ngày kết thúc</h2>
-          </div>
-          <div class="col-4 col-sm-6">
-            <h2 class="title-sub">Giờ về bến</h2>
-          </div>
+<div
+  class="container text-center"
+  style="border: solid 1px black; margin-top: 5%"
+>
+  <div class="row justify-content-md-center">
+    <div class="col-sm-3" style="border-right: solid 1px black">
+      <h1 class="title col-md-auto">
+        Thời gian kết thúc chuyến (Thời gian có thể chọn)
+      </h1>
+    </div>
+    <div class="col-sm-9">
+      <div class="row" style="border-top: solid 2px black">
+        <div class="col-8 col-sm-6" style="border-right: solid 1px black">
+          <h2 class="title-sub">Ngày kết thúc</h2>
         </div>
-        <div
-          class="row"
-          style="border-top: solid 1px black"
-          *ngFor="let item of timetrip; let i = index"
-        >
-          <div class="col-8 col-sm-6" style="border-right: solid 1px black">
-            <span class="day-content">
-              {{ item.day }}
-            </span>
-          </div>
-  
-          <div class="col-4 col-sm-6">
-            <span class="day-content">
-              {{ item.time }}
-            </span>
-          </div>
+        <div class="col-4 col-sm-6">
+          <h2 class="title-sub">Giờ về bến</h2>
         </div>
       </div>
-    </div>
-  </div>
-  <div class="hstack gap-3" style="margin-top: 5%;" >
-    <div class="p-2"></div>
-    <div class="p-2 ms-auto"></div>
-    <div class="p-2" style="margin-right: 5%;">
-        <button type="button" class="btn btn-outline-success"  style="background-color: #22493b; color: #e2f1ef; " (click)="handleAddTime()">
-            Thêm mới
-        </button>
-    </div>
-  </div>
-  <section class="z-3 position-fixed section-placeholder" *ngIf="isAdd" >
-    <div class="modal_overlay">
       <div
-        class="modal_inner"
-        style="width: 727px; height: 400px; margin-top: 10%"
+        class="row"
+        style="border-top: solid 1px black"
+        *ngFor="let item of timetrip; let i = index"
       >
-        <div class="form_heading">
-          <span class="Title"> Tạo thời gian cho hành trình mới </span>
-          <button
-            class="material-symbols-outlined"
-            id="cancel"
-            style="color: #22493b; background-color: #e2f1ef; border: none"
-            type="button"
-            (click)="handleClose()"
-          >
-            close
-          </button>
+        <div class="col-8 col-sm-6" style="border-right: solid 1px black">
+          <span class="day-content">
+            {{ formatDateVietNam(item.end_day) }}
+          </span>
         </div>
-        <div class="row" style="margin-top: 5%;">
-            <div class="col" style="margin-left: 20px; border: none">
-                <label for="formGroupExampleInput" class="form-label">Ngày xuất bến</label>
-              <input type="date" class="form-control" placeholder="Chọn theo định dạng ngày" aria-label="First name">
-            </div>
-            <div class="col" style="margin-right: 20px;  border: none">
-                <label for="formGroupExampleInput" class="form-label">Thời gian xuất bến</label>
-              <input type="text" class="form-control" placeholder="Chọn theo định dạng thời gian" aria-label="Last name">
-            </div>
-          </div>
-          <div class="row" style="margin-top: 5%;">
-            <div class="col" style="margin-left: 20px; border: none">
-                <label for="formGroupExampleInput" class="form-label">Ngày xuất bến</label>
-              <input type="date" class="form-control" placeholder="Chọn theo định dạng ngày" aria-label="First name">
-            </div>
-            <div class="col" style="margin-right: 20px;  border: none">
-                <label for="formGroupExampleInput" class="form-label">Thời gian xuất bến</label>
-              <input type="text" class="form-control" placeholder="Chọn theo định dạng thời gian" aria-label="Last name">
-            </div>
-          </div>
-          <div class="float-xxl-end" style="margin-top: 11%;">
-            <div class="hstack gap-3">
-                <div class="p-2 ms-auto">
-                <button type="button" class="btn btn-outline-danger" style="border-color:white ;" (click)="handleClose()">Hủy</button>
-                </div>
-                <div class="p-2"><button type="button" class="btn btn-outline-success">Xác nhận</button>
-                </div>
-              </div>
-        </div><br>    
+
+        <div class="col-4 col-sm-6">
+          <span class="day-content">
+            {{ item.end_time }}
+          </span>
+        </div>
       </div>
     </div>
-  </section>
+  </div>
+</div>
+<div class="hstack gap-3" style="margin-top: 5%">
+  <div class="p-2"></div>
+  <div class="p-2 ms-auto"></div>
+  <div class="p-2" style="margin-right: 5%">
+    <button
+      type="button"
+      class="btn btn-outline-success"
+      style="background-color: #22493b; color: #e2f1ef"
+      (click)="handleAddTime()"
+    >
+      Thêm mới
+    </button>
+  </div>
+</div>
+<section class="z-3 position-fixed section-placeholder" *ngIf="isAdd">
+  <div class="modal_overlay">
+    <div
+      class="modal_inner"
+      style="width: 727px; height: 450px; margin-top: 10%"
+    >
+      <div class="form_heading">
+        <span class="Title"> Tạo thời gian cho hành trình mới </span>
+        <button
+          class="material-symbols-outlined"
+          id="cancel"
+          style="color: #22493b; background-color: #e2f1ef; border: none"
+          type="button"
+          (click)="handleClose()"
+        >
+          close
+        </button>
+      </div>
+      <div class="row" style="margin-top: 5%">
+        <div class="col" style="margin-left: 20px; border: none">
+          <label for="formGroupExampleInput" class="form-label"
+            >Ngày xuất bến</label
+          >
+
+        <mat-form-field color="warn" id="des" >
+          <mat-label>Chọn ngày phù hợp</mat-label>
+          <input
+            matInput
+            [matDatepickerFilter]="myFilter"
+            [matDatepicker]="picker1"
+            (input)="onDateInput($event)"
+            #start_Day
+            readonly 
+            (click)="picker1.open()"
+          />
+          <mat-datepicker-toggle 
+            matIconSuffix
+            [for]="picker1"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #picker1 ></mat-datepicker>
+          <mat-error *ngIf="error">{{ error }}</mat-error>
+        </mat-form-field>
+
+          
+        </div>
+        <div class="col" style="margin-right: 20px; border: none">
+          <label for="formGroupExampleInput" class="form-label"
+            >Thời gian xuất bến</label
+          >
+          <input
+            type="button"
+            class="form-control"
+            id="picktime"
+            [ngxTimepicker]="pickerTime1"
+            [(ngModel)]="startTime"
+            placeholder="Chọn theo định dạng thời gian"
+            
+          />
+          <ngx-material-timepicker
+            #pickerTime1
+            [format]="24"
+          ></ngx-material-timepicker>
+        </div>
+      </div>
+      <div class="row" style="margin-top: 5%">
+        <div class="col" style="margin-left: 20px; border: none">
+          <label for="des" class="form-label">Ngày về bến</label>
+          <mat-form-field color="warn" id="des">
+            <mat-label>Chọn ngày phù hợp</mat-label>
+            <input
+              matInput
+              [matDatepickerFilter]="myFilter"
+              [matDatepicker]="picker2"
+              (dateInput)="onDateInput($event)"
+              readonly 
+              (click)="picker2.open()"
+              #end_Day
+            />
+
+            <mat-datepicker-toggle
+              matIconSuffix
+              [for]="picker2"
+            ></mat-datepicker-toggle>
+            <mat-datepicker #picker2></mat-datepicker>
+          </mat-form-field>
+        </div>
+        <div class="col" style="margin-right: 20px; border: none">
+          <label for="picktime" class="form-label">Thời gian về bến</label>
+          <input
+            type="button"
+            class="form-control"
+            id="picktime"
+            [ngxTimepicker]="pickerTime"
+            [(ngModel)]="endTime"
+            placeholder="Chọn theo định dạng thời gian"
+          />
+          <ngx-material-timepicker
+            #pickerTime
+            [format]="24"
+          ></ngx-material-timepicker>
+        </div>
+      </div>
+      <div class="a" style="margin-top: 1%">
+        <div class="hstack gap-3">
+          <div
+            class="p-2 text-nowrap bg-body-secondary border"
+            style="
+              font-size: 16px;
+              font-family: Lexend;
+              width: 17rem;
+              color: #22493b;
+            "
+          >
+            <span style="color: #22493b; font-weight: bold">
+              Định dạng ngày sẽ là: DD/MM/YYYY
+            </span>
+          </div>
+          <div class="p-2 ms-auto">
+            <button
+              type="button"
+              class="btn btn-outline-danger"
+              style="border-color: white"
+              (click)="handleClose()"
+            >
+              Hủy
+            </button>
+          </div>
+          <div class="p-2">
+            <button
+              type="button"
+              class="btn btn-outline-success"
+              (click)="addTime(start_Day, end_Day)"
+            >
+              Xác nhận
+            </button>
+          </div>
+        </div>
+      </div>
+      <br />
+    </div>
+  </div>
+</section>

@@ -1,0 +1,201 @@
+<div>
+  <h1
+    style="
+      font-size: 30px;
+      font-family: Legend;
+      font-weight: bold;
+      font-stretch: normal;
+      font-style: normal;
+      line-height: 1.2;
+      letter-spacing: normal;
+      text-align: left;
+      color: #22493b;
+      justify-content: center;
+      text-align: center;
+      padding-bottom: 20px;
+      padding-top: 20px;
+    "
+  >
+    QUẢN LÝ CHUYẾN XE
+  </h1>
+</div>
+<div class="vstack gap-3">
+  <div class="position-relative p-2">
+    <div class="position-absolute top-0 start-0">
+      <section
+        class="example-container mat-elevation-z8"
+        tabindex="0"
+        style="border-bottom: solid 1px gray"
+      >
+      <ng-container *ngIf="dataSource as dataSource">
+        <table
+          mat-table
+          [dataSource]="dataSource"
+          style="border-bottom: solid 1px black"
+        >
+          <ng-container matColumnDef="name" style="font-size: 18px">
+            <th mat-header-cell *matHeaderCellDef>Tên chuyến</th>
+            <td mat-cell *matCellDef="let element">{{ element.name }}</td>
+          </ng-container>
+          <ng-container matColumnDef="timetrip">
+            <th mat-header-cell *matHeaderCellDef>Ngày đi | Giờ đi</th>
+            <td mat-cell *matCellDef="let element">
+              {{ appService.formatDateVietNam(element.time.start_day) }} -
+              {{ element.time.start_time }}
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="timeend">
+            <th mat-header-cell *matHeaderCellDef>Ngày đến | giờ đến</th>
+            <td mat-cell *matCellDef="let element">
+              {{ appService.formatDateVietNam(element.time.end_day) }} -
+              {{ element.time.end_time }}
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="type">
+            <th mat-header-cell *matHeaderCellDef>Biển kiểm soát</th>
+            <td mat-cell *matCellDef="let element">
+              {{ element.seats.number_plate }} 
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="finish">
+            <th mat-header-cell *matHeaderCellDef>Trạng thái</th>
+            <td mat-cell *matCellDef="let element; let i = index">
+              {{status?.[i]}}
+            </td>
+          </ng-container>
+
+          <tr
+            mat-header-row
+            id="table-sticky"
+            *matHeaderRowDef="displayedColumns; sticky: isSticky"
+          ></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+        </table>
+      </ng-container>
+      </section>
+    </div>
+  </div>
+  <div class="p-2" style="margin-top: 30%">
+    <section>
+      <div
+        class="example-label"
+        style="margin-bottom: 10px; color: #22493b; font-weight: bold"
+      >
+        Thao tác xử lý
+      </div>
+      <div class="example-button-row">
+        <button mat-raised-button (click)="handleAddTrip()">
+          Tạo chuyến mới
+        </button>
+      </div>
+    </section>
+  </div>
+</div>
+<section class="z-3 position-fixed section-placeholder" *ngIf="isAdd">
+  <div class="modal_overlay">
+    <div
+      class="modal_inner"
+      style="width: 727px; height: 460px; margin-top: 10%"
+    >
+      <div class="form_heading">
+        <span class="Title"> Tạo chuyến đi mới</span>
+        <button
+          class="material-symbols-outlined"
+          id="cancel"
+          style="color: #22493b; background-color: #e2f1ef; border: none"
+          type="button"
+          (click)="handleClose()"
+        >
+          close
+        </button>
+      </div>
+
+      <form class="example-form" (ngSubmit)="handleAdd(message,timeid, typeid )" #addForm ="ngForm">
+        <div class="row">
+          <div class="col" style="border: none; width: 100%">
+            <label for="des" class="form-label"
+              >Bạn hãy nhập tên chuyến đi vào ô input bên dưới</label
+            >
+            <div class="inputFiled">
+              <mat-form-field class="example-full-width">
+                <mat-label
+                  >Nhập tên chuyến chính xác để in ra danh sách</mat-label
+                >
+                <input
+                  matInput
+                  type="text" 
+                  ngModel
+                  name="message"
+                  minlength="10"
+                  #message = "ngModel"
+                  required
+                  placeholder="Ví dụ: Sài Gòn đi Bình Định"
+                />
+                <div *ngIf="message.invalid && (message.dirty || message.touched)" class="error-message">
+                  <div *ngIf="message.errors?.['required']">Tên là trường bắt buộc.</div>
+                  <div *ngIf="message.errors?.['minLength']">Bạn nên đặt tên đầy đủ để dễ hiểu và biết</div>
+              </div>
+              </mat-form-field>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col" style="border: none">
+            <label for="des" class="form-label"
+              >Chọn ngày và giờ theo biểu đồ giờ đã tạo</label
+            >
+            <select
+              id="des"
+              class="form-select"
+              aria-label="Default select example"
+              #timeid
+
+            >
+              <option *ngFor="let item of timeArray" [value]="item.id" >
+                {{ appService.formatDateVietNam(item.start_day) }} -
+                {{ item.start_time }} ->
+                {{ appService.formatDateVietNam(item.end_day) }} -
+                {{ item.end_time }}
+              </option>
+            </select>
+          </div>
+        </div>
+        <div class="row" style="margin-top: 5%">
+          <div class="col" style="border: none">
+            <label for="des" class="form-label">Chọn loại xe </label>
+            <select
+              id="des"
+              class="form-select"
+              aria-label="Default select example"
+              #typeid
+            >
+              <option *ngFor="let item of typeBus" [value]="item.id">
+                {{ item?.name }} có {{ item?.maxslot }} chỗ. BKS: {{ item?.number_plate}}
+              </option>
+            </select>
+          </div>
+        </div>
+        <div class="a" style="margin-top: 5%">
+          <div class="hstack gap-3">
+            <div class="p-2 ms-auto">
+              <button
+                type="button"
+                class="btn btn-outline-danger"
+                style="border-color: white"
+                (click)="handleClose()"
+              >
+                Hủy
+              </button>
+            </div>
+            <div class="p-2">
+              <button type="submit" class="btn btn-outline-success"  [disabled]="!addForm.valid">
+                Xác nhận
+              </button>
+            </div>
+          </div>
+        </div>
+        <br />
+      </form>
+    </div>
+  </div>
+</section>

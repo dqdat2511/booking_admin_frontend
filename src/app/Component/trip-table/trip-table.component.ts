@@ -1,5 +1,5 @@
 import { Component, Input, Output,EventEmitter, OnInit } from '@angular/core';
-import { Destination } from 'src/app/TripTest/TripModel';
+
 
 
 
@@ -10,16 +10,15 @@ import { Destination } from 'src/app/TripTest/TripModel';
 })
 
 export class TripTableComponent {
-  @Input() tripTime!: Destination[];
   @Output() chooseEvent = new EventEmitter<number>();
   defaultNum! :number ;
   displayedColumns: string[] = ['destination', 'start_time','selected'];
 
   ngOnInit() {
     // Kiểm tra xem tripTime có giá trị không trước khi sử dụng
-    if (this.tripTime && this.tripTime.length > 0) {
-      this.defaultNum = this.tripTime[0].id;
-    }
+    // if (this.tripTime && this.tripTime.length > 0) {
+    //   this.defaultNum = this.tripTime[0].id;
+    // }
   }
 
   tickOption(value: number) : void{ 

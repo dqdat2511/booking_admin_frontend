@@ -1,76 +1,45 @@
-import { Component,Input, Output,EventEmitter,inject } from '@angular/core';
-import { ReceiptModel } from 'src/app/TripTest/Receipt';
-import { Destination, TripModel } from 'src/app/TripTest/TripModel';
-import { Receipt } from 'src/app/TripTest/Receipt';
-import {MatSnackBar, MatSnackBarRef} from '@angular/material/snack-bar';
-interface Seat {
-  id_trip: number; 
-  choose: boolean;
-  num: string;
-  price: number;
-}
-interface BusType{
-  id : number;
-  numeber_seat : {
-    floor : number;
-  }
-  
-}
-interface Trip{
-  id : number;
-  Start_time: Date;
-  name : string;
-  max_slot : number;
-}
+import { Component,Input, Output,EventEmitter,inject, OnInit } from '@angular/core';
+import { AppService } from 'src/app/app.service';
+import { Trip } from 'src/app/Model/trip';
+import { Seat } from 'src/app/Model/Seat';
+import { SeatService } from 'src/app/Service/seat.service';
+import { TicketService } from 'src/app/Service/ticket.service';
+import { Ticket } from 'src/app/Model/Ticket';
+import { Client } from 'src/app/Model/Client';
+
 
 @Component({
   selector: 'app-seat-trip',
   templateUrl: './seat-trip.component.html',
   styleUrls: ['./seat-trip.component.scss']
 })
-export class SeatTripComponent {
+export class SeatTripComponent implements OnInit  {
   @Input() desId!: number;
-  @Input() tripId!: number;
-  @Output() confirmEvent = new EventEmitter<Receipt[]>();
+  @Input() tripData!: Trip;
+  @Input() client!:Client
+  @Output() confirmEvent = new EventEmitter<string>();
   total = 0;
   seatNo1 : Seat[]= [];
   showSeatList:Seat[]=[];
-  isOn : boolean = false;
   isStarted : boolean = false;
   isEnough: boolean = true;
   isTwoFloor: boolean = false;
   alert=false;
   message: string = ""; 
-  receiptModel = new ReceiptModel()
-  receiptNew:Receipt[] = []
-  busFloor : BusType[] = [{
-    'id': 1, 
-    'numeber_seat':{
-      'floor' : 1
-    }
+  trip: Trip[] = [];
+  receiptNew!:Ticket;
+  idTicket!:string
     
-  },
-  {
-    'id': 2,
-    'numeber_seat':{
-      'floor' : 0
+
+  constructor(public appService: AppService, 
+    private seatService: SeatService,
+    private ticketService: TicketService) { }
+    ngOnInit(): void {
+      this.getData()
+      this.checkCurrentDate()
+      this.checkSeat()
     }
-  }
-  ]
-    
-  trip : Trip[] = [ {
-    'id': 1,
-    'max_slot': 100,
-    'name': "Sài Gòn đi Bình Định",
-    'Start_time': new Date('12/17/2023, 14:30') // Example date and time
-  },
-  {
-    'id': 2,
-    'max_slot': 10,
-    'name': "Sài Gòn đi Bến Tre",
-    'Start_time': new Date('12/17/2028, 2:30') // Example date and time
-  }
-  ]
+  
   IsChoose(key:any){
     this.changeSeatColor(key)
   }
@@ -84,14 +53,14 @@ removeList(seat: Seat[]): void {
 }
   changeSeatColor(key:any){
     let id= document.getElementById(key)
-    let seatCount = this.seatNo.find(seat => seat.num === key);
+    let seatCount = this.seatNo1.find(seat => seat.name_slot === key);
     let seatRemove: Array<Seat>;
-    seatRemove = this.seatNo.filter(seat => seat.num === key);
+    seatRemove = this.seatNo1.filter(seat => seat.name_slot === key);
     if(id?.classList.contains("selected")){
       id.classList.remove('selected')
       if(seatCount){
         this.removeList(seatRemove);
-        this.minusFare(seatCount.price);
+        this.minusFare(150);
        }
     }
     else if(id?.classList.contains("booked")){
@@ -99,15 +68,13 @@ removeList(seat: Seat[]): void {
     }
     else
     {
-      if((this.showSeatList.length < 4)) {       
+           
         id?.classList.add('selected')
         if(seatCount){
          this.showList(seatCount);
-         this.totalFare(seatCount.price);
+         this.totalFare(150);
         }
-      }else{
-        this.alertOn("Chỉ được đặt 4 vé 1 lần");
-      }
+
    
     }
   }
@@ -121,62 +88,54 @@ removeList(seat: Seat[]): void {
   }
 
   changeColorBookTicket(key:any){
-    let id= document.getElementById(key) 
+    let id = document.getElementById(key) 
      id?.classList.add('booked')
   
   }
-  checkBoughtTicket(id:number){
+  checkBoughtTicket(){
     let seatCount: Array<Seat>;
-    seatCount = this.seatNo.filter(seat => seat.id_trip === id);
-    let choosenSeat: Array<Seat>;
-    choosenSeat = seatCount.filter(choose => choose.choose === false)
+    seatCount = this.seatNo1.filter(seat => !seat._available);
     if(seatCount){
-    for (let index = 0; index < choosenSeat.length; index++) {
-      const element = choosenSeat[index];
-      this.changeColorBookTicket(element.num);
+    for (let index = 0; index < seatCount.length; index++) {
+      const element = seatCount[index];
+      this.changeColorBookTicket(element.name_slot);
     }
     }else{
       console.log(false)
     }
   }
 
-isMoreThanOneFloor(id: number): boolean {
+isMoreThanOneFloor(): boolean {
   // Find the bus floor with the given id
-  const busFloor = this.busFloor.find(floor => floor.id === id);
-  if( !!busFloor && busFloor.numeber_seat.floor >= 1 ){
+  const busFloor = this.tripData.seats.numbers_floor;
+  if( !!busFloor && busFloor >= 1 ){
     this.isTwoFloor = true;
   }else{
     this.isTwoFloor = false;
   }
+ this.checkBoughtTicket()
   return this.isTwoFloor;
 }
 
-checkCurrentDate(id:number) : boolean{
-
+checkCurrentDate() : boolean{
+  
   // Get the current date and time
   const currentDateTime: Date = new Date();
-  // Find the trip with id 1
-  const trip = this.trip.find(time => time.id === id);
-  if (trip) {
-    // Get the trip's start time as a Date object
-    const tripStartTime: Date = new Date(trip.Start_time);
-
-    // Compare the current date and time with the trip's start time
+  if (this.tripData) {
+    const tripStartTime: Date = new Date(`${this.tripData.time.start_day}T${this.tripData.time.start_time}`);
     if (currentDateTime >= tripStartTime) {
       this.message="The trip has started or is in progress.";  
       this.isStarted = false; 
-      console.log(this.message)
       return this.isStarted;
     } else {
-      console.log('The trip has not started yet.');
-      this.isStarted = true
+     // console.log('The trip has not started yet.');
+       this.isStarted = true
       return this.isStarted;
     }
   } else {
-    console.log ('Trip with id 1 not found.') ;
+    //console.log ('Trip with id 1 not found.') ;
   }
   return this.isStarted;
-
 }
 
 onFloor2() {
@@ -189,55 +148,70 @@ onFloor2() {
     }
   }
 }
+getData() {
+  this.seatService.getSeatByTripID(this.tripData.id).subscribe((data :any)=>{
+    this.seatNo1 = data   
+  })
+}
+checkSeat() : boolean{
+  let trip_seat = this.tripData.seats.maxslot
 
-checkSeat(id : number) : boolean{
-  let seatCount: Array<Seat>;
-  seatCount = this.seatNo.filter(seat => seat.id_trip === id);
-  this.seatNo1 = seatCount
-  let trip_seat = this.trip.find(seat => seat.id === id)?.max_slot
-  let choosenSeat = seatCount.filter(choose => choose.choose === false).length
-  if(trip_seat! <= choosenSeat){
+  let choosenSeat = this.seatNo1.filter(choose => choose._available === false).length
+  if(trip_seat <= choosenSeat){
     this.isEnough = false;
     this.message = "full seat, please create new one";
-    console.log(this.message)
   }
-  this.checkBoughtTicket(id);
+  //this.checkBoughtTicket();
+
   return this.isEnough
+  
 }
 
 confirmJourney(){
   let seats=[];
+  let seatNum=[]
   seats= this.showSeatList.map(iteam=>{   
-  return iteam.num 
+  return iteam.id 
+});
+seatNum= this.showSeatList.map(iteam=>{   
+  return iteam.name_slot 
 });
 if(seats.length == 0){
   window.alert("Bạn chưa chọn vé")
   }else{
-  window.alert("Bạn đã đặt thành công vé: "+ seats  );
-  for (let index = 0; index < seats.length; index++) {
-    const element = seats[index];
+  window.alert("Bạn đã đặt thành công vé: "+ seatNum  );
+  for (let index = 0; index < seatNum.length; index++) {
+    const element = seatNum[index];
     this.changeColorBookTicket(element)  
   }
   }
   this.createReceipt(seats);
-  this.bookEvent();
+  
 }
 
+bookEvent(id:any):void{
 
-bookEvent():void{
-  this.confirmEvent.emit(this.receiptNew);
+  this.confirmEvent.emit(id.replace("\"", "").trim());
 }
 createReceipt(seat: Array<string>){
-  let destination: Destination[] = new TripModel().getDestination(this.tripId, this.desId);
-   this.receiptNew  = 
-    [{
-    id_trip: this.tripId,
-    destination: destination,
-    client: "Nguyen van A",
-    seat: seat,
-    total: this.total}]
+  let customer_name =this.client.customer_name;
+  let customer_phone=  this.client.customer_phone;
+  let address = this.client.address;
+  let num_ticket = seat.length;
+  let trip_id = this.tripData.id
+  let sloots  =  seat
+    
   
-  this.receiptModel.createReceipt(this.receiptNew);
+   this.ticketService.addTicket(customer_name,customer_phone,address,num_ticket,trip_id,sloots).subscribe(
+    (response:any) => {  
+      this.idTicket = response
+      this.bookEvent(this.idTicket.replace("\"", "").trim());
+    },
+    (error) => {
+      console.error('Error:', error);
+      // Handle the error here
+    }
+  );
 }
 totalFare(fare:number){
   this.total+=fare;
@@ -245,100 +219,7 @@ totalFare(fare:number){
 minusFare(fare:number){
   this.total-=fare;
 }
- seatNo: Seat[] = [
-  { 'id_trip': 1, 'num': 'A01', 'choose': false, 'price': 150.000 },
-  { 'id_trip': 1, 'num': 'A02', 'choose': false, 'price': 150.000 },
-  { 'id_trip': 1, 'num': 'A03', 'choose': false, 'price': 150.000 },
-  { 'id_trip': 1, 'num': 'A04', 'choose': false, 'price': 150.000 },
-  { 'id_trip': 1, 'num': 'A05', 'choose': false, 'price': 150.000 },
-  { 'id_trip': 1, 'num': 'A06', 'choose': false, 'price': 150.000 },
-  { 'id_trip': 1, 'num': 'A07', 'choose': false, 'price': 150.000 },
-  { 'id_trip': 1, 'num': 'A08', 'choose': false, 'price': 150.000 },
-  { 'id_trip': 1, 'num': 'A09', 'choose': false, 'price': 150.000 },
-  { 'id_trip': 1, 'num': 'A10', 'choose': false, 'price': 150.000 },
-  { 'id_trip': 1, 'num': 'A11', 'choose': false, 'price': 150.000 },
-  { 'id_trip': 1, 'num': 'A12', 'choose': false, 'price': 150.000 },
-  { 'id_trip': 1, 'num': 'A13', 'choose': false, 'price': 150.000 },
-  { 'id_trip': 1, 'num': 'A14', 'choose': false, 'price': 150.000 },
-  { 'id_trip': 1, 'num': 'A15', 'choose': false, 'price': 150.000 },
-  { 'id_trip': 1, 'num': 'A16', 'choose': false, 'price': 150.000 },
-  { 'id_trip': 1, 'num': 'A17', 'choose': false, 'price': 150.000 },
-  { 'id_trip': 1, 'num': 'A18', 'choose': false, 'price': 150.000 },
-  { 'id_trip': 1, 'num': 'A19', 'choose': false, 'price': 150.000 },
-  { 'id_trip': 1, 'num': 'A20', 'choose': false, 'price': 150.000 },
-  { 'id_trip': 1, 'num': 'A21', 'choose': false, 'price': 150.000 },
-  { 'id_trip': 1, 'num': 'A22', 'choose': false, 'price': 150.000 },
-  { 'id_trip': 1, 'num': 'A23', 'choose': false, 'price': 150.000 },
-  { 'id_trip': 1, 'num': 'B01', 'choose': false, 'price': 150.000 },
-  { 'id_trip': 1, 'num': 'B02', 'choose': false, 'price': 150.000 },
-  { 'id_trip': 1, 'num': 'B03', 'choose': false, 'price': 150.000 },
-  { 'id_trip': 1, 'num': 'B04', 'choose': false, 'price': 150.000 },
-  { 'id_trip': 1, 'num': 'B05', 'choose': false, 'price': 150.000 },
-  { 'id_trip': 1, 'num': 'B06', 'choose': false, 'price': 150.000 },
-  { 'id_trip': 1, 'num': 'B07', 'choose': false, 'price': 150.000 },
-  { 'id_trip': 1, 'num': 'B08', 'choose': false, 'price': 150.000 },
-  { 'id_trip': 1, 'num': 'B09', 'choose': false, 'price': 150.000 },
-  { 'id_trip': 1, 'num': 'B10', 'choose': false, 'price': 150.000 },
-  { 'id_trip': 1, 'num': 'B11', 'choose': false, 'price': 150.000 },
-  { 'id_trip': 1, 'num': 'B12', 'choose': false, 'price': 150.000 },
-  { 'id_trip': 1, 'num': 'B13', 'choose': false, 'price': 150.000 },
-  { 'id_trip': 1, 'num': 'B14', 'choose': false, 'price': 150.000 },
-  { 'id_trip': 1, 'num': 'B15', 'choose': false, 'price': 150.000 },
-  { 'id_trip': 1, 'num': 'B16', 'choose': true, 'price': 150.000 },
-  { 'id_trip': 1, 'num': 'B17', 'choose': true, 'price': 150.000 },
-  { 'id_trip': 1, 'num': 'B18', 'choose': true, 'price': 150.000 },
-  { 'id_trip': 1, 'num': 'B19', 'choose': true, 'price': 150.000 },
-  { 'id_trip': 1, 'num': 'B20', 'choose': true, 'price': 150.000 },
-  { 'id_trip': 1, 'num': 'B21', 'choose': true, 'price': 150.000 },
-  { 'id_trip': 1, 'num': 'B22', 'choose': true, 'price': 150.000 },
-  { 'id_trip': 1, 'num': 'B23', 'choose': true, 'price': 150.000 },
-  { 'id_trip': 2, 'num': 'A01', 'choose': false, 'price': 150.000 },
-  { 'id_trip': 2, 'num': 'A02', 'choose': false, 'price': 150.000 },
-  { 'id_trip': 2, 'num': 'A03', 'choose': false, 'price': 150.000 },
-  { 'id_trip': 2, 'num': 'A04', 'choose': false, 'price': 150.000 },
-  { 'id_trip': 2, 'num': 'A05', 'choose': false, 'price': 150.000 },
-  { 'id_trip': 2, 'num': 'A06', 'choose': false, 'price': 150.000 },
-  { 'id_trip': 2, 'num': 'A07', 'choose': false, 'price': 150.000 },
-  { 'id_trip': 2, 'num': 'A08', 'choose': false, 'price': 150.000 },
-  { 'id_trip': 2, 'num': 'A09', 'choose': false, 'price': 150.000 },
-  { 'id_trip': 2, 'num': 'A10', 'choose': false, 'price': 150.000 },
-  { 'id_trip': 2, 'num': 'A11', 'choose': false, 'price': 150.000 },
-  { 'id_trip': 2, 'num': 'A12', 'choose': false, 'price': 150.000 },
-  { 'id_trip': 2, 'num': 'A13', 'choose': false, 'price': 150.000 },
-  { 'id_trip': 2, 'num': 'A14', 'choose': false, 'price': 150.000 },
-  { 'id_trip': 2, 'num': 'A15', 'choose': false, 'price': 150.000 },
-  { 'id_trip': 2, 'num': 'A16', 'choose': false, 'price': 150.000 },
-  { 'id_trip': 2, 'num': 'A17', 'choose': false, 'price': 150.000 },
-  { 'id_trip': 2, 'num': 'A18', 'choose': false, 'price': 150.000 },
-  { 'id_trip': 2, 'num': 'A19', 'choose': false, 'price': 150.000 },
-  { 'id_trip': 2, 'num': 'A20', 'choose': false, 'price': 150.000 },
-  { 'id_trip': 2, 'num': 'A21', 'choose': false, 'price': 150.000 },
-  { 'id_trip': 2, 'num': 'A22', 'choose': false, 'price': 150.000 },
-  { 'id_trip': 2, 'num': 'A23', 'choose': false, 'price': 150.000 },
-  { 'id_trip': 2, 'num': 'B01', 'choose': false, 'price': 150.000 },
-  { 'id_trip': 2, 'num': 'B02', 'choose': false, 'price': 150.000 },
-  { 'id_trip': 2, 'num': 'B03', 'choose': false, 'price': 150.000 },
-  { 'id_trip': 2, 'num': 'B04', 'choose': false, 'price': 150.000 },
-  { 'id_trip': 2, 'num': 'B05', 'choose': false, 'price': 150.000 },
-  { 'id_trip': 2, 'num': 'B06', 'choose': false, 'price': 150.000 },
-  { 'id_trip': 2, 'num': 'B07', 'choose': false, 'price': 150.000 },
-  { 'id_trip': 2, 'num': 'B08', 'choose': false, 'price': 150.000 },
-  { 'id_trip': 2, 'num': 'B09', 'choose': false, 'price': 150.000 },
-  { 'id_trip': 2, 'num': 'B10', 'choose': false, 'price': 150.000 },
-  { 'id_trip': 2, 'num': 'B11', 'choose': false, 'price': 150.000 },
-  { 'id_trip': 2, 'num': 'B12', 'choose': false, 'price': 150.000 },
-  { 'id_trip': 2, 'num': 'B13', 'choose': false, 'price': 150.000 },
-  { 'id_trip': 2, 'num': 'B14', 'choose': false, 'price': 150.000 },
-  { 'id_trip': 2, 'num': 'B15', 'choose': false, 'price': 150.000 },
-  { 'id_trip': 2, 'num': 'B16', 'choose': true, 'price': 150.000 },
-  { 'id_trip': 2, 'num': 'B17', 'choose': true, 'price': 150.000 },
-  { 'id_trip': 2, 'num': 'B18', 'choose': true, 'price': 150.000 },
-  { 'id_trip': 2, 'num': 'B19', 'choose': true, 'price': 150.000 },
-  { 'id_trip': 2, 'num': 'B20', 'choose': true, 'price': 150.000 },
-  { 'id_trip': 2, 'num': 'B21', 'choose': true, 'price': 150.000 },
-  { 'id_trip': 2, 'num': 'B22', 'choose': true, 'price': 150.000 },
-  { 'id_trip': 2, 'num': 'B23', 'choose': true, 'price': 150.000 }
-];
+
 
 }
 

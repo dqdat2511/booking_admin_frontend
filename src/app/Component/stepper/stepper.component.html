@@ -1,32 +1,37 @@
-<!-- <button mat-raised-button (click)="isLinear = !isLinear" id="toggle-linear">
-    {{!isLinear ? 'Enable linear mode' : 'Disable linear mode'}}
-  </button> -->
+
   <mat-stepper [linear]=true #stepper>
     <mat-step [stepControl]="firstFormGroup">
-      <form [formGroup]="firstFormGroup">
+      <form [formGroup]="firstFormGroup" >
         <div class="row">
-          <div class="col-md-4">
+          <div class="col-md-3">
+            <mat-form-field>
+                <mat-label>Số điện thoại</mat-label>
+                <input matInput placeholder="012456789" formControlName="phoneCtrl" name="phoneNumber" type="number" required >
+              </mat-form-field>
+            </div>
+          <div class="col-md-3">
         <ng-template matStepLabel>Điền thông tin khách hàng</ng-template>
         <mat-form-field>
           <mat-label>Tên</mat-label>
-          <input matInput placeholder="Nguyễn Văn A" formControlName="nameCtrl" required>
+          <input matInput placeholder="Nguyễn Văn A" formControlName="nameCtrl" name="name" required>
         </mat-form-field>
       </div>
-      <div class="col-md-4">
-        <mat-form-field>
-            <mat-label>Số điện thoại</mat-label>
-            <input matInput placeholder="012456789" formControlName="phoneCtrl" name="phoneNumber" type="number" required >
+        <div class="col-md-3">
+          <mat-form-field>
+            <mat-label>Địa điểm đón</mat-label>
+            <input matInput formControlName="addressCtrl" name="address1" placeholder="1 Điện Biên Phủ, Quận 1, Tp.HCM"
+                   required>
           </mat-form-field>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-3">
           <mat-form-field>
-            <mat-label>Địa chỉ</mat-label>
-            <input matInput formControlName="addressCtrl" placeholder="1 Điện Biên Phủ, Quận 1, Tp.HCM"
+            <mat-label>Địa điểm xuống</mat-label>
+            <input matInput formControlName="address2Ctrl" name="address1" placeholder="50 Điện Biên Phủ, Quận 1, Tp.HCM"
                    required>
           </mat-form-field>
         </div>
         <div>
-          <button mat-button matStepperNext>Tiếp</button>
+          <button mat-button matStepperNext (click)="saveCustomer()">Tiếp</button>
         </div>
       </div>
       </form>
@@ -40,7 +45,7 @@
         <mat-form-field >
             <mat-label>Chọn nơi đi</mat-label>
             <mat-select disableRipple matInput formControlName="tripCtrl" #teams (valueChange)="onSelected(teams.value)" >
-              <mat-option *ngFor="let tripName of tripModel" [value]="tripName.id">{{tripName.name}}</mat-option>       
+              <mat-option *ngFor="let tripName of uniqueTrips" [value]="tripName.name">{{tripName.name}}</mat-option>       
             </mat-select>
             <!-- <mat-label *ngFor="let time of timeTrip"> {{time}}</mat-label> -->
           </mat-form-field> 
@@ -49,38 +54,49 @@
         <div class="col-md-3">
           <mat-form-field >
             <mat-label>Chọn nơi đến</mat-label>
-            <mat-select disableRipple matInput formControlName="placeCtrl" #place (valueChange)="onSelectedPlace(place.value)" >
-              <mat-option *ngFor="let tripName of trips" [value]="tripName.key">{{tripName.place}}</mat-option>       
+            <mat-select disableRipple matInput  #place (valueChange)="onSelectedPlace(place.value)" >
+              <mat-option *ngFor="let tripName of tripInfo2" [value]="tripName.time.id">{{tripName.time.start_day}}, {{tripName.time.start_time}}</mat-option>       
             </mat-select>       
           </mat-form-field> 
         </div> 
-          <!-- <mat-card-footer *ngFor="let tripName of trips"> {{tripName.Start_time}}</mat-card-footer>  -->
-          <div class="col-md-6"><app-trip-table *ngIf="search" [tripTime]="getTrip()" (chooseEvent)="receiveNumber($event)"></app-trip-table></div>
+        <!-- for enhance do not delete -->
+        <!-- <div class="col-md-3">
+          <mat-form-field >
+            <mat-label>Chọn nơi đến</mat-label>
+            <mat-select disableRipple matInput  #place (valueChange)="onSelectedPlace(place.value)" >
+              <mat-option *ngFor="let tripName of getUniqueTrips(trips)" [value]="tripName.key">{{tripName.place}}</mat-option>       
+            </mat-select>       
+          </mat-form-field> 
+        </div>  -->
+      
+          <!-- <div class="col-md-6"><app-trip-table *ngIf="search" [tripTime]="getTrip()" (chooseEvent)="receiveNumber($event)"></app-trip-table></div>
         </div>
         <button mat-raised-button color="primary" (click)="searchTrip()">Search</button>
-        <div>
+        <div> -->
+          <div>
           <button mat-button matStepperPrevious>Trở lại</button>
-          <button mat-button matStepperNext >Tiếp</button>
+          <button mat-button matStepperNext (click)="isNextStep()">Tiếp</button>
         </div>
-      
+        </div>
       </form> 
     </mat-step>
-    <mat-step [stepControl]="thirdFormGroup" label="Chọn ghế khách hàng">
+    <mat-step [stepControl]="thirdFormGroup" label="Chọn ghế khách hàng" >
         <!-- #enddocregion label -->
-          <form [formGroup]="thirdFormGroup">
-             <app-seat-trip [desId]="selectDes" [tripId]="selectTrip" (confirmEvent)="receiveReceipt($event)"></app-seat-trip>          
+          <form [formGroup]="thirdFormGroup" >
+             <app-seat-trip *ngIf="isBook" [client]="client" [desId]="selectDes" [tripData]="trip" (confirmEvent)="receiveReceipt($event)" ></app-seat-trip>          
             <div>
-              <button mat-button matStepperPrevious>Trở lại</button>
-              <button mat-button matStepperNext >Tiếp</button>
+              <button mat-button matStepperPrevious (click)="getBackToTrip()">Trở lại</button>
+              <button mat-button matStepperNext (click)="getTicket()">Tiếp</button>
             </div>
           </form>
         </mat-step>
     <mat-step>
       <ng-template matStepLabel>Done</ng-template>
-      <app-receipt [receipt]="receiptNew"></app-receipt>
+      <div *ngIf="!ticketOn"class="alert alert-danger" >{{message}}</div>
+      <app-receipt *ngIf="ticketOn" [receipt]="receiptNew"></app-receipt>
       <div>
-        <button mat-button matStepperPrevious>Back</button>
-        <button mat-button (click)="stepper.reset()">Reset</button>
+        <button mat-button matStepperPrevious (click)="getBackToBook()">Trở lại</button>
+        <button mat-button (click)="stepper.reset()">Bắt đầu lại</button>
       </div>
     </mat-step>
   </mat-stepper>
