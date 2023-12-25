@@ -1,6 +1,7 @@
 .example-container {
     height: 400px;
     overflow: auto;
+    max-width: 1246px !important;
   }
   
   table {
@@ -11,7 +12,7 @@
     display: relative;
 }
 .example-container{
-    width: 1256px;
+    max-width: 1246px;
 }
 .z-3{
     position: fixed !important;

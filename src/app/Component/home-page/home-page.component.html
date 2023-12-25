@@ -118,7 +118,7 @@
           <span class="news" id="list">In ra danh sách</span>
           
         </div>
-        <div type="button" class="menu-location" (click)="HandleNews($event)">
+        <!-- <div type="button" class="menu-location" (click)="HandleNews($event)">
           <svg
             width="24"
             height="24"
@@ -138,7 +138,7 @@
           </svg>
 
           <span class="location"></span>
-        </div>
+        </div> -->
       </div>
       <div class="all" style="width: 120%">
         <div *ngIf="!isOn">
@@ -175,7 +175,6 @@
               
             </div>
         </div>
-
         <app-time-trip *ngIf="isTime"></app-time-trip>
         <app-trip *ngIf="isTrip"></app-trip>
         <app-bus-type *ngIf="isBusType"></app-bus-type>

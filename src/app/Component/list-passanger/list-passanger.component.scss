@@ -1,14 +1,16 @@
 .example-container {
-    height: 400px;
-    overflow: auto;
-  }
-  
+  height: 591px;
+  overflow: auto;
+  margin-left: 148px;
+  width: 951px;
+}
   table {
     width: 100%;
   }
 .container{
     justify-content: center;
     display: relative;
+    max-width: 1246px;
 }
 .example-container[_ngcontent-ng-c2007608577] {
 	width: 1027px;

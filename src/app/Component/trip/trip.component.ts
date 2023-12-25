@@ -27,7 +27,7 @@ import { NgToastService } from 'ng-angular-popup';
 })
 export class TripComponent {
   isAdd: boolean = false;
-  isSticky = false;
+  isSticky = true;
   status: any[] | null = [];
   timeArray: TimeTrip[] | null = [];
   typeBus: BusType[] | null = [];
