@@ -7,6 +7,7 @@ import { is } from 'date-fns/locale';
   styleUrls: ['./home-page.component.scss']
 })
 export class HomePageComponent {
+  
   isTime = false;
   isTrip = false;
   isList = false;
@@ -20,6 +21,7 @@ export class HomePageComponent {
   iconList = '';
   isWine = false;
   isCertificate = false;
+  isTicket = false;
   hours : any | null = 0;
   mins : any | null = 0;
   sec : any | null = 0;
@@ -39,8 +41,6 @@ export class HomePageComponent {
       this.sec = (currentTime.getSeconds() < 10 ?"0":"") + currentTime.getSeconds();
   }
   HandleNews(element: any){
-    const element1 = element;
-    console.log(element1);
     if(this.active?.className != undefined){
       this.active.classList.remove('active-menu');
       this.hide = true;
@@ -55,7 +55,6 @@ export class HomePageComponent {
     }
    
     this.active?.classList.add('active');
-    console.log(this.active?.className);
     if(this.active?.className == 'menu-news active'){
       this.reset();
       this.isCertificate = true;
@@ -63,10 +62,40 @@ export class HomePageComponent {
       this.isList = true;
       this.list();
     }
+    
     //AddBooking
     this.reset()
     this.isBooking = true;
     document.getElementById("booking")?.setAttribute("style","font-weight : normal;");
+  }
+  HandleTicket(element: any){
+    if(this.active?.className != undefined){
+      this.active.classList.remove('active-menu');
+      this.hide = true;
+      this.iconList = 'chevron_right';
+      this.active.classList.remove('active');
+    }
+    if(element.target.nodeName == 'DIV'){
+      this.active = element.target;
+    }
+    else{
+      this.active = element.target.parentNode;
+    }
+   
+    this.active?.classList.add('active');
+    if(this.active?.className == 'menu-news active'){
+      this.reset();
+      this.isCertificate = true;
+      this.isOn = true;
+      this.isList = true;
+
+      this.list();
+    }
+    //AddBooking
+    this.reset()
+    this.isTicket = true;
+    document.getElementById("list")?.setAttribute("style","font-weight : normal;");
+  
   }
   HandleList(element: any){
     this.hide = false;
@@ -109,6 +138,7 @@ export class HomePageComponent {
     this.isCertificate = false;
     this.isBusType = false;
     this.isList = false;
+    this.isTicket= false;
     document.getElementById("time")?.setAttribute("style","font-weight : normal;");  
     document.getElementById("trip")?.setAttribute("style","font-weight : normal;");
     document.getElementById("bus")?.setAttribute("style","font-weight : normal;");

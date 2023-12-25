@@ -1,0 +1,50 @@
+<ng-container [ngSwitch]="stepperOrientation | async">
+    <div *ngSwitchCase="'horizontal'">Make your screen smaller to see a vertical stepper</div>
+    <div *ngSwitchCase="'vertical'">Make your screen larger to see a horizontal stepper</div>
+  </ng-container>
+  
+  <mat-stepper
+    class="example-stepper"
+    [orientation]="(stepperOrientation | async)!">
+    <mat-step [stepControl]="firstFormGroup" label="Fill out your name">
+        <form [formGroup]="firstFormGroup">
+            <div class="row">
+              <div class="col-md-3">
+            <mat-form-field >
+                <mat-label>Chọn nơi đi</mat-label>
+                <mat-select disableRipple matInput formControlName="tripCtrl" #teams (valueChange)="onSelected(teams.value)" >
+                  <mat-option *ngFor="let tripName of uniqueTrips" [value]="tripName.name">{{tripName.name}}</mat-option>       
+                </mat-select>
+                <!-- <mat-label *ngFor="let time of timeTrip"> {{time}}</mat-label> -->
+              </mat-form-field> 
+            </div>
+    
+            <div class="col-md-3">
+              <mat-form-field >
+                <mat-label>Chọn nơi đến</mat-label>
+                <mat-select disableRipple matInput  #place (valueChange)="onSelectedPlace(place.value)" >
+                  <mat-option *ngFor="let tripName of tripInfo2" [value]="tripName.time.id">{{tripName.time.start_day}}, {{tripName.time.start_time}}</mat-option>       
+                </mat-select>       
+              </mat-form-field> 
+            </div> 
+            <!-- for enhance do not delete -->
+            <!-- <div class="col-md-3">
+              <mat-form-field >
+                <mat-label>Chọn nơi đến</mat-label>
+                <mat-select disableRipple matInput  #place (valueChange)="onSelectedPlace(place.value)" >
+                  <mat-option *ngFor="let tripName of getUniqueTrips(trips)" [value]="tripName.key">{{tripName.place}}</mat-option>       
+                </mat-select>       
+              </mat-form-field> 
+            </div>  -->
+          
+              <div class="col-md-6"><app-trip-ticket-table *ngIf="search" [tripId]="selectTrip" ></app-trip-ticket-table></div>
+            </div>
+            <button mat-raised-button color="primary" (click)="searchTrip()">Search</button>
+            <div>            
+              </div>         
+          </form> 
+    </mat-step>
+   
+
+  </mat-stepper>
+  

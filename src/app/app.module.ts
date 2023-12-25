@@ -44,6 +44,9 @@ import {StepperOrientation} from '@angular/material/stepper';
 import {BreakpointObserver} from '@angular/cdk/layout';
 import { BusTypeComponent } from './Component/bus-type/bus-type.component';
 import { ListPassangerComponent } from './Component/list-passanger/list-passanger.component';
+import { TripTicketComponent } from './Component/trip-ticket/trip-ticket.component';
+import { TripTicketTableComponent } from './Component/trip-ticket-table/trip-ticket-table.component';
+
 
 registerLocaleData(vi);
 @NgModule({
@@ -59,6 +62,9 @@ registerLocaleData(vi);
     TripComponent,
     BusTypeComponent,
     ListPassangerComponent,
+    TripTicketComponent,
+    TripTicketTableComponent
+    
   ],
   imports: [
     NgSwitch,

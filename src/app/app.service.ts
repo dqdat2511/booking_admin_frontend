@@ -21,7 +21,7 @@ export class AppService {
     return this.url + 'seat/trip';
   }
   getUrlList(){
-    return this.url + '/seat/list';
+    return this.url + 'seat/list';
   }
   getUrlBusType(){
     return this.url + 'bus/type';

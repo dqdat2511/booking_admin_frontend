@@ -3,7 +3,7 @@ import {Sort} from '@angular/material/sort';
 import { TicketService } from 'src/app/Service/ticket.service';
 import { AppService } from 'src/app/app.service';
 
-interface Ticket2 {
+export interface Ticket2 {
   name_customer: string;
   number_phone:string;
   number_tickets:string,
@@ -16,8 +16,6 @@ interface Ticket2 {
   templateUrl: './receipt.component.html',
   styleUrls: ['./receipt.component.scss']
 })
-
-
 
 export class ReceiptComponent  {
   @Input() receipt!: string;
