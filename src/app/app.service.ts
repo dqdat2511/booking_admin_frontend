@@ -35,7 +35,12 @@ export class AppService {
   getUrlTripSeatDetail(){
     return this.url + 'seat/trip'
   }
-  
+  getUrlUser(){
+    return this.url + 'passanger'
+  }
+  getUrlAddress(){  
+    return this.url + 'address'
+  }
   formatDateVietNam(date: Date | null): any {
     return date ? this.datePipe.transform(date, 'dd/MM/yyyy') : '';
   }

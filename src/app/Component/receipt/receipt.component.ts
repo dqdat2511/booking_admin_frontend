@@ -4,10 +4,12 @@ import { TicketService } from 'src/app/Service/ticket.service';
 import { AppService } from 'src/app/app.service';
 
 export interface Ticket2 {
+  name_trip?:string,
   name_customer: string;
   number_phone:string;
   number_tickets:string,
   address:string;
+  code?:string;
   seat:string[]
 }
 

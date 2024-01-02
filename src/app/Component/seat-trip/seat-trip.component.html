@@ -39,11 +39,16 @@
         </div>
       </div>
       <div class="row" *ngIf="isTwoFloor">
-        <button class="btn mt-3 ml-3 btn-success btn-sm btn-block" (click)="onFloor2()">Lầu trên</button>
+        <div class="col-md-6 d-flex justify-content-center">
+          <button class="btn mt-3  btn-success btn-sm btn-block" (click)="onFloor2()">Lầu trên</button>
+        </div>
+        <div class="col-md-6 d-flex justify-content-center">
+        <button (click)="confirmJourney()"class="btn mt-3  btn-sm btn-primary btn-block">Confirm</button>
+      </div>
       </div>
       <hr>
         <div class="row ">
-          <button (click)="confirmJourney()"class="btn btn-primary  btn-block ">Confirm</button>
+         
         </div>
           <div class="total  bg-default">
             <b>Tổng tiền: {{total}}.000</b>

@@ -1,23 +1,25 @@
-import { Component } from '@angular/core';
+import { Component,OnInit } from '@angular/core';
 import {FormBuilder, Validators} from '@angular/forms';
-
 import { Client } from 'src/app/Model/Client';
 import { ClientService } from 'src/app/Service/Client.service';
 import { TripService } from 'src/app/Service/trip.service';
 import { AppService } from 'src/app/app.service';
 import { Trip } from 'src/app/Model/trip';
-import { BusTypeService } from 'src/app/Service/bus-type.service';
 import { BusType } from 'src/app/Model/BusType';
 import { TimeTrip } from 'src/app/Model/time';
-import { TimeService } from 'src/app/Service/time.service';
-import { Ticket } from 'src/app/Model/Ticket';
+import { AddressService } from 'src/app/Service/address.service';
+import { Address } from 'src/app/Model/Address';
+import {FormControl} from '@angular/forms';
+import {Observable} from 'rxjs';
+import {map, startWith} from 'rxjs/operators';
+
 
 @Component({ 
   selector: 'app-stepper',
   templateUrl: './stepper.component.html',
   styleUrls: ['./stepper.component.scss'],
 })
-export class StepperComponent { 
+export class StepperComponent implements OnInit { 
   idChoose: boolean = false;
   search:boolean = false;
   client!:Client;
@@ -30,38 +32,65 @@ export class StepperComponent {
   idTrip?: number;
   trip!: Trip;
   ticketOn:boolean = false;
-  clientService = new ClientService()
+  options:string[] =[]
   isBook: boolean = false;
+  isOptional = true;
   message: string = "";
-  
+  phoneCtrl = new FormControl('');
+  filteredOptions!: Observable<string[]>;
+
+
  firstFormGroup = this._formBuilder.group({
-    nameCtrl: ['', Validators.required],
-    phoneCtrl: ['', Validators.required],
+    nameCtrl: ['', Validators.required], 
     addressCtrl: ['', Validators.required],
     address2Ctrl: ['', Validators.required],
   });
   
   secondFormGroup = this._formBuilder.group({
     tripCtrl: ['', Validators.required],
+    timeCtrl:['',Validators.required]
   });
   thirdFormGroup = this._formBuilder.group({
-    
+    seatCtrl:['']
   });
   
   isLinear = false;
   constructor(public appService: AppService, 
     private tripService: TripService, 
     private _formBuilder: FormBuilder,
-    private typeService: BusTypeService,
-    private time:TimeService) {
+    private clientService: ClientService,
+    private addressService: AddressService) {
     this.init();
+    
   }
-
+  ngOnInit(){
+    this.getAllPhone();
+    this.validation();
+  }
+  validation(){
+    this.phoneCtrl = new FormControl('', [
+      Validators.required,
+      Validators.minLength(9),
+       // Bắt buộc nhập     
+    ]);
+  }
+  private _filter(value: string): string[] {
+    const filterValue = value
+    return this.options.filter(option => option.includes(filterValue));
+  }
+  getAllPhone(){
+    this.clientService.getPhone().subscribe((data:any)=>{
+      this.options = data
+      this.filteredOptions = this.phoneCtrl.valueChanges.pipe(
+        startWith(''),
+        map(value => this._filter(value || '')),
+      );
+    })
+  }
   selectTrip :any ;
   selectDes = 0;
   onSelected(value:any): void {
-    // this.trips = new TripModel().getPlace(value);
-    // this.idTrip = value;
+    this.secondFormGroup.get('timeCtrl')?.reset();
     let tripInfo: Trip[] = []
     this.tripService.getTrip().subscribe((data : any)=>{
       tripInfo = data;
@@ -111,44 +140,78 @@ export class StepperComponent {
   receiveReceipt($event: string) : void{
     this.receiptNew = $event
   }
-  init(){
-    
+  init(){ 
     const uniqueTripsSet : string[] = [];
     let tripInfo: Trip[] = []
     this.tripService.getTrip().subscribe((data: any) =>{
       tripInfo = data;
+
       tripInfo.forEach(trip => {
         if(!uniqueTripsSet.includes(trip.name)){
           uniqueTripsSet.push(trip.name);
           this.uniqueTrips.push(trip)   
         }
        })
+       
     })
   }
-  // getUniqueTrips(trips: Destination[]):  Destination[]{
-  //   const uniqueTripsSet = new Set<string>();
-  //   const uniqueTrips: Destination[] = [];
-  
-  //   trips.forEach(trip => {
-  //     if (!uniqueTripsSet.has(trip.key)) {
-  //       uniqueTripsSet.add(trip.key);
-  //       uniqueTrips.push(trip);
-  //     }
-  //   });
-  //   return uniqueTrips;
-  // }
+
  
   saveCustomer() : void{
     const name = this.firstFormGroup.get('nameCtrl')?.value;
-    const phone = this.firstFormGroup.get('phoneCtrl')?.value;
+    const phone = this.phoneCtrl.value;
     const address = this.firstFormGroup.get('addressCtrl')?.value;
     const address2 = this.firstFormGroup.get('address2Ctrl')?.value;
+    let addressList : Address[] = [];
     this.client ={
+    
       customer_name : name!,
-      customer_phone:phone!,
-      address: "Đón: " + address! + " Xuống: "+ address2,
-      
+      customer_phone: phone!,
+      address: "Đón: " + address! + " Xuống: "+ address2, 
     };
-    this.clientService.addClient(this.client)
+    this.clientService.addClient(this.client).subscribe((response : any)=>{
+       let id = JSON.parse(response);
+      if(id == null){
+       id = this.client.id
+      }
+      addressList=this.getAddress(address,address2,id.id)
+      this.addressService.addClientAddress(addressList).subscribe((data)=>{
+       return response
+   });
+    },
+    (error)=>{
+      return error
+    }) 
   }
+  getAddress(a:any,b:any,c:any):Address[]{
+    let list: Array<Address> = [];
+    let address:Address={
+      name : a,
+      longitude : "",
+      latitude : " ",
+      passanger_id : c
+    }
+    let address2:Address={
+      name : b,
+      longitude : "",
+      latitude : "",
+      passanger_id : c
+    }
+    list.push(address)
+    list.push(address2)
+    return list;
+  }
+  autoFill(phone:string){
+    this.clientService.getClientByPhone(phone).subscribe((data : any)=>{
+      this.client = data[0]
+      this.firstFormGroup.get('nameCtrl')?.setValue(data[0].name)
+      return data
+    })
+  }
+  getFieldFil(data:any){
+    this.firstFormGroup.get('nameCtrl')?.setValue(data[0].name)
+    this.firstFormGroup.get('addressCtrl')?.setValue("");
+     this.firstFormGroup.get('address2Ctrl')?.setValue("");;    
+  }
+  
 }

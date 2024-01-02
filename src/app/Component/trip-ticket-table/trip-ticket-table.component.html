@@ -1,17 +1,106 @@
-<table matSort (matSortChange)="sortData($event)">
-    <tr>
-      <th mat-sort-header="name_customer">Dessert (100g)</th>
-      <th mat-sort-header="number_phone">Calories</th>
-      <th mat-sort-header="address">Fat (g)</th>
-      <!-- <th mat-sort-header="carbs">Carbs (g)</th>
-      <th mat-sort-header="protein">Protein (g)</th> -->
-    </tr>
-  
-    <tr *ngFor="let dessert of ticket">
-      <td>{{dessert.name_customer}}</td>
-      <td>{{dessert.number_phone}}</td>
-      <td>{{dessert.address}}</td>
-      <!-- <td>{{dessert.carbs}}</td>
-      <td>{{dessert.protein}}</td> -->
-    </tr>
-  </table>
+<button mat-icon-button color="primary" aria-label="Example icon button with a home icon" (click)="printList()">
+  <mat-icon>print</mat-icon>
+</button>
+<div id="content" #content>
+  <header *ngIf="trip" class="frame-parent mb-2" id="report">
+    <div class="frame">
+      <div class="frame1">
+        <b class="xe-24-phng">XE {{trip.seats.maxslot}} PHÒNG BẢY TÀU.</b>
+        <div class="nhaxebaytaucomvn">
+          <span>(</span>
+          <span class="nhaxebaytaucomvn1">nhaxebaytau.com.vn</span>
+          <span>)</span>
+        </div>
+        <div class="nhaxebaytaucomvn">0977949477</div>
+      </div>
+    </div>
+    <div class="frame2">
+      <div class="frame3">
+        <div class="thi-gian-khi-container">
+          <p class="thi-gian-khi">Thời Gian Khởi Hành:</p>
+          <p class="thi-gian-khi">{{trip.time.start_day}}, {{trip.time.start_time}}</p>
+        </div>
+        <div class="danh-sch-chuyn-container">
+          <p class="thi-gian-khi">DANH SÁCH CHUYỂN:</p>
+          <p class="thi-gian-khi">{{trip.name}}</p>
+        </div>
+        <div class="thi-gian-khi-container">
+          <p class="thi-gian-khi">Xe: {{trip.seats.number_plate}}</p>
+          <p class="thi-gian-khi">{{trip.seats.name}} </p>
+        </div>
+      </div>
+    </div>
+  </header>
+  <div class="container">
+    <div class="row">
+    <div class="col-md-3 ml-5" >
+    <mat-card class="example-card " *ngFor="let a of pagedSeatNo | slice:0:6 " >
+      <mat-card-header>
+        <mat-card-title-group>
+          <!-- <mat-card-title>Shiba Inu</mat-card-title> -->
+          <mat-card-subtitle style="font-size: 10px;">{{a.name_slot}}</mat-card-subtitle>
+        </mat-card-title-group>
+      </mat-card-header>
+      <mat-card-content *ngIf="!a._available ">  
+        KH: {{mappingData(a.name_slot).name_customer}}<br>
+        SĐT: {{mappingData(a.name_slot).number_phone}}<br>
+        {{mappingData(a.name_slot).address}}   
+      </mat-card-content>
+    </mat-card>
+  </div>
+    <div class="col-md-3">
+      <mat-card class="example-card " *ngFor="let a of pagedSeatNo | slice:6:12 " >
+        <mat-card-header>
+          <mat-card-title-group>
+            <!-- <mat-card-title>Shiba Inu</mat-card-title> -->
+            <mat-card-subtitle style="font-size: 10px;">{{a.name_slot}}</mat-card-subtitle>
+          </mat-card-title-group>
+        </mat-card-header>
+        <mat-card-content *ngIf="!a._available">
+          KH: {{mappingData(a.name_slot).name_customer}}<br>
+          SĐT: {{mappingData(a.name_slot).number_phone}}<br>
+          {{mappingData(a.name_slot).address}}   
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <div class="col-md-3">
+      <mat-card class="example-card " *ngFor="let a of pagedSeatNo | slice:12:18 " >
+        <mat-card-header>
+          <mat-card-title-group>
+            <!-- <mat-card-title>Shiba Inu</mat-card-title> -->
+            <mat-card-subtitle style="font-size: 10px;">{{a.name_slot}}</mat-card-subtitle>
+          </mat-card-title-group>
+        </mat-card-header>
+        <mat-card-content *ngIf="!a._available">
+          KH: {{mappingData(a.name_slot).name_customer}}<br>
+          SĐT: {{mappingData(a.name_slot).number_phone}}<br>
+          {{mappingData(a.name_slot).address}}   
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <div class="col-md-3">
+      <mat-card class="example-card " *ngFor="let a of pagedSeatNo | slice:18:24 " >
+        <mat-card-header>
+          <mat-card-title-group>
+            <!-- <mat-card-title>Shiba Inu</mat-card-title> -->
+            <mat-card-subtitle style="font-size: 10px;">{{a.name_slot}}</mat-card-subtitle>
+          </mat-card-title-group>
+        </mat-card-header>
+        <mat-card-content *ngIf="!a._available">
+          KH: {{mappingData(a.name_slot).name_customer}}<br>
+          SĐT: {{mappingData(a.name_slot).number_phone}}<br>
+          {{mappingData(a.name_slot).address}}   
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+  </div>
+</div>
+<mat-paginator
+  (page)="handlePage($event)"
+  [length]="length"
+  [pageSize]="pageSize"
+>
+</mat-paginator>
+
+

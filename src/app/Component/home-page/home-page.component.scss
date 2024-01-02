@@ -9,7 +9,7 @@ $main-width: 1250px;
     gap: 8px;
     padding: 8px;
     font-family: Lexend;
-    color: #22493b;
+    color: #feb236;
     font-weight: 500;
     font-stretch: normal;
     font-style: normal;
@@ -27,12 +27,12 @@ $main-width: 1250px;
     align-items: center;
     gap: 8px;
     padding: 8px;
-    background-color: #22493b;
+    background-color: #feb236;
     svg path:first-child {
-        fill: #fff;
+        fill: #000000;
     }
     svg path:last-child {
-        fill: #fff;
+        fill: #000000;
     }
     margin-left:  10%;
 }
@@ -47,7 +47,7 @@ $main-width: 1250px;
     line-height: 1.2;
     letter-spacing: normal;
     text-align: left;
-    color: #fff;
+    color: #000000;
     margin-left:  10%;
 }
 
@@ -67,8 +67,8 @@ svg path:first-child {
 $color-background-clicked:  #e2f1ef;
 $radius-top:20px;
 $radius-bottom: 20px;
-$color-menu:  #22493b;
-$color-news-clicked: #22493b;
+$color-menu:  #feb236;
+$color-news-clicked: #feb236;
 body{
 
     // padding: 0 14px 0 0;
@@ -102,12 +102,12 @@ body{
     align-items: center;
     gap: 8px;
     padding: 2px;
-    background-color: #22493b;
+    background-color: #feb236;
     svg path:first-child {
-        fill: #fff;
+        fill: #000000;
     }
     svg path:last-child {
-        fill: #fff;
+        fill: #000000;
     }
 }
 .list-menu{
@@ -136,7 +136,7 @@ body{
     gap: 16px;
     margin: 0 16px 0 0;
     // padding: 16px 0 16px 16px;
-    background-color: #22493b;
+    background-color: #feb236;
 }
 .Frame-1862 {
 
@@ -155,7 +155,7 @@ body{
     width: 40px;
     height: 40px;
     flex-grow: 2;
-    color: white ;
+    color: rgb(0, 0, 0) ;
 }
 
 .menu-item {
@@ -168,7 +168,7 @@ body{
     margin-left: 15%;
     gap: 8px;
     padding: 10px;
-    color: #22493b;
+    color: #feb236;
     font-weight: 500;
 }
 .active-spot {
@@ -225,13 +225,13 @@ body{
     border-top-left-radius: $radius-top;
     border-bottom-left-radius: $radius-bottom;
     span{
-        color: #22493B;
+        color: #feb236;
     }
     svg path:first-child {
-        fill: #22493B;
+        fill: #feb236;
     }
     svg path:last-child {
-        fill: #22493B;
+        fill: #feb236;
     }
 }
 .active-menu {
@@ -243,13 +243,13 @@ body{
     border-top-left-radius: $radius-top;
     border-bottom-left-radius: $radius-bottom;
     span{
-        color: #22493B;
+        color: #feb236;
     }
     svg path:first-child {
-        fill: #22493B;
+        fill: #feb236;
     }
     svg path:last-child {
-        fill: #22493B;
+        fill: #feb236;
     }
 
 }
@@ -265,7 +265,7 @@ body{
     line-height: 1.2;
     letter-spacing: normal;
     text-align: left;
-    color: #22493b;
+    color: #feb236;
 }
 .clock{
     font-family: 'Poppins', sans-serif;

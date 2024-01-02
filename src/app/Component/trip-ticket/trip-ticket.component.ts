@@ -18,8 +18,10 @@ export class TripTicketComponent {
   tripInfo2: Trip[] = [] ;
   trip!: Trip;
   selectTrip :any ;
+  tripName:any;
   firstFormGroup = this._formBuilder.group({
     tripCtrl: ['', Validators.required],
+    timeCtrl:['']
   });
 
   stepperOrientation: Observable<StepperOrientation>;
@@ -47,14 +49,18 @@ export class TripTicketComponent {
   onSelected(value:any): void {
     // this.trips = new TripModel().getPlace(value);
     // this.idTrip = value;
+    this.tripName = value;
+    this.firstFormGroup.get('timeCtrl')?.reset();
     let tripInfo: Trip[] = []
     this.tripService.getTrip().subscribe((data : any)=>{
       tripInfo = data;
       this.tripInfo2 = tripInfo.filter(data => data.name === value);   
     })
+    
 	}
  
   onSelectedPlace(value:any): void {	
+    this.search= false;
     const selectedTrip = this.tripInfo2.find(trip => trip.time.id === value);
     if (selectedTrip) {
       this.selectTrip = selectedTrip.id;
@@ -62,6 +68,7 @@ export class TripTicketComponent {
         this.trip  = data     
       })
     }  
+   
   }
   searchTrip(){
     this.search = true;    

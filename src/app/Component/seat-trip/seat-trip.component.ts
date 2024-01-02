@@ -155,7 +155,6 @@ getData() {
 }
 checkSeat() : boolean{
   let trip_seat = this.tripData.seats.maxslot
-
   let choosenSeat = this.seatNo1.filter(choose => choose._available === false).length
   if(trip_seat <= choosenSeat){
     this.isEnough = false;
@@ -190,9 +189,9 @@ if(seats.length == 0){
 }
 
 bookEvent(id:any):void{
-
   this.confirmEvent.emit(id.replace("\"", "").trim());
 }
+
 createReceipt(seat: Array<string>){
   let customer_name =this.client.customer_name;
   let customer_phone=  this.client.customer_phone;

@@ -46,6 +46,8 @@ import { BusTypeComponent } from './Component/bus-type/bus-type.component';
 import { ListPassangerComponent } from './Component/list-passanger/list-passanger.component';
 import { TripTicketComponent } from './Component/trip-ticket/trip-ticket.component';
 import { TripTicketTableComponent } from './Component/trip-ticket-table/trip-ticket-table.component';
+import {PageEvent, MatPaginatorModule} from '@angular/material/paginator';
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
 
 
 registerLocaleData(vi);
@@ -58,13 +60,11 @@ registerLocaleData(vi);
     StepperComponent,
     TripTableComponent,
     ReceiptComponent,
-
     TripComponent,
     BusTypeComponent,
     ListPassangerComponent,
     TripTicketComponent,
-    TripTicketTableComponent
-    
+    TripTicketTableComponent,
   ],
   imports: [
     NgSwitch,
@@ -84,7 +84,8 @@ registerLocaleData(vi);
     MatTableModule,
     MatRadioModule,
     MatSortModule,
-
+    MatPaginatorModule,
+    MatAutocompleteModule,
     BrowserAnimationsModule,
     AppRoutingModule,
     HttpClientModule,
@@ -113,8 +114,7 @@ registerLocaleData(vi);
     preventDuplicates: false,
     timeOut: 10000}
     ),
-
-
+   
   ],
   providers: [DatePipe, { provide: MAT_DATE_LOCALE, useValue: 'vi-VN' }, { provide: NZ_I18N, useValue: vi_VN },
  ],

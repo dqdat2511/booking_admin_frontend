@@ -6,14 +6,20 @@
           <div class="col-md-3">
             <mat-form-field>
                 <mat-label>Số điện thoại</mat-label>
-                <input matInput placeholder="012456789" formControlName="phoneCtrl" name="phoneNumber" type="number" required >
+                <input matInput  [formControl]="phoneCtrl"
+                [matAutocomplete]="auto" placeholder="12456789"  name="phoneNumber" type="number" required>
+                <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+                  <mat-option *ngFor="let option of filteredOptions | async" [value]="option" (onSelectionChange)="autoFill(option)">
+                    {{option}}
+                  </mat-option>
+                </mat-autocomplete>
               </mat-form-field>
             </div>
           <div class="col-md-3">
         <ng-template matStepLabel>Điền thông tin khách hàng</ng-template>
         <mat-form-field>
           <mat-label>Tên</mat-label>
-          <input matInput placeholder="Nguyễn Văn A" formControlName="nameCtrl" name="name" required>
+          <input matInput placeholder="Nguyễn Văn A" formControlName="nameCtrl" name="name" required >
         </mat-form-field>
       </div>
         <div class="col-md-3">
@@ -29,12 +35,17 @@
             <input matInput formControlName="address2Ctrl" name="address1" placeholder="50 Điện Biên Phủ, Quận 1, Tp.HCM"
                    required>
           </mat-form-field>
+        
         </div>
-        <div>
+        
+      </div>
+      <div class="row">
+        <div class="d-flex justify-content-end">
           <button mat-button matStepperNext (click)="saveCustomer()">Tiếp</button>
         </div>
       </div>
       </form>
+      
     </mat-step>
     <!-- #docregion label -->
     <mat-step [stepControl]="secondFormGroup" label="Chọn chuyến xe">
@@ -44,7 +55,7 @@
           <div class="col-md-3">
         <mat-form-field >
             <mat-label>Chọn nơi đi</mat-label>
-            <mat-select disableRipple matInput formControlName="tripCtrl" #teams (valueChange)="onSelected(teams.value)" >
+            <mat-select disableRipple matInput formControlName="tripCtrl" #teams (valueChange)="onSelected(teams.value)"  >
               <mat-option *ngFor="let tripName of uniqueTrips" [value]="tripName.name">{{tripName.name}}</mat-option>       
             </mat-select>
             <!-- <mat-label *ngFor="let time of timeTrip"> {{time}}</mat-label> -->
@@ -54,7 +65,7 @@
         <div class="col-md-3">
           <mat-form-field >
             <mat-label>Chọn nơi đến</mat-label>
-            <mat-select disableRipple matInput  #place (valueChange)="onSelectedPlace(place.value)" >
+            <mat-select disableRipple matInput formControlName="timeCtrl" #place (valueChange)="onSelectedPlace(place.value)" >
               <mat-option *ngFor="let tripName of tripInfo2" [value]="tripName.time.id">{{tripName.time.start_day}}, {{tripName.time.start_time}}</mat-option>       
             </mat-select>       
           </mat-form-field> 
@@ -73,30 +84,43 @@
         </div>
         <button mat-raised-button color="primary" (click)="searchTrip()">Search</button>
         <div> -->
-          <div>
-          <button mat-button matStepperPrevious>Trở lại</button>
-          <button mat-button matStepperNext (click)="isNextStep()">Tiếp</button>
         </div>
+          <div class="row">
+            <div class="col-md-6 d-flex justify-content-start">
+              <button mat-button matStepperPrevious>Trở lại</button>
+            </div>
+            <div class="col-md-6 d-flex justify-content-end">
+            <button mat-button matStepperNext (click)="isNextStep()">Tiếp</button>
+          </div>
         </div>
+        
       </form> 
     </mat-step>
-    <mat-step [stepControl]="thirdFormGroup" label="Chọn ghế khách hàng" >
+    <mat-step [stepControl]="thirdFormGroup" label="Chọn ghế khách hàng">
         <!-- #enddocregion label -->
           <form [formGroup]="thirdFormGroup" >
-             <app-seat-trip *ngIf="isBook" [client]="client" [desId]="selectDes" [tripData]="trip" (confirmEvent)="receiveReceipt($event)" ></app-seat-trip>          
-            <div>
+             <app-seat-trip formControlName="seatCtrl"  *ngIf="isBook" [client]="client" [desId]="selectDes" [tripData]="trip" (confirmEvent)="receiveReceipt($event)" ></app-seat-trip>          
+            <div class="row">
+              <div class="col-md-6 d-flex justify-content-start">
               <button mat-button matStepperPrevious (click)="getBackToTrip()">Trở lại</button>
+            </div>
+            <div class="col-md-6 d-flex justify-content-end">
               <button mat-button matStepperNext (click)="getTicket()">Tiếp</button>
             </div>
+            </div>
           </form>
-        </mat-step>
+    </mat-step>
     <mat-step>
       <ng-template matStepLabel>Done</ng-template>
       <div *ngIf="!ticketOn"class="alert alert-danger" >{{message}}</div>
       <app-receipt *ngIf="ticketOn" [receipt]="receiptNew"></app-receipt>
-      <div>
+      <div class="row">
+        <div class="col-md-6 d-flex justify-content-start">
         <button mat-button matStepperPrevious (click)="getBackToBook()">Trở lại</button>
+      </div>
+      <div class="col-md-6 d-flex justify-content-end">
         <button mat-button (click)="stepper.reset()">Bắt đầu lại</button>
+      </div>
       </div>
     </mat-step>
   </mat-stepper>
@@ -105,3 +129,4 @@
   <!-- Copyright 2023 Google LLC. All Rights Reserved.
       Use of this source code is governed by an MIT-style license that
       can be found in the LICENSE file at https://angular.io/license -->
+      

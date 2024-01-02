@@ -1,0 +1,111 @@
+#content{
+    width: 595px;
+    height: 842px;
+}
+
+.example-card {
+    max-width: 200px;
+    height: 120px;
+    margin-bottom: 2px;
+    font-size: 9px;
+  }
+.mat-mdc-card{
+    background-color: rgb(223, 218, 212) !important;
+}
+
+
+//
+.xe-24-phng {
+    flex: 1;
+    position: relative;
+  }
+  .nhaxebaytaucomvn1 {
+    text-decoration: underline;
+    color: #2307cb;
+  }
+  .nhaxebaytaucomvn {
+    flex: 1;
+    position: relative;
+    font-weight: 300;
+  }
+  .frame,
+  .frame1 {
+    align-self: stretch;
+    overflow: hidden;
+    display: flex;
+  }
+  .frame1 {
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 5px;
+  }
+  .frame {
+    height: 25px;
+    flex-shrink: 0;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .thi-gian-khi {
+    margin: 0;
+  }
+  .thi-gian-khi-container {
+    flex: 1;
+    position: relative;
+    font-weight: 500;
+  }
+  .danh-sch-chuyn-container {
+    flex: 1;
+    position: relative;
+    font-weight: 600;
+  }
+  .frame2,
+  .frame3 {
+    align-self: stretch;
+    overflow: hidden;
+  }
+  .frame3 {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 22px;
+  }
+  .frame2 {
+    height: 36px;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+  }
+  .a4-2,
+  .frame-parent,
+  .frame2 {
+    display: flex;
+    flex-direction: column;
+  }
+  .frame-parent {
+    align-self: stretch;
+    border-radius: 5px;
+    background-color: #b4afaf;
+    align-items: flex-start;
+    justify-content: flex-end;
+    padding: 3px 0 5px;
+    gap: 11px;
+    text-align: center;
+    font-size: 12px;
+    color: #000;
+    font-family: Inter;
+  }
+  .a4-2 {
+    position: relative;
+    background-color: #fff;
+    width: 100%;
+    height: 80px;
+    overflow: hidden;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 0 0 18px;
+    box-sizing: border-box;
+  }
+  
