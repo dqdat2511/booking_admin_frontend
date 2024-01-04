@@ -2,3 +2,18 @@
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+@media print{
+    #showContent{
+      display: none;
+    }
+    .mat-horizontal-stepper-header-container{
+        display: none;
+    }
+    app-print-templ{
+      display: block;
+      
+    }
+    .example-card{
+        page-break-inside: avoid;
+    }
+  }
