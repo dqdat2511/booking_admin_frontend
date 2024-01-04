@@ -49,7 +49,6 @@ import { TripTicketTableComponent } from './Component/trip-ticket-table/trip-tic
 import {PageEvent, MatPaginatorModule} from '@angular/material/paginator';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 
-
 registerLocaleData(vi);
 @NgModule({
   declarations: [
@@ -65,6 +64,7 @@ registerLocaleData(vi);
     ListPassangerComponent,
     TripTicketComponent,
     TripTicketTableComponent,
+
   ],
   imports: [
     NgSwitch,

@@ -1,7 +1,7 @@
-<button mat-icon-button color="primary" aria-label="Example icon button with a home icon" (click)="printList()">
+<button mat-icon-button color="primary" aria-label="Example icon button with a home icon" (click)="printList()" *ngIf="!isBooking">
   <mat-icon>print</mat-icon>
 </button>
-<div id="content" #content>
+<div id="content" #content *ngIf="!isBooking">
   <header *ngIf="trip" class="frame-parent mb-2" id="report">
     <div class="frame">
       <div class="frame1">
@@ -34,7 +34,7 @@
   <div class="container">
     <div class="row">
     <div class="col-md-3 ml-5" >
-    <mat-card class="example-card " *ngFor="let a of pagedSeatNo | slice:0:6 " >
+    <mat-card class="example-card empty" *ngFor="let a of pagedSeatNo | slice:0:6 " [id] = "a.name_slot"  (click)="IsChoose(a.name_slot)">
       <mat-card-header>
         <mat-card-title-group>
           <!-- <mat-card-title>Shiba Inu</mat-card-title> -->
@@ -49,7 +49,7 @@
     </mat-card>
   </div>
     <div class="col-md-3">
-      <mat-card class="example-card " *ngFor="let a of pagedSeatNo | slice:6:12 " >
+      <mat-card class="example-card empty" *ngFor="let a of pagedSeatNo | slice:6:12 " [id] = "a.name_slot" (click)="IsChoose(a.name_slot)">
         <mat-card-header>
           <mat-card-title-group>
             <!-- <mat-card-title>Shiba Inu</mat-card-title> -->
@@ -64,7 +64,7 @@
       </mat-card>
     </div>
     <div class="col-md-3">
-      <mat-card class="example-card " *ngFor="let a of pagedSeatNo | slice:12:18 " >
+      <mat-card class="example-card empty" *ngFor="let a of pagedSeatNo | slice:12:18 " [id] = "a.name_slot" (click)="IsChoose(a.name_slot)">
         <mat-card-header>
           <mat-card-title-group>
             <!-- <mat-card-title>Shiba Inu</mat-card-title> -->
@@ -79,7 +79,7 @@
       </mat-card>
     </div>
     <div class="col-md-3">
-      <mat-card class="example-card " *ngFor="let a of pagedSeatNo | slice:18:24 " >
+      <mat-card class="example-card empty" *ngFor="let a of pagedSeatNo | slice:18:24 " [id] = "a.name_slot" (click)="IsChoose(a.name_slot)">
         <mat-card-header>
           <mat-card-title-group>
             <!-- <mat-card-title>Shiba Inu</mat-card-title> -->
@@ -94,13 +94,21 @@
       </mat-card>
     </div>
   </div>
+  </div>
+  <div class="row">
+    <div class="d-flex justify-content-end">
+      <button mat-button matStepperNext>Tiếp</button>
+    </div>
   </div>
 </div>
 <mat-paginator
   (page)="handlePage($event)"
   [length]="length"
   [pageSize]="pageSize"
+  *ngIf="!isBooking"
 >
 </mat-paginator>
+
+
 
 
