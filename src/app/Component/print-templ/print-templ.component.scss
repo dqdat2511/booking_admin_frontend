@@ -1,15 +1,15 @@
 
 .example-card {
-   min-width: 190px;
-    max-width: 190px;
-    height: 120px;
+  min-width: 190px;
+  max-width: 190px;
+  height: 110px;
     margin-bottom: 2px;
-    font-size: 12px;
+    font-size: 11px;
     border: 2px solid #060606; 
+    color: #000;
   }
 .mat-mdc-card{
-    background-color: rgb(255, 255, 255) !important;
-    
+    background-color: rgb(223, 218, 212) !important;
 }
 
 
@@ -86,7 +86,7 @@
   .frame-parent {
     align-self: stretch;
     border-radius: 5px;
-    background-color: #ffffff;
+    background-color: #b4afaf;
     align-items: flex-start;
     justify-content: flex-end;
     padding: 3px 0 5px;
@@ -108,20 +108,9 @@
     padding: 0 0 18px;
     box-sizing: border-box;
   }
-  .example-card.empty:not(.sold):hover {
-    cursor: pointer;
-    transform: scale(1.2);
-  }
-  
-  app-print-templ{
-    display: none;
-  }
-
-  @media print{
-    #showContent{
-      display: none;
-    }
-    app-print-templ{
-      display: block;
-    }
-  }
+  h4{
+    font-weight: 700;
+    color:rgb(0,90,255);
+    font-size:18px;
+    text-align: center;
+}

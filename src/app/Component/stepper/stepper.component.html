@@ -54,7 +54,7 @@
         <div class="row">
           <div class="col-md-3">
         <mat-form-field >
-            <mat-label>Chọn nơi đi</mat-label>
+            <mat-label>Chọn chuyến đi</mat-label>
             <mat-select disableRipple matInput formControlName="tripCtrl" #teams (valueChange)="onSelected(teams.value)"  >
               <mat-option *ngFor="let tripName of uniqueTrips" [value]="tripName.name">{{tripName.name}}</mat-option>       
             </mat-select>
@@ -64,7 +64,7 @@
 
         <div class="col-md-3">
           <mat-form-field >
-            <mat-label>Chọn nơi đến</mat-label>
+            <mat-label>Chọn thời gian</mat-label>
             <mat-select disableRipple matInput formControlName="timeCtrl" #place (valueChange)="onSelectedPlace(place.value)" >
               <mat-option *ngFor="let tripName of tripInfo2" [value]="tripName.time.id">{{tripName.time.start_day}}, {{tripName.time.start_time}}</mat-option>       
             </mat-select>       
