@@ -144,16 +144,18 @@ export class StepperComponent implements OnInit {
     const uniqueTripsSet : string[] = [];
     let tripInfo: Trip[] = []
     this.tripService.getTrip().subscribe((data: any) =>{
-      tripInfo = data;
-
+      if(data){
+      tripInfo = this.checkCurrentDate(data);
       tripInfo.forEach(trip => {
         if(!uniqueTripsSet.includes(trip.name)){
           uniqueTripsSet.push(trip.name);
           this.uniqueTrips.push(trip)   
+       
         }
        })
-       
+      }
     })
+   
   }
 
  
@@ -213,5 +215,21 @@ export class StepperComponent implements OnInit {
     this.firstFormGroup.get('addressCtrl')?.setValue("");
      this.firstFormGroup.get('address2Ctrl')?.setValue("");;    
   }
-  
-}
+ 
+  checkCurrentDate(tripData:Trip[]):Trip[]{
+    // Get the current date and time
+    let tripList: Trip[] = []
+    const currentDateTime: Date = new Date();
+    for (let index = 0; index < tripData.length; index++) {
+      const element = tripData[index];
+      
+      if (tripData) {
+        const tripStartTime: Date = new Date(`${element.time.start_day}T${element.time.start_time}`);
+        if (currentDateTime <= tripStartTime) {
+          tripList.push(element)
+        } 
+      }
+    }
+    return tripList
+  }
+  }

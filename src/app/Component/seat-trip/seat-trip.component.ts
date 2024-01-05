@@ -189,7 +189,7 @@ if(seats.length == 0){
 }
 
 bookEvent(id:any):void{
-  this.confirmEvent.emit(id.replace("\"", "").trim());
+  this.confirmEvent.emit(id);
 }
 
 createReceipt(seat: Array<string>){
@@ -203,8 +203,8 @@ createReceipt(seat: Array<string>){
   
    this.ticketService.addTicket(customer_name,customer_phone,address,num_ticket,trip_id,sloots).subscribe(
     (response:any) => {  
-      this.idTicket = response
-      this.bookEvent(this.idTicket.replace("\"", "").trim());
+      this.idTicket = JSON.parse(response)
+     this.bookEvent(this.idTicket);
     },
     (error) => {
       console.error('Error:', error);

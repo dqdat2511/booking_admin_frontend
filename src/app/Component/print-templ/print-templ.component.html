@@ -126,8 +126,8 @@
             </mat-card-content>
           </mat-card>
         </div>
-        <div class="col-md-3">
-          <mat-card class="example-card empty" *ngFor="let a of pagedSeatNo | slice:12:18 " [id]="a.name_slot">
+        <div class="col-md-3 d-flex align-items-end flex-column">
+          <mat-card class="example-card empty " *ngFor="let a of pagedSeatNo | slice:12:18 " [id]="a.name_slot">
             <mat-card-header>
               <mat-card-title-group>
                 <!-- <mat-card-title>Shiba Inu</mat-card-title> -->
