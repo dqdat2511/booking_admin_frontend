@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, ViewChild,OnInit  } from '@angular/core';
+import { Component, ElementRef, Input, ViewChild,OnInit, Output, EventEmitter, DoCheck } from '@angular/core';
 import { AppService } from 'src/app/app.service';
 import { SeatService } from 'src/app/Service/seat.service';
 import { Ticket2 } from '../receipt/receipt.component';
@@ -18,6 +18,7 @@ import { HttpClient } from '@angular/common/http';
 })
 export class TripTicketTableComponent implements OnInit{
   @Input() tripId!:string
+  @Output() showSeatListEvent = new EventEmitter<Seat[]>();
   trip!:Trip
   BusName!:string;
   length= 0;
@@ -28,6 +29,10 @@ export class TripTicketTableComponent implements OnInit{
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   pageSize = 24; // Set an initial page size
   pagedSeatNo: Seat[] = [];
+  total = 0;
+  showSeatList:Seat[]=[];
+  isBooking = false;
+  hideTableSeat = false;
   constructor(public appService: AppService, 
     private seatService: SeatService,
     private tripService: TripService,
@@ -61,8 +66,10 @@ export class TripTicketTableComponent implements OnInit{
     this.ticket.forEach(ticket => {
       if (ticket.seat.includes(key)) {
         bookTicket = ticket;
-        let id = document.getElementById(key);
-        id?.classList.remove('empty')
+        
+        //có data thì remove id 'empty'
+        let id = document.getElementById(key)
+        id?.classList.remove("empty")
       }
     });
     if (bookTicket !== undefined) {
@@ -124,4 +131,59 @@ export class TripTicketTableComponent implements OnInit{
   printTest(){
     window.print();
   }
+//nqd1111 start
+  IsChoose(key:any){
+    this.changeSeatColor(key)
+  }
+
+  changeSeatColor(key:any){
+    let id= document.getElementById(key)
+    let seatCount = this.pagedSeatNo.find(seat => seat.name_slot === key);
+    let seatRemove: Array<Seat>;
+    seatRemove = this.pagedSeatNo.filter(seat => seat.name_slot === key);
+    if(id?.classList.contains("selected")){
+      id.classList.remove('selected')
+      if(seatCount){
+        this.removeList(seatRemove);
+        this.minusFare(150);
+       }
+    }
+    else if(id?.classList.contains("booked")){
+      window.alert("Ghế đã được mua")
+    }
+    else
+    {
+           
+        id?.classList.add('selected')
+        if(seatCount){
+         this.showList(seatCount);
+         this.totalFare(150);
+        }
+
+   
+    }
+    this.showSeatListEvent.emit(this.showSeatList);
+    console.log(this.showSeatList)
+  }
+
+  removeList(seat: Seat[]): void {
+    // Filter out the seats to be removed from showSeatList
+    this.showSeatList = this.showSeatList.filter(existingSeat => !seat.includes(existingSeat));
+  
+    
+  }
+
+  minusFare(fare:number){
+    this.total-=fare;
+  }
+
+  totalFare(fare:number){
+    this.total+=fare;
+  }
+
+  showList(seat:Seat){
+    this.showSeatList.push(seat);
+}
+
+//nqd1111 end
 }
