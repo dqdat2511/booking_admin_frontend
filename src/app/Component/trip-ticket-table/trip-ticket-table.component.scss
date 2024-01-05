@@ -112,6 +112,16 @@
     cursor: pointer;
     transform: scale(1.2);
   }
+
+
+  .example-card.selected {
+    background-color: green!important;
+  }
+  
+  .example-card.booked {
+    background-color: #f00606!important;
+  }
+  
   
   app-print-templ{
     display: none;

@@ -2,7 +2,7 @@
   
   </ng-container>
   
-  <mat-stepper
+  <mat-stepper [linear]=true #stepper
     class="example-stepper"
     [orientation]="(stepperOrientation | async)!">
     <mat-step [stepControl]="firstFormGroup" label="Danh sách chuyến đi" >
@@ -41,14 +41,105 @@
               </mat-form-field> 
             </div>  -->
           </div>
-          <div class="row">
-              <div class="col-md-12"><app-trip-ticket-table *ngIf="search" [tripId]="selectTrip" ></app-trip-ticket-table></div>
-          </div>
-           
-            <div>            
+              
+              
+            <div class="row">   
+              <div class="col-md-12"><app-trip-ticket-table *ngIf="search" [tripId]="selectTrip" (showSeatListEvent)="receiveEvent($event)"></app-trip-ticket-table></div>         
               </div>         
           </form> 
     </mat-step>
    
+
+
+    <mat-step [stepControl]="firstFormGroup2">
+      <form [formGroup]="firstFormGroup2" >
+        <div class="row">
+          <div class="col-md-3">
+            <mat-form-field class="py-3">
+                <mat-label>Số điện thoại</mat-label>
+                <input matInput  [formControl]="phoneCtrl"
+                [matAutocomplete]="auto" placeholder="12456789"  name="phoneNumber" type="number" required>
+                <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+                  <mat-option *ngFor="let option of filteredOptions | async" [value]="option" (onSelectionChange)="autoFill(option)">
+                    {{option}}
+                  </mat-option>
+                </mat-autocomplete>
+              </mat-form-field>
+            </div>
+          <div class="col-md-3">
+        <ng-template matStepLabel>Điền thông tin khách hàng</ng-template>
+        <mat-form-field class="py-3">
+          <mat-label>Tên</mat-label>
+          <input matInput placeholder="Nguyễn Văn A" formControlName="nameCtrl" name="name" required >
+        </mat-form-field>
+      </div>
+        <div class="col-md-3">
+          <mat-form-field class="py-3">
+            <mat-label>Địa điểm đón</mat-label>
+            <input matInput formControlName="addressCtrl" name="address1" placeholder="1 Điện Biên Phủ, Quận 1, Tp.HCM"
+                   required>
+          </mat-form-field>
+        </div>
+        <div class="col-md-3">
+          <mat-form-field class="py-3">
+            <mat-label>Địa điểm xuống</mat-label>
+            <input matInput formControlName="address2Ctrl" name="address1" placeholder="50 Điện Biên Phủ, Quận 1, Tp.HCM"
+                   required>
+          </mat-form-field>
+        
+        </div>
+        
+      </div>
+      <div class="row">
+        <div class="col-md-6 d-flex justify-content-start">
+            <button mat-button matStepperPrevious (click)="searchTrip()">Trở lại</button>
+        </div>
+          
+        <div class="d-flex justify-content-end col-md-6">
+            <button (click)="confirmJourney()" matStepperPrevious class="btn btn-sm btn-block  buttoncss">Xác nhận</button>
+        </div>
+          
+        <!-- <div class="d-flex justify-content-end col-md-4">
+            <button mat-button matStepperNext (click)="">Bắt đầu lại</button>
+        </div> -->
+      </div>
+      </form>
+      
+    </mat-step>
+
+  <!-- <mat-step>
+    <table matSort >
+      <tr>
+        <th >Tên khách hàng </th>
+        <th >SDT khách hàng</th>
+        <th >Địa điểm</th>     
+        <th >Tổng Ghế </th>
+        <th >Số Ghế </th>
+      </tr>
+    
+      <tr >
+        <td>{{ticket.name_customer}}</td>
+        <td>
+          {{ ticket.number_phone }} 
+        </td>
+        <td>{{ticket.address}}</td>     
+        <td>{{ticket.number_tickets}}</td>
+        <td><span *ngFor="let seat of ticket.seat">{{seat}}
+        </span></td>
+      </tr>
+    </table>
+
+    <div class="col-md-6 d-flex justify-content-end">
+      <button mat-button (click)="stepper.reset()">Bắt đầu lại</button>
+    </div>
+
+ <div *ngIf="!ticketOn"class="alert alert-danger" >{{message}}</div>
+    <app-receipt *ngIf="ticketOn" [receipt]="receiptNew"></app-receipt>
+    <div class="row">
+      <div class="col-md-6 d-flex justify-content-start">
+      <button mat-button matStepperPrevious (click)="getBackToBook()">Trở lại</button>
+    </div> 
+    
+  </mat-step> -->
   </mat-stepper>
   

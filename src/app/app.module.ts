@@ -52,7 +52,6 @@ import {ScrollingModule} from '@angular/cdk/scrolling';
 import { PrintTemplComponent } from './Component/print-templ/print-templ.component';
 
 
-
 registerLocaleData(vi);
 @NgModule({
   declarations: [
