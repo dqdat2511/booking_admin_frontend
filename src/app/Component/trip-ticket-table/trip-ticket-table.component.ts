@@ -2,19 +2,21 @@ import { Component, ElementRef, Input, ViewChild,OnInit, Output, EventEmitter, D
 import { AppService } from 'src/app/app.service';
 import { SeatService } from 'src/app/Service/seat.service';
 import { Ticket2 } from '../receipt/receipt.component';
-import jsPDF from 'jspdf';
 import { Seat } from 'src/app/Model/Seat';
 import { PageEvent, MatPaginator } from '@angular/material/paginator';
-import html2canvas from 'html2canvas';
 import { TripService } from 'src/app/Service/trip.service';
 import { Trip } from 'src/app/Model/trip';
+import jsPDF from 'jspdf';
+import html2canvas from 'html2canvas';
+import { HttpClient } from '@angular/common/http';
+
 
 @Component({
   selector: 'app-trip-ticket-table',
   templateUrl: './trip-ticket-table.component.html',
   styleUrls: ['./trip-ticket-table.component.scss']
 })
-export class TripTicketTableComponent implements OnInit  {
+export class TripTicketTableComponent implements OnInit{
   @Input() tripId!:string
   @Output() showSeatListEvent = new EventEmitter<Seat[]>();
   trip!:Trip
@@ -23,6 +25,7 @@ export class TripTicketTableComponent implements OnInit  {
   seatNo!:Seat[]
   ticket!: Ticket2[]
   @ViewChild('content', {static:false})el!: ElementRef
+  @ViewChild('Printcontent', {static:false})content!: ElementRef
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   pageSize = 24; // Set an initial page size
   pagedSeatNo: Seat[] = [];
@@ -32,11 +35,12 @@ export class TripTicketTableComponent implements OnInit  {
   hideTableSeat = false;
   constructor(public appService: AppService, 
     private seatService: SeatService,
-    private tripService: TripService) {
+    private tripService: TripService,
+    private http: HttpClient) {
   }
-  
+ 
   ngOnInit() {
-    this.getData();
+    this.getData();    
   }
   getData(){
     this.seatService.getSeatListByTripID(this.tripId).subscribe((data=>{
@@ -52,6 +56,7 @@ export class TripTicketTableComponent implements OnInit  {
       this.trip = data
     }
    })
+
   }
 
   mappingData(key:any):Ticket2{
@@ -79,30 +84,31 @@ export class TripTicketTableComponent implements OnInit  {
   }
  
   async printList() {
-    this.paginator.firstPage();
-    const content = this.el.nativeElement;
-    const pdf = new jsPDF('p', 'mm', 'a4');
-    const imgWidth = 200; // Chiều rộng của tài liệu PDF (A4)
-    const addPageToPdf = async () => {
-      this.paginator.nextPage();
-      const currentPageCanvas = await html2canvas(content);
-      const currentPageImgData = currentPageCanvas.toDataURL('image/png');
-      pdf.addImage(currentPageImgData, 'PNG', 1, 1, imgWidth, (currentPageCanvas.height * imgWidth) / currentPageCanvas.width);
-    };
-      const firstPageCanvas = await html2canvas(content);
-      const firstPageImgData = firstPageCanvas.toDataURL('image/png');
-      pdf.addImage(firstPageImgData, 'PNG', 1, 1, imgWidth, (firstPageCanvas.height * imgWidth) / firstPageCanvas.width);
-    for (let i = 1; i < this.paginator.getNumberOfPages(); i++) {
-      await addPageToPdf();
-      pdf.addPage();
-      const currentPageCanvas = await html2canvas(content);
-      const currentPageImgData = currentPageCanvas.toDataURL('image/png');
-      pdf.addImage(currentPageImgData, 'PNG', 1, 1, imgWidth, (currentPageCanvas.height * imgWidth) / currentPageCanvas.width);
-    }
-    if (this.paginator.pageIndex + 1 === this.paginator.getNumberOfPages()) {
-      pdf.autoPrint({variant: 'non-conform'})
-      pdf.save(this.ticket[0].name_trip +'.pdf');
-    }
+    // this.paginator.firstPage();
+    // const content = this.el.nativeElement;
+    // const pdf = new jsPDF('p', 'mm', 'a4');
+    // const imgWidth = 200; // Chiều rộng của tài liệu PDF (A4)
+    // const addPageToPdf = async () => {
+    //   this.paginator.nextPage();
+    //   const currentPageCanvas = await html2canvas(content);
+    //   const currentPageImgData = currentPageCanvas.toDataURL('image/png');
+    //   pdf.addImage(currentPageImgData, 'PNG', 1, 1, imgWidth, (currentPageCanvas.height * imgWidth) / currentPageCanvas.width);
+    // };
+    //   const firstPageCanvas = await html2canvas(content);
+    //   const firstPageImgData = firstPageCanvas.toDataURL('image/png');
+    //   pdf.addImage(firstPageImgData, 'PNG', 1, 1, imgWidth, (firstPageCanvas.height * imgWidth) / firstPageCanvas.width);
+    // for (let i = 1; i < this.paginator.getNumberOfPages(); i++) {
+    //   await addPageToPdf();
+    //   pdf.addPage();
+    //   const currentPageCanvas = await html2canvas(content);
+    //   const currentPageImgData = currentPageCanvas.toDataURL('image/png');
+    //   pdf.addImage(currentPageImgData, 'PNG', 1, 1, imgWidth, (currentPageCanvas.height * imgWidth) / currentPageCanvas.width);
+    // }
+    // if (this.paginator.pageIndex + 1 === this.paginator.getNumberOfPages()) {
+    //   pdf.autoPrint({variant: 'non-conform'})
+    //   pdf.save(this.ticket[0].name_trip +'.pdf');
+    // }
+  this.printTest()
   }
   initializePaginator() {
     if (this.paginator) {
@@ -118,6 +124,12 @@ export class TripTicketTableComponent implements OnInit  {
     const startIndex = event.pageIndex * event.pageSize;
     const endIndex = startIndex + event.pageSize;
     this.pagedSeatNo = this.seatNo.slice(startIndex, endIndex);
+
+  }
+
+
+  printTest(){
+    window.print();
   }
 //nqd1111 start
   IsChoose(key:any){

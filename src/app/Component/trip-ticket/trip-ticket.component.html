@@ -5,9 +5,9 @@
   <mat-stepper [linear]=true #stepper
     class="example-stepper"
     [orientation]="(stepperOrientation | async)!">
-    <mat-step [stepControl]="firstFormGroup" label="Chọn tuyến đường và thời gian">
+    <mat-step [stepControl]="firstFormGroup" label="Danh sách chuyến đi" >
         <form [formGroup]="firstFormGroup">
-            <div class="row">
+            <div class="row" id="showContent">
               <div class="col-md-3">
                 <div class="row">
                <mat-form-field >
@@ -18,14 +18,14 @@
                 <!-- <mat-label *ngFor="let time of timeTrip"> {{time}}</mat-label> -->
                 
               </mat-form-field> 
-              <button class="d-flex flex-end" mat-raised-button color="primary" (click)="searchTrip()">Search</button>
+              <button class="d-flex flex-end" mat-raised-button color="primary" (click)="searchTrip()">Tìm chuyến</button>
             </div>
             </div>
             
     
             <div class="col-md-3">
               <mat-form-field >
-                <mat-label>Chọn nơi đến</mat-label>
+                <mat-label>Chọn thời gian</mat-label>
                 <mat-select disableRipple  formControlName="timeCtrl" matInput  #place (valueChange)="onSelectedPlace(place.value)" >
                   <mat-option *ngFor="let tripName of tripInfo2" [value]="tripName.time.id">{{tripName.time.start_day}}, {{tripName.time.start_time}}</mat-option>       
                 </mat-select>       
@@ -40,12 +40,11 @@
                 </mat-select>       
               </mat-form-field> 
             </div>  -->
-          
-              <div class="col-md-6"><app-trip-ticket-table *ngIf="search" [tripId]="selectTrip" (showSeatListEvent)="receiveEvent($event)"></app-trip-ticket-table></div>
+          </div>
               
-            </div>
-           
-            <div>            
+              
+            <div class="row">   
+              <div class="col-md-12"><app-trip-ticket-table *ngIf="search" [tripId]="selectTrip" (showSeatListEvent)="receiveEvent($event)"></app-trip-ticket-table></div>         
               </div>         
           </form> 
     </mat-step>

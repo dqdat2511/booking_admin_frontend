@@ -1,4 +1,5 @@
-<button mat-icon-button color="primary" aria-label="Example icon button with a home icon" (click)="printList()" *ngIf="!isBooking">
+<div id="showContent">
+<button mat-icon-button color="primary" aria-label="Example icon button with a home icon" (click)="printTest()" *ngIf="!isBooking">
   <mat-icon>print</mat-icon>
 </button>
 <div id="content" #content *ngIf="!isBooking">
@@ -33,12 +34,12 @@
   </header>
   <div class="container">
     <div class="row">
-    <div class="col-md-3 ml-5" >
+    <div class="col-md-3 d-flex align-items-end flex-column" >
     <mat-card class="example-card empty" *ngFor="let a of pagedSeatNo | slice:0:6 " [id] = "a.name_slot"  (click)="IsChoose(a.name_slot)">
       <mat-card-header>
         <mat-card-title-group>
           <!-- <mat-card-title>Shiba Inu</mat-card-title> -->
-          <mat-card-subtitle style="font-size: 10px;">{{a.name_slot}}</mat-card-subtitle>
+          <mat-card-subtitle style="font-size: 10px; color:black;" >{{a.name_slot}}</mat-card-subtitle>
         </mat-card-title-group>
       </mat-card-header>
       <mat-card-content *ngIf="!a._available ">  
@@ -53,7 +54,7 @@
         <mat-card-header>
           <mat-card-title-group>
             <!-- <mat-card-title>Shiba Inu</mat-card-title> -->
-            <mat-card-subtitle style="font-size: 10px;">{{a.name_slot}}</mat-card-subtitle>
+            <mat-card-subtitle style="font-size: 10px;color:black">{{a.name_slot}}</mat-card-subtitle>
           </mat-card-title-group>
         </mat-card-header>
         <mat-card-content *ngIf="!a._available">
@@ -63,12 +64,12 @@
         </mat-card-content>
       </mat-card>
     </div>
-    <div class="col-md-3">
+    <div class="col-md-3 d-flex align-items-end flex-column">
       <mat-card class="example-card empty" *ngFor="let a of pagedSeatNo | slice:12:18 " [id] = "a.name_slot" (click)="IsChoose(a.name_slot)">
         <mat-card-header>
           <mat-card-title-group>
             <!-- <mat-card-title>Shiba Inu</mat-card-title> -->
-            <mat-card-subtitle style="font-size: 10px;">{{a.name_slot}}</mat-card-subtitle>
+            <mat-card-subtitle style="font-size: 10px;color:black">{{a.name_slot}}</mat-card-subtitle>
           </mat-card-title-group>
         </mat-card-header>
         <mat-card-content *ngIf="!a._available">
@@ -78,12 +79,14 @@
         </mat-card-content>
       </mat-card>
     </div>
+
     <div class="col-md-3">
       <mat-card class="example-card empty" *ngFor="let a of pagedSeatNo | slice:18:24 " [id] = "a.name_slot" (click)="IsChoose(a.name_slot)">
         <mat-card-header>
           <mat-card-title-group>
             <!-- <mat-card-title>Shiba Inu</mat-card-title> -->
-            <mat-card-subtitle style="font-size: 10px;">{{a.name_slot}}</mat-card-subtitle>
+            <mat-card-subtitle style="font-size: 10px;color:black">{{a.name_slot}}</mat-card-subtitle>
+
           </mat-card-title-group>
         </mat-card-header>
         <mat-card-content *ngIf="!a._available">
@@ -108,6 +111,8 @@
   *ngIf="!isBooking"
 >
 </mat-paginator>
+</div>
+<app-print-templ  [trip]="trip" [pagedSeatNo]="seatNo" [ticket]="ticket"></app-print-templ>
 
 
 

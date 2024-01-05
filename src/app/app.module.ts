@@ -48,6 +48,9 @@ import { TripTicketComponent } from './Component/trip-ticket/trip-ticket.compone
 import { TripTicketTableComponent } from './Component/trip-ticket-table/trip-ticket-table.component';
 import {PageEvent, MatPaginatorModule} from '@angular/material/paginator';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import {ScrollingModule} from '@angular/cdk/scrolling';
+import { PrintTemplComponent } from './Component/print-templ/print-templ.component';
+
 
 registerLocaleData(vi);
 @NgModule({
@@ -64,7 +67,9 @@ registerLocaleData(vi);
     ListPassangerComponent,
     TripTicketComponent,
     TripTicketTableComponent,
-
+    PrintTemplComponent,
+    
+   
   ],
   imports: [
     NgSwitch,
@@ -114,7 +119,7 @@ registerLocaleData(vi);
     preventDuplicates: false,
     timeOut: 10000}
     ),
-   
+    ScrollingModule
   ],
   providers: [DatePipe, { provide: MAT_DATE_LOCALE, useValue: 'vi-VN' }, { provide: NZ_I18N, useValue: vi_VN },
  ],

@@ -16,7 +16,6 @@ export class SeatService {
   }
   getSeatListByTripID(tripId: string): Observable<any> {
     this.url = this.appService.getUrlList();
-    console.log(`${this.url}?id=${tripId}`)
     return this.http.get(`${this.url}?id=${tripId}`).pipe();
   }
 }
