@@ -22,6 +22,7 @@
 <div class="vstack gap-3">
   <div class="position-relative p-2">
     <div class="position-absolute top-0 start-0">
+      
       <section
         class="example-container mat-elevation-z8"
         tabindex="0"
@@ -31,6 +32,10 @@
         <table
           mat-table
           [dataSource]="dataSource"
+          matSort
+          matSortActive="timetrip"
+          matSortDisableClear
+          matSortDirection="desc"
           style="border-bottom: solid 1px black"
         >
           <ng-container matColumnDef="name" style="font-size: 18px">

@@ -9,7 +9,7 @@ export class BusTypeService {
   url ='';
   constructor(private http: HttpClient, private appService: AppService) { }
   getType(){
-    this.url = this.appService.getUrlBusType();
+    this.url = this.appService.getUrlBusType();  // => http://localhost:5050/api/v1/ + bus/type
     return this.http.get(`${this.url}`).pipe();
   }
   addType(name: any, maxslot: any, numbers_floor: number, number_plate: any, convenients: any){

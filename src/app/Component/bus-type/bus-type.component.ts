@@ -17,7 +17,6 @@ export class BusTypeComponent {
   typeBus: BusType[]|null = [];
   displayedColumns = ['name', 'number', 'maxslot', 'numbers_floor','convenients'];
   dataSource: CdkTableDataSourceInput<BusType> | null = null;
-  
   @ViewChild('stickyHeaderRow') stickyHeaderRow!: ElementRef;
   constructor(private appService: AppService,
     private renderer2: Renderer2,
