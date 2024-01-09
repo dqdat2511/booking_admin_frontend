@@ -28,6 +28,7 @@ export class TicketService {
         
     };
     const body = JSON.stringify(obj);
+    console.log(body);
     return this.http.post(`${this.url}`, body,{
       headers: {'Content-Type': 'application/json'},
       responseType: 'text',

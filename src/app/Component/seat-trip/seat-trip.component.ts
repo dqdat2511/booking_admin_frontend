@@ -6,6 +6,8 @@ import { SeatService } from 'src/app/Service/seat.service';
 import { TicketService } from 'src/app/Service/ticket.service';
 import { Ticket } from 'src/app/Model/Ticket';
 import { Client } from 'src/app/Model/Client';
+import { NgToastService } from 'ng-angular-popup';
+
 
 
 @Component({
@@ -33,7 +35,8 @@ export class SeatTripComponent implements OnInit  {
 
   constructor(public appService: AppService, 
     private seatService: SeatService,
-    private ticketService: TicketService) { }
+    private ticketService: TicketService,
+    private toast: NgToastService) { }
     ngOnInit(): void {
       this.getData()
       this.checkCurrentDate()
@@ -178,16 +181,18 @@ seatNum= this.showSeatList.map(iteam=>{
 if(seats.length == 0){
   window.alert("Bạn chưa chọn vé")
   }else{
-  window.alert("Bạn đã đặt thành công vé: "+ seatNum  );
+ // window.alert("Bạn đã đặt thành công vé: "+ seatNum  );
   for (let index = 0; index < seatNum.length; index++) {
     const element = seatNum[index];
     this.changeColorBookTicket(element)  
   }
   }
   this.createReceipt(seats);
-  
+  this.showSuccess(seatNum);
 }
-
+showSuccess(seatNum:any[]) {
+  this.toast.success({detail:"SUCCESS",summary:'Đặt ghế '+ seatNum +' thành công',duration:3000});
+}
 bookEvent(id:any):void{
   this.confirmEvent.emit(id);
 }
@@ -220,5 +225,9 @@ minusFare(fare:number){
 }
 
 
+}
+
+function showSuccess() {
+  throw new Error('Function not implemented.');
 }
 

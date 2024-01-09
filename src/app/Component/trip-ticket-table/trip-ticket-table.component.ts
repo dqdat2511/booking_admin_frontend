@@ -6,8 +6,6 @@ import { Seat } from 'src/app/Model/Seat';
 import { PageEvent, MatPaginator } from '@angular/material/paginator';
 import { TripService } from 'src/app/Service/trip.service';
 import { Trip } from 'src/app/Model/trip';
-import jsPDF from 'jspdf';
-import html2canvas from 'html2canvas';
 import { HttpClient } from '@angular/common/http';
 
 
@@ -18,6 +16,7 @@ import { HttpClient } from '@angular/common/http';
 })
 export class TripTicketTableComponent implements OnInit{
   @Input() tripId!:string
+  isTwoFloor: boolean = false;
   @Output() showSeatListEvent = new EventEmitter<Seat[]>();
   trip!:Trip
   BusName!:string;
@@ -49,14 +48,20 @@ export class TripTicketTableComponent implements OnInit{
     this.seatService.getSeatByTripID(this.tripId).subscribe((data :any)=>{
       this.seatNo = data   
       this.length=this.seatNo.length
+      
       this.initializePaginator();
+
     })
    this.tripService.getTripById(this.tripId).subscribe((data: any)=>{
     if(data){
       this.trip = data
+      this.isMoreThanOneFloor(data)
+      if(this.isTwoFloor){
+        this.pageSize = 23
+      }
     }
    })
-
+  
   }
 
   mappingData(key:any):Ticket2{
@@ -83,36 +88,11 @@ export class TripTicketTableComponent implements OnInit{
     
   }
  
-  async printList() {
-    // this.paginator.firstPage();
-    // const content = this.el.nativeElement;
-    // const pdf = new jsPDF('p', 'mm', 'a4');
-    // const imgWidth = 200; // Chiều rộng của tài liệu PDF (A4)
-    // const addPageToPdf = async () => {
-    //   this.paginator.nextPage();
-    //   const currentPageCanvas = await html2canvas(content);
-    //   const currentPageImgData = currentPageCanvas.toDataURL('image/png');
-    //   pdf.addImage(currentPageImgData, 'PNG', 1, 1, imgWidth, (currentPageCanvas.height * imgWidth) / currentPageCanvas.width);
-    // };
-    //   const firstPageCanvas = await html2canvas(content);
-    //   const firstPageImgData = firstPageCanvas.toDataURL('image/png');
-    //   pdf.addImage(firstPageImgData, 'PNG', 1, 1, imgWidth, (firstPageCanvas.height * imgWidth) / firstPageCanvas.width);
-    // for (let i = 1; i < this.paginator.getNumberOfPages(); i++) {
-    //   await addPageToPdf();
-    //   pdf.addPage();
-    //   const currentPageCanvas = await html2canvas(content);
-    //   const currentPageImgData = currentPageCanvas.toDataURL('image/png');
-    //   pdf.addImage(currentPageImgData, 'PNG', 1, 1, imgWidth, (currentPageCanvas.height * imgWidth) / currentPageCanvas.width);
-    // }
-    // if (this.paginator.pageIndex + 1 === this.paginator.getNumberOfPages()) {
-    //   pdf.autoPrint({variant: 'non-conform'})
-    //   pdf.save(this.ticket[0].name_trip +'.pdf');
-    // }
-  this.printTest()
-  }
+
   initializePaginator() {
     if (this.paginator) {
       this.paginator.firstPage(); 
+     
       this.handlePage({
         pageIndex: 0,
         pageSize: this.pageSize,
@@ -123,7 +103,7 @@ export class TripTicketTableComponent implements OnInit{
    handlePage(event: PageEvent) {
     const startIndex = event.pageIndex * event.pageSize;
     const endIndex = startIndex + event.pageSize;
-    this.pagedSeatNo = this.seatNo.slice(startIndex, endIndex);
+    this.pagedSeatNo = this.seatNo.slice(startIndex, endIndex );
 
   }
 
@@ -183,6 +163,16 @@ export class TripTicketTableComponent implements OnInit{
 
   showList(seat:Seat){
     this.showSeatList.push(seat);
+}
+
+isMoreThanOneFloor(trip : Trip) {
+  // Find the bus floor with the given id
+  const busFloor = trip.seats.numbers_floor;
+  if( !!busFloor && busFloor >= 1 ){
+    this.isTwoFloor = true;
+  }else{
+    this.isTwoFloor = false;
+  }
 }
 
 //nqd1111 end

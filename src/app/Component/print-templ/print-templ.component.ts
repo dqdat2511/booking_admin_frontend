@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, DoCheck, Input } from '@angular/core';
 import { Seat } from 'src/app/Model/Seat';
 import { Trip } from 'src/app/Model/trip';
 import { Ticket2 } from '../receipt/receipt.component';
@@ -8,10 +8,16 @@ import { Ticket2 } from '../receipt/receipt.component';
   templateUrl: './print-templ.component.html',
   styleUrls: ['./print-templ.component.scss']
 })
-export class PrintTemplComponent {
+export class PrintTemplComponent{
+  @Input() isTwoFloor!: boolean 
   @Input() trip!:Trip
   @Input() pagedSeatNo!:Seat[]
   @Input() ticket!:Ticket2[]
+
+  // ngDoCheck() {
+  //   this.isMoreThanOneFloor1();    
+  // }
+
   mappingData(key:any):Ticket2{
     try {
       let bookTicket: Ticket2 | undefined;
@@ -21,6 +27,7 @@ export class PrintTemplComponent {
           bookTicket = ticket;
           let id = document.getElementById(key);
           id?.classList.remove('empty')
+          //console.log(this.trip)
         }
       });
       if (bookTicket !== undefined) {
@@ -33,4 +40,14 @@ export class PrintTemplComponent {
     }
       
     }
+
+    // isMoreThanOneFloor1() {
+    //   // Find the bus floor with the given id
+    //   const busFloor = this.trip.seats.numbers_floor;
+    //   if( !!busFloor && busFloor >= 1 ){
+    //     this.isTwoFloor = true;
+    //   }else{
+    //     this.isTwoFloor = false;
+    //   }
+    // }
 }

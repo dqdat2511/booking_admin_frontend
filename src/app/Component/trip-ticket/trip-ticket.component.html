@@ -9,17 +9,14 @@
         <form [formGroup]="firstFormGroup">
             <div class="row" id="showContent">
               <div class="col-md-3">
-                <div class="row">
+                
                <mat-form-field >
                 <mat-label>Chọn nơi đi</mat-label>
                 <mat-select disableRipple matInput formControlName="tripCtrl" #teams (valueChange)="onSelected(teams.value)" >
                   <mat-option *ngFor="let tripName of uniqueTrips" [value]="tripName.name">{{tripName.name}}</mat-option>       
                 </mat-select>
                 <!-- <mat-label *ngFor="let time of timeTrip"> {{time}}</mat-label> -->
-                
-              </mat-form-field> 
-              <button class="d-flex flex-end" mat-raised-button color="primary" (click)="searchTrip()">Tìm chuyến</button>
-            </div>
+              </mat-form-field>           
             </div>
             
     
@@ -41,7 +38,11 @@
               </mat-form-field> 
             </div>  -->
           </div>
-              
+            <div class="row">
+              <button class="col-md-4 d-flex flex-start me-5" mat-raised-button color="primary" (click)="searchTrip()">Tìm chuyến</button>
+              <button class="col-md-4 d-flex flex-end ms-5" mat-raised-button color="primary" (click)="Reload()">Tải lại</button>
+  
+            </div>
               
             <div class="row">   
               <div class="col-md-12"><app-trip-ticket-table *ngIf="search" [tripId]="selectTrip" (showSeatListEvent)="receiveEvent($event)"></app-trip-ticket-table></div>         
