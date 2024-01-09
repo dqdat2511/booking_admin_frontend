@@ -12,6 +12,7 @@ import { Address } from 'src/app/Model/Address';
 import {FormControl} from '@angular/forms';
 import {Observable} from 'rxjs';
 import {map, startWith} from 'rxjs/operators';
+import { Ticket } from 'src/app/Model/Ticket';
 
 
 @Component({ 
@@ -27,7 +28,7 @@ export class StepperComponent implements OnInit {
   tripInfo2: Trip[] = [] ;
   timeTrip:TimeTrip[] = []
   typeBus: BusType[]=[]
-  receiptNew!: string;
+  receiptNew!: Ticket[];
   key : string =''
   idTrip?: number;
   trip!: Trip;
@@ -99,7 +100,7 @@ export class StepperComponent implements OnInit {
 	}
  
   onSelectedPlace(value:any): void {	
-      const selectedTrip = this.tripInfo2.find(trip => trip.time.id === value);
+      const selectedTrip = this.tripInfo2.find(trip => trip.id === value);
       if (selectedTrip) {
         this.selectTrip = selectedTrip.id;
         this.tripService.getTripById(selectedTrip.id).subscribe((data :any)=>{
@@ -108,9 +109,8 @@ export class StepperComponent implements OnInit {
       }  
 	}
  
-  searchTrip(){
-    
-      this.search = true;    
+  searchTrip(){  
+    this.search = true;    
   }
   getBackToTrip(){
     this.isBook = false;
@@ -137,7 +137,7 @@ export class StepperComponent implements OnInit {
     this.selectDes = $event
     this.selectTrip = this.idTrip!
   }
-  receiveReceipt($event: string) : void{
+  receiveReceipt($event: Ticket[]) : void{
     this.receiptNew = $event
   }
   init(){ 

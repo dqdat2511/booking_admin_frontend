@@ -66,7 +66,7 @@
           <mat-form-field >
             <mat-label>Chọn thời gian</mat-label>
             <mat-select disableRipple matInput formControlName="timeCtrl" #place (valueChange)="onSelectedPlace(place.value)" >
-              <mat-option *ngFor="let tripName of tripInfo2" [value]="tripName.time.id">{{tripName.time.start_day}}, {{tripName.time.start_time}}</mat-option>       
+              <mat-option *ngFor="let tripName of tripInfo2" [value]="tripName.id">{{tripName.time.start_day}}, {{tripName.time.start_time}}</mat-option>       
             </mat-select>       
           </mat-form-field> 
         </div> 

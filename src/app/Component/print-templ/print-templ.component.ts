@@ -16,13 +16,17 @@ export class PrintTemplComponent {
     try {
       let bookTicket: Ticket2 | undefined;
       
-      this.ticket.forEach(ticket => {
-        if (ticket.seat.includes(key)) {
-          bookTicket = ticket;
-          let id = document.getElementById(key);
-          id?.classList.remove('empty')
-        }
-      });
+      // this.ticket.forEach(ticket => {
+      //   if (ticket.seat.includes(key)) {
+      //     bookTicket = ticket;
+      //     let id = document.getElementById(key);
+      //     id?.classList.remove('empty')
+      //   }
+      // });  
+      bookTicket = this.ticket.find(ticket => ticket.seat === key)
+     //có data thì remove id 'empty'
+        let id = document.getElementById(key)
+        id?.classList.remove("empty")
       if (bookTicket !== undefined) {
         return bookTicket;
       } else {
