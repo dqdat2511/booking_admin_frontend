@@ -68,7 +68,7 @@ export class BusTypeComponent {
   handleAdd(name: any, number: any, seat: any, floor: any, feature: any){
       this.busTypeService.addType(name.value, seat.value, floor.value, number.value, feature.value).subscribe((data: any)=>{
         if(data == 'OK'){
-          this.toast.success({detail:"Thành công",summary:'Đã thêm vào một chiếc xe mới',duration:5000, position:'topRight'});
+          this.toast.success({detail:"Thành công",summary:'Đã thêm vào một chiếc xe mới', position:'topRight'});
           this.init();
           this.isAdd = false;
         }

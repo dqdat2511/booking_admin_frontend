@@ -20,6 +20,7 @@ import { TicketService } from 'src/app/Service/ticket.service';
 import { SeatService } from 'src/app/Service/seat.service';
 import { Ticket2 } from '../receipt/receipt.component';
 import { PageEvent, MatPaginator } from '@angular/material/paginator';
+import { Ticket } from 'src/app/Model/Ticket';
 
 @Component({
   selector: 'app-trip-ticket',
@@ -27,7 +28,6 @@ import { PageEvent, MatPaginator } from '@angular/material/paginator';
   styleUrls: ['./trip-ticket.component.scss']
 })
 export class TripTicketComponent {
-  
   search:boolean = false;
   uniqueTrips: Trip[] = [];
   tripInfo2: Trip[] = [] ;
@@ -39,20 +39,17 @@ export class TripTicketComponent {
     timeCtrl:['']
   });
 
- 
-
   stepperOrientation: Observable<StepperOrientation>;
+  ticket!:Ticket2
 //nqd1111 start
   idTicket!:string
   @Output() confirmEvent = new EventEmitter<string>();
   @Input() showSeatList!:Seat[];
-  ticket!: Ticket2[]
   seatNo!:Seat[]
   length= 0;
   @ViewChild(MatPaginator) paginator!: MatPaginator;
   pageSize = 24;
   pagedSeatNo: Seat[] = [];
-
   idChoose: boolean = false;
   client!:Client;
   timeTrip:TimeTrip[] = []
@@ -92,9 +89,6 @@ export class TripTicketComponent {
   }
 
   getData(){
-    this.seatService.getSeatListByTripID(this.selectTrip).subscribe((data=>{
-      this.ticket = data 
-    }))
     this.seatService.getSeatByTripID(this.selectTrip).subscribe((data :any)=>{
       this.seatNo = data   
       this.length=this.seatNo.length
@@ -105,7 +99,15 @@ export class TripTicketComponent {
       this.trip = data
     }
    })
+   
   }
+
+  
+  receiveTicket($event: Ticket2){
+    this.ticket = $event
+    this.getFieldFill(this.ticket)
+  }
+
 
   initializePaginator() {
     if (this.paginator) {
@@ -267,10 +269,13 @@ autoFill(phone:string){
     return data
   })
 }
-getFieldFil(data:any){
-  this.firstFormGroup2.get('nameCtrl')?.setValue(data[0].name)
-  this.firstFormGroup2.get('addressCtrl')?.setValue("");
-   this.firstFormGroup2.get('address2Ctrl')?.setValue("");;    
+getFieldFill(data:Ticket2){
+  let address: string[] = data.address.split("Đón: ")
+  let address1: string[] = address[1].split("Xuống: ")
+  this.phoneCtrl.setValue(data.number_phone)
+  this.firstFormGroup2.get('nameCtrl')?.setValue(data.name_customer)
+  this.firstFormGroup2.get('addressCtrl')?.setValue(address1[0]);
+   this.firstFormGroup2.get('address2Ctrl')?.setValue(address1[1]);;    
 }
 
 receiveEvent($event:Seat[]){
@@ -301,7 +306,10 @@ if(seats.length == 0){
   }
   this.createReceipt(seats);
   this.search = true;
+
 }
+
+
 
 changeColorBookTicket(key:any){
   let id = document.getElementById(key) 
@@ -310,6 +318,7 @@ changeColorBookTicket(key:any){
 }
 
 createReceipt(seat: Array<string>){
+  let ticket: Ticket[] =[]
   const name = this.firstFormGroup2.get('nameCtrl')?.value;
   const phone = this.phoneCtrl.value;
   const address1 = this.firstFormGroup2.get('addressCtrl')?.value;
@@ -319,25 +328,46 @@ createReceipt(seat: Array<string>){
     customer_phone: phone!,
     address: "Đón: " + address1! + " Xuống: "+ address2, 
   };
-
   let customer_name =this.client.customer_name;
   let customer_phone=  this.client.customer_phone;
   let address = this.client.address;
-  let num_ticket = seat.length;
   let trip_id = this.trip.id
-  let sloots  =  seat
-    
-  
-   this.ticketService.addTicket(customer_name,customer_phone,address,num_ticket,trip_id,sloots).subscribe(
-    (response:any) => {  
-      this.idTicket = response
-      this.bookEvent(this.idTicket.replace("\"", "").trim());
-    },
-    (error) => {
-      console.error('Error:', error);
-      // Handle the error here
+  let idTicket:string
+  if(this.ticket){
+     idTicket = this.ticket.id!
+  }
+  for (let index = 0; index < seat.length; index++) {
+    const element = seat[index];
+    let obj: Ticket = {
+      id:idTicket!,
+      customer_name : customer_name,
+      customer_phone : customer_phone,
+      address : address,
+      trip:{id:trip_id},
+      id_seat:{id:element}
     }
-  );
+    ticket.push(obj)
+  }
+  if(this.ticket)
+  {
+    this.ticketService.updateTicket(ticket[0]).subscribe((response:any)=>{
+      console.error('Oke:', response);
+    },(error)=>{
+      console.error('Error:', error);
+    })
+  }
+  else{
+    this.ticketService.addTicket(ticket).subscribe(
+      (response:any) => {  
+        this.idTicket = response
+        this.bookEvent(this.idTicket.replace("\"", "").trim());
+      },
+      (error) => {
+        console.error('Error:', error);
+        // Handle the error here
+      }
+    );
+  }
 }
 
 bookEvent(id:any):void{
