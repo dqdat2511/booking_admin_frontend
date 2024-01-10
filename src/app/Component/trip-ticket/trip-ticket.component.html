@@ -45,7 +45,7 @@
             </div>
               
             <div class="row">   
-              <div class="col-md-12"><app-trip-ticket-table *ngIf="search" [tripId]="selectTrip" (showSeatListEvent)="receiveEvent($event)"></app-trip-ticket-table></div>         
+              <div class="col-md-12"><app-trip-ticket-table *ngIf="search" [tripId]="selectTrip" (showSeatListEvent)="receiveEvent($event)" (putTicketEvent)="receiveTicket($event)"></app-trip-ticket-table></div>         
               </div>         
           </form> 
     </mat-step>

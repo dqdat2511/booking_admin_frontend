@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AppService } from '../app.service';
 import { Observable } from 'rxjs';
+import { Ticket } from '../Model/Ticket';
 
 @Injectable({
   providedIn: 'root'
@@ -16,19 +17,18 @@ export class TicketService {
     this.url = this.appService.getUrlTicket();
     return this.http.get(`${this.url}`).pipe();
   }
-  addTicket(customer_name: any,customer_phone:any,address:any,num_tickets:any, trip_id: any, sloots: any[]): Observable<any>{
-    let obj = {
+  addTicket(ticket:Ticket[]): Observable<any>{
+    // let obj = {
       
-      customer_name: customer_name,
-      customer_phone: customer_phone,
-      address: address,
-      num_tickets: num_tickets,
-      trip: {id:trip_id},
-      sloots: sloots.map(id => ({ id: id }))
+    //   customer_name: customer_name,
+    //   customer_phone: customer_phone,
+    //   address: address,
+    //   trip: {id:trip_id},
+    //   id_seat:{ id: sloots }
         
-    };
-    const body = JSON.stringify(obj);
-    console.log(body);
+    // };
+    
+    const body = JSON.stringify(ticket);
     return this.http.post(`${this.url}`, body,{
       headers: {'Content-Type': 'application/json'},
       responseType: 'text',
@@ -37,5 +37,12 @@ export class TicketService {
   getTicketByID(ticketId: string): Observable<any> {
     this.url = this.appService.getUrlTicket();
     return this.http.get(`${this.url}?id=${ticketId}`).pipe();
+  }
+  updateTicket(ticket:Ticket): Observable<any>{
+    const body = JSON.stringify(ticket);
+    return this.http.put(`${this.url}`, body,{
+      headers: {'Content-Type': 'application/json'},
+      responseType: 'text',
+    }).pipe();
   }
 }

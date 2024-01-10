@@ -19,7 +19,7 @@ export class SeatTripComponent implements OnInit  {
   @Input() desId!: number;
   @Input() tripData!: Trip;
   @Input() client!:Client
-  @Output() confirmEvent = new EventEmitter<string>();
+  @Output() confirmEvent = new EventEmitter<Ticket[]>();
   total = 0;
   seatNo1 : Seat[]= [];
   showSeatList:Seat[]=[];
@@ -30,7 +30,7 @@ export class SeatTripComponent implements OnInit  {
   message: string = ""; 
   trip: Trip[] = [];
   receiptNew!:Ticket;
-  idTicket!:string
+  idTicket!:Ticket[]
     
 
   constructor(public appService: AppService, 
@@ -198,18 +198,27 @@ bookEvent(id:any):void{
 }
 
 createReceipt(seat: Array<string>){
+  let ticket: Ticket[] =[]
   let customer_name =this.client.customer_name;
   let customer_phone=  this.client.customer_phone;
   let address = this.client.address;
-  let num_ticket = seat.length;
   let trip_id = this.tripData.id
-  let sloots  =  seat
-    
-  
-   this.ticketService.addTicket(customer_name,customer_phone,address,num_ticket,trip_id,sloots).subscribe(
+    for (let index = 0; index < seat.length; index++) {
+      const element = seat[index];
+      let obj: Ticket = {
+        customer_name : customer_name,
+        customer_phone : customer_phone,
+        address : address,
+        trip: {id: trip_id},
+        id_seat:{id:element}
+      }
+      ticket.push(obj)
+    }
+   this.ticketService.addTicket(ticket).subscribe(
     (response:any) => {  
       this.idTicket = JSON.parse(response)
-     this.bookEvent(this.idTicket);
+      this.bookEvent(this.idTicket);
+     
     },
     (error) => {
       console.error('Error:', error);

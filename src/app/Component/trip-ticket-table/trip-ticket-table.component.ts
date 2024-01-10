@@ -6,7 +6,8 @@ import { Seat } from 'src/app/Model/Seat';
 import { PageEvent, MatPaginator } from '@angular/material/paginator';
 import { TripService } from 'src/app/Service/trip.service';
 import { Trip } from 'src/app/Model/trip';
-import { HttpClient } from '@angular/common/http';
+import { Ticket } from 'src/app/Model/Ticket';
+import { NgToastService } from 'ng-angular-popup';
 
 
 @Component({
@@ -18,8 +19,8 @@ export class TripTicketTableComponent implements OnInit{
   @Input() tripId!:string
   isTwoFloor: boolean = false;
   @Output() showSeatListEvent = new EventEmitter<Seat[]>();
+  @Output() putTicketEvent = new EventEmitter<Ticket2>();
   trip!:Trip
-  BusName!:string;
   length= 0;
   seatNo!:Seat[]
   ticket!: Ticket2[]
@@ -30,17 +31,19 @@ export class TripTicketTableComponent implements OnInit{
   pagedSeatNo: Seat[] = [];
   total = 0;
   showSeatList:Seat[]=[];
+  showTicketList:Ticket2[] = [];
   isBooking = false;
   hideTableSeat = false;
   constructor(public appService: AppService, 
     private seatService: SeatService,
     private tripService: TripService,
-    private http: HttpClient) {
+    private toast: NgToastService) {
   }
  
   ngOnInit() {
     this.getData();    
   }
+
   getData(){
     this.seatService.getSeatListByTripID(this.tripId).subscribe((data=>{
       this.ticket = data 
@@ -68,15 +71,9 @@ export class TripTicketTableComponent implements OnInit{
   try {
     let bookTicket: Ticket2 | undefined;
     
-    this.ticket.forEach(ticket => {
-      if (ticket.seat.includes(key)) {
-        bookTicket = ticket;
-        
-        //có data thì remove id 'empty'
-        let id = document.getElementById(key)
-        id?.classList.remove("empty")
-      }
-    });
+    bookTicket = this.ticket.find(ticket => ticket.seat === key)
+     //có data thì remove id 'empty'
+
     if (bookTicket !== undefined) {
       return bookTicket;
     } else {
@@ -88,7 +85,6 @@ export class TripTicketTableComponent implements OnInit{
     
   }
  
-
   initializePaginator() {
     if (this.paginator) {
       this.paginator.firstPage(); 
@@ -111,9 +107,14 @@ export class TripTicketTableComponent implements OnInit{
   printTest(){
     window.print();
   }
+
+
 //nqd1111 start
   IsChoose(key:any){
+  
     this.changeSeatColor(key)
+    
+    
   }
 
   changeSeatColor(key:any){
@@ -126,26 +127,40 @@ export class TripTicketTableComponent implements OnInit{
       if(seatCount){
         this.removeList(seatRemove);
         this.minusFare(150);
+        this.showTicketList = []
        }
     }
     else if(id?.classList.contains("booked")){
       window.alert("Ghế đã được mua")
     }
     else
-    {
-           
-        id?.classList.add('selected')
+    {     
         if(seatCount){
-         this.showList(seatCount);
-         this.totalFare(150);
+          if(seatCount?._available ){
+            this.showList(seatCount);
+            id?.classList.add('selected')    
+          }else if(!seatCount?._available && this.showTicketList.length == 0 && this.showSeatList.length == 0)
+          {
+            this.showList(seatCount);
+            this.showListTicket(this.mappingData(key))
+            id?.classList.add('selected')
+          }else{
+            this.showError()
+          }       
         }
-
-   
     }
-    this.showSeatListEvent.emit(this.showSeatList);
-    console.log(this.showSeatList)
+    if(this.showSeatList){
+      this.showSeatListEvent.emit(this.showSeatList);
+      console.log(this.showSeatList)
+    }
+    if(this.showTicketList){
+     this.putTicketEvent.emit(this.showTicketList[0]) 
+     console.log(this.showTicketList)
+    }
   }
-
+  showError() {
+    this.toast.error({detail:"ERROR",summary:'Vui lòng sửa thông tin cho từng vé',duration:2000});
+  }
   removeList(seat: Seat[]): void {
     // Filter out the seats to be removed from showSeatList
     this.showSeatList = this.showSeatList.filter(existingSeat => !seat.includes(existingSeat));
@@ -176,4 +191,8 @@ isMoreThanOneFloor(trip : Trip) {
 }
 
 //nqd1111 end
+
+showListTicket(ticket:Ticket2){
+  this.showTicketList.push(ticket);
+}
 }

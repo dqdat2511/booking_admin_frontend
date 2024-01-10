@@ -8,15 +8,14 @@
     <th >Số Ghế </th>
   </tr>
 
-  <tr >
+  <tr *ngFor="let ticket of ticket">
     <td>{{ticket.name_customer}}</td>
     <td>
       {{ ticket.number_phone }} 
     </td>
     <td>{{ticket.address}}</td>     
     <td>{{ticket.number_tickets}}</td>
-    <td><span *ngFor="let seat of ticket.seat">{{seat}}
-    </span></td>
+    <td>{{ticket.seat}}</td>
   </tr>
 </table>
 
