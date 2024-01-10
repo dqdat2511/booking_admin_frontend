@@ -8,8 +8,10 @@ app-print-templ{
   @media print{
     #showContent{
       display: none;
+      
     }
     app-print-templ{
       display: block;
+      zoom: 78%;
     }
   }

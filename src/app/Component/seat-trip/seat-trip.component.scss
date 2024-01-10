@@ -93,6 +93,14 @@ li {
     background-color: #f00606;
   }
 
+  .seat.selected {
+    background-color: green;
+  }
+  
+  .seat.booked {
+    background-color: #f00606;
+  }
+
   .seat.last.selected {
     background-color: green;
   }
@@ -111,6 +119,8 @@ li {
   }
 
   .seatArrange{
-    margin-left: 50px;
+    margin-left: 70px;
   }
+
+
   
