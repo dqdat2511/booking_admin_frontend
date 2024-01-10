@@ -73,7 +73,6 @@ export class TripTicketTableComponent implements OnInit{
     
     bookTicket = this.ticket.find(ticket => ticket.seat === key)
      //có data thì remove id 'empty'
-
     if (bookTicket !== undefined) {
       return bookTicket;
     } else {

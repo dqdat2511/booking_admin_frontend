@@ -1,3 +1,15 @@
 .buttoncss{
     background-color: #feb236;
 }
+app-print-templ{
+    display: none;
+  }
+
+  @media print{
+    #showContent{
+      display: none;
+    }
+    app-print-templ{
+      display: block;
+    }
+  }

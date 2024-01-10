@@ -225,6 +225,17 @@ createReceipt(seat: Array<string>){
       // Handle the error here
     }
   );
+  //remove object from showlist after create ticket start 
+  //quoc dat 
+  let seatRemove: Seat[] = [];
+    for (let index = 0; index < seat.length; index++) {
+      let element = seat[index];
+      let obj:Seat = this.seatNo1.find(seat => seat.id === element)!;
+      seatRemove.push(obj)
+    }
+  this.removeList(seatRemove)
+  //remove object from showlist after create ticket 
+  //quoc dat end
 }
 totalFare(fare:number){
   this.total+=fare;

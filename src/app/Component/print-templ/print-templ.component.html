@@ -38,10 +38,11 @@
         <mat-card-header>
           <mat-card-title-group>
             <!-- <mat-card-title>Shiba Inu</mat-card-title> -->
-            <mat-card-subtitle style="font-size: 10px;color:black">{{a.name_slot}} KH: {{mappingData(a.name_slot).name_customer}}</mat-card-subtitle>
+            <mat-card-subtitle style="font-size: 10px;color:black">{{a.name_slot}} </mat-card-subtitle>
           </mat-card-title-group>
         </mat-card-header>
         <mat-card-content *ngIf="!a._available ">  
+          KH: {{mappingData(a.name_slot).name_customer}}
           SĐT: {{mappingData(a.name_slot).number_phone}}<br>
           {{mappingData(a.name_slot).address}}   
         </mat-card-content>
