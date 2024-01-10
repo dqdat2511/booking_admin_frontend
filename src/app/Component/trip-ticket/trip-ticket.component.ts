@@ -168,6 +168,14 @@ export class TripTicketComponent {
   searchTrip(){
     this.search = true;    
 }
+Reload(){
+  this.search = false;
+  
+  setTimeout(() => {
+    this.searchTrip()
+  }, 50);
+  
+}
 
 validation(){
   this.phoneCtrl = new FormControl('', [

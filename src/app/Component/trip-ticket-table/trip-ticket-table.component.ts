@@ -17,6 +17,7 @@ import { NgToastService } from 'ng-angular-popup';
 })
 export class TripTicketTableComponent implements OnInit{
   @Input() tripId!:string
+  isTwoFloor: boolean = false;
   @Output() showSeatListEvent = new EventEmitter<Seat[]>();
   @Output() putTicketEvent = new EventEmitter<Ticket2>();
   trip!:Trip
@@ -50,14 +51,20 @@ export class TripTicketTableComponent implements OnInit{
     this.seatService.getSeatByTripID(this.tripId).subscribe((data :any)=>{
       this.seatNo = data   
       this.length=this.seatNo.length
+      
       this.initializePaginator();
+
     })
    this.tripService.getTripById(this.tripId).subscribe((data: any)=>{
     if(data){
       this.trip = data
+      this.isMoreThanOneFloor(data)
+      if(this.isTwoFloor){
+        this.pageSize = 23
+      }
     }
    })
-
+  
   }
 
   mappingData(key:any):Ticket2{
@@ -81,6 +88,7 @@ export class TripTicketTableComponent implements OnInit{
   initializePaginator() {
     if (this.paginator) {
       this.paginator.firstPage(); 
+     
       this.handlePage({
         pageIndex: 0,
         pageSize: this.pageSize,
@@ -91,7 +99,7 @@ export class TripTicketTableComponent implements OnInit{
    handlePage(event: PageEvent) {
     const startIndex = event.pageIndex * event.pageSize;
     const endIndex = startIndex + event.pageSize;
-    this.pagedSeatNo = this.seatNo.slice(startIndex, endIndex);
+    this.pagedSeatNo = this.seatNo.slice(startIndex, endIndex );
 
   }
 
@@ -170,6 +178,16 @@ export class TripTicketTableComponent implements OnInit{
 
   showList(seat:Seat){
     this.showSeatList.push(seat);
+}
+
+isMoreThanOneFloor(trip : Trip) {
+  // Find the bus floor with the given id
+  const busFloor = trip.seats.numbers_floor;
+  if( !!busFloor && busFloor >= 1 ){
+    this.isTwoFloor = true;
+  }else{
+    this.isTwoFloor = false;
+  }
 }
 
 //nqd1111 end

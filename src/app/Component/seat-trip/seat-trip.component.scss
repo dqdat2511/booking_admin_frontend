@@ -21,7 +21,7 @@ float: right;
 
 
 .seat_plan_wrap {
-    border: 3px solid coral;
+    border: 3px solid #feb236;
     padding: 40px;
     text-align: center;
     
@@ -55,6 +55,15 @@ li {
     border-style: solid;
     border-color:burlywood;
     text-align: center;
+
+    display: flex;
+    justify-content: center; /* align horizontal */
+    align-items: center; /* align vertical */
+  }
+
+  .seat-card:not(.sold):hover {
+    cursor: pointer;
+    transform: scale(1.2);
   }
 
   .seat:not(.sold):hover {
@@ -72,14 +81,36 @@ li {
     border-top-right-radius: 10px;
     border-style: solid;
     border-color:burlywood;
+    
   
   }
 
-  .seat.selected {
+  .seat-card.selected {
     background-color: green;
   }
   
-  .seat.booked {
+  .seat-card.booked {
     background-color: #f00606;
+  }
+
+  .seat.last.selected {
+    background-color: green;
+  }
+  
+  .seat.last.booked {
+    background-color: #f00606;
+  }
+
+  .lauTren{
+    background-color: #feb236;
+    transition: transform 0.3s;
+  }
+
+  .confirm{
+    background-color: green;
+  }
+
+  .seatArrange{
+    margin-left: 50px;
   }
   

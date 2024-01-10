@@ -5,15 +5,62 @@
       <div class="col-md-9 ">
       <div class="seat_plan_wrap" >
         <div *ngIf="alert"class="alert alert-danger" >{{message}}</div>
-        <div class="row">
+        <div class="row col-md-12">
           <div class="col-md-6" id="seat-with-floor" *ngIf="isMoreThanOneFloor()" >
             <h6>Lầu dưới </h6>
             <div class="seats" >                       
-              <div class="row"  >                        
-                <div  *ngFor="let seat of seatNo1 | slice:0:18 ;let i = index"  [id]="seat.name_slot" [title]="seat.name_slot" (click)="IsChoose(seat.name_slot)" class="seat" >{{ seat.name_slot }}</div>
+              <div class="row d-flex" >   
+                <div class="d-flex align-items-center flex-column col-md-4" >                    
+                <mat-card class="seat-card" *ngFor="let seat of seatNo1 | slice:0:6 ;let i = index"  [id]="seat.name_slot" [title]="seat.name_slot" (click)="IsChoose(seat.name_slot)">
+                  <mat-card-header>
+                    <mat-card-title-group>
+                      <!-- <mat-card-title>Shiba Inu</mat-card-title> -->
+                      <mat-card-subtitle style="font-size: 10px; color:black; text-align: left" >{{seat.name_slot}}</mat-card-subtitle>
+                    </mat-card-title-group>
+                  </mat-card-header>
+                  <mat-card-content >    
+                  </mat-card-content>
+                </mat-card>
+              </div> 
+              <div class="d-flex align-items-center flex-column col-md-4" >  
+                <mat-card class="seat-card" *ngFor="let seat of seatNo1 | slice:6:12 ;let i = index"  [id]="seat.name_slot" [title]="seat.name_slot" (click)="IsChoose(seat.name_slot)">
+                  <mat-card-header>
+                    <mat-card-title-group>
+                      <!-- <mat-card-title>Shiba Inu</mat-card-title> -->
+                      <mat-card-subtitle style="font-size: 10px; color:black; text-align: left" >{{seat.name_slot}}</mat-card-subtitle>
+                    </mat-card-title-group>
+                  </mat-card-header>
+                  <mat-card-content >    
+                  </mat-card-content>
+                </mat-card>
+              </div> 
+              <div class="d-flex align-items-center flex-column col-md-4" >  
+                <mat-card class="seat-card" *ngFor="let seat of seatNo1 | slice:12:18 ;let i = index"  [id]="seat.name_slot" [title]="seat.name_slot" (click)="IsChoose(seat.name_slot)">
+                  <mat-card-header>
+                    <mat-card-title-group>
+                      <!-- <mat-card-title>Shiba Inu</mat-card-title> -->
+                      <mat-card-subtitle style="font-size: 10px; color:black; text-align: left" >{{seat.name_slot}}</mat-card-subtitle>
+                    </mat-card-title-group>
+                  </mat-card-header>
+                  <mat-card-content >    
+                  </mat-card-content>
+                </mat-card>
+              </div> 
               </div>    
-              <div class="row">                        
-                <div  *ngFor="let seat of seatNo1 | slice:18:23 ;let i = index"  [id]="seat.name_slot" [title]="seat.name_slot" (click)="IsChoose(seat.name_slot)" class="seat last" >{{ seat.name_slot }}</div>
+
+              
+
+              <div class="row d-flex">                        
+                <mat-card class="seat-card" *ngFor="let seat of seatNo1 | slice:18:23 ;let i = index"  [id]="seat.name_slot" [title]="seat.name_slot" (click)="IsChoose(seat.name_slot)" class="seat last" >
+                  <mat-card-header>
+                    <mat-card-title-group>
+                      <mat-card-subtitle class="text-center" style="font-size: 10px; color:black; text-align: center" >{{seat.name_slot}}</mat-card-subtitle>
+                    </mat-card-title-group>
+                  </mat-card-header>
+                  <mat-card-content >  
+                      
+                  </mat-card-content>
+                </mat-card>
               </div>       
             </div>
           </div>
@@ -21,31 +68,83 @@
             <h6>Ghế</h6>
             <div class="seats" >                       
               <div class="row nofloor" >                        
-                <div  *ngFor="let seat of seatNo1;let i = index"  [id]="seat.name_slot" [title]="seat.name_slot" (click)="IsChoose(seat.name_slot)" class="seat">{{ seat.name_slot }}</div>
+                <!-- <div  >{{ seat.name_slot }}</div> -->
+              
+                <mat-card *ngFor="let seat of seatNo1;let i = index"  [id]="seat.name_slot" [title]="seat.name_slot" (click)="IsChoose(seat.name_slot)" class="seat">
+                  <mat-card-header>
+                    <mat-card-title-group>
+                      <mat-card-subtitle class="text-center" style="font-size: 10px; color:black; text-align: center" >{{seat.name_slot}}</mat-card-subtitle>
+                    </mat-card-title-group>
+                  </mat-card-header>
+                  <mat-card-content >  
+                  </mat-card-content>
+                </mat-card>
               </div>   
             </div>
           </div>    
           <div class="col-md-6" id="floor-2" style="display: none;"*ngIf="isTwoFloor">
             <h6>Lầu trên </h6>
             <div class="seats" >         
-              <div class="row" >
-                <div  *ngFor="let seat of seatNo1 | slice:23:41 ;let i = index"  [id]="seat.name_slot" [title]="seat.name_slot" (click)="IsChoose(seat.name_slot)" class="seat"  >{{ seat.name_slot }}</div>
+              <div class="row d-flex" >
+                <div class="row d-flex align-items-center flex-column col-md-4">                        
+                  <mat-card class="seat-card" *ngFor="let seat of seatNo1 | slice:23:29 ;let i = index"  [id]="seat.name_slot" [title]="seat.name_slot" (click)="IsChoose(seat.name_slot)">
+                    <mat-card-header>
+                      <mat-card-title-group>
+                        <mat-card-subtitle class="text-center" style="font-size: 10px; color:black; text-align: center" >{{seat.name_slot}}</mat-card-subtitle>
+                      </mat-card-title-group>
+                    </mat-card-header>
+                    <mat-card-content >  
+                    </mat-card-content>
+                  </mat-card>
+                </div>
+
+                <div class="row d-flex align-items-center flex-column col-md-4">                        
+                  <mat-card class="seat-card" *ngFor="let seat of seatNo1 | slice:29:35 ;let i = index"  [id]="seat.name_slot" [title]="seat.name_slot" (click)="IsChoose(seat.name_slot)">
+                    <mat-card-header>
+                      <mat-card-title-group>
+                        <mat-card-subtitle class="text-center" style="font-size: 10px; color:black; text-align: center" >{{seat.name_slot}}</mat-card-subtitle>
+                      </mat-card-title-group>
+                    </mat-card-header>
+                    <mat-card-content >  
+                    </mat-card-content>
+                  </mat-card>
+                </div>
+
+                <div class="row d-flex align-items-center flex-column col-md-4">                        
+                  <mat-card class="seat-card" *ngFor="let seat of seatNo1 | slice:35:41 ;let i = index"  [id]="seat.name_slot" [title]="seat.name_slot" (click)="IsChoose(seat.name_slot)">
+                    <mat-card-header>
+                      <mat-card-title-group>
+                        <mat-card-subtitle class="text-center" style="font-size: 10px; color:black; text-align: center" >{{seat.name_slot}}</mat-card-subtitle>
+                      </mat-card-title-group>
+                    </mat-card-header>
+                    <mat-card-content >  
+                    </mat-card-content>
+                  </mat-card>
+                </div>
               </div> 
-              <div class="row"  >                        
-                <div  *ngFor="let seat of seatNo1 | slice:41:46 ;let i = index"  [id]="seat.name_slot" [title]="seat.name_slot" (click)="IsChoose(seat.name_slot)" class="seat last" >{{ seat.name_slot }}</div>
+              <div class="row d-flex" >                        
+                <mat-card class="seat-card" *ngFor="let seat of seatNo1 | slice:41:46 ;let i = index"  [id]="seat.name_slot" [title]="seat.name_slot" (click)="IsChoose(seat.name_slot)">
+                  <mat-card-header>
+                    <mat-card-title-group>
+                      <mat-card-subtitle class="text-center" style="font-size: 10px; color:black; text-align: center" >{{seat.name_slot}}</mat-card-subtitle>
+                    </mat-card-title-group>
+                  </mat-card-header>
+                  <mat-card-content >  
+                  </mat-card-content>
+                </mat-card>
               </div>                   
             </div>    
           </div>
         </div>
       </div>
-      <div class="row" *ngIf="isTwoFloor">
-        <div class="col-md-6 d-flex justify-content-center">
+      <div class="row" >
+        <div class="col-md-6 d-flex justify-content-center" *ngIf="isTwoFloor">
 
-          <button class="btn mt-3 btn-success btn-sm btn-block px-5 py-2" (click)="onFloor2()">Lầu trên</button>
+          <button class="btn mt-3 lauTren btn-sm btn-block px-5 py-2" (click)="onFloor2()">Lầu trên</button>
         </div>
       </div>
         <div class="col-md-6 d-flex justify-content-center ">
-          <button (click)="confirmJourney()"class="btn mt-3 btn-sm btn-primary btn-block px-5 py-2">Confirm</button>
+          <button (click)="confirmJourney()"class="btn mt-3 btn-sm confirm btn-block px-5 py-2">Xác nhận</button>
       </div>
       
       <hr>
