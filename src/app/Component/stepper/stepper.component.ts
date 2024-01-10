@@ -232,4 +232,4 @@ export class StepperComponent implements OnInit {
     }
     return tripList
   }
-  }
+}
