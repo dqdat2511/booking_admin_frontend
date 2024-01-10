@@ -39,14 +39,14 @@
     <mat-card class="example-card empty" *ngFor="let a of pagedSeatNo | slice:0:6 " [id] = "a.name_slot"  (click)="IsChoose(a.name_slot)">
       <mat-card-header>
         <mat-card-title-group>
-          <!-- <mat-card-title>Shiba Inu</mat-card-title> -->
-          <mat-card-subtitle style="font-size: 10px; color:black;" >{{a.name_slot}}</mat-card-subtitle>
+          <mat-card-subtitle style="font-size: 10px; color:black;">{{a.name_slot}} <span *ngIf="!a._available " >{{mappingData(a.name_slot).name_customer}}</span></mat-card-subtitle>
         </mat-card-title-group>
       </mat-card-header>
       <mat-card-content *ngIf="!a._available ">  
-        KH: {{mappingData(a.name_slot).name_customer}}<br>
-        SĐT: {{mappingData(a.name_slot).number_phone}}<br>
-        {{mappingData(a.name_slot).address}}   
+        <p style="font-size: 10px;">
+          SĐT: {{mappingData(a.name_slot).number_phone}}<br>
+          {{mappingData(a.name_slot).address}}
+        </p>
       </mat-card-content>
     </mat-card> 
   </div>
@@ -56,13 +56,14 @@
       <mat-card-header>
         <mat-card-title-group>
           <!-- <mat-card-title>Shiba Inu</mat-card-title> -->
-          <mat-card-subtitle style="font-size: 10px; color:black;" >{{a.name_slot}}</mat-card-subtitle>
+          <mat-card-subtitle style="font-size: 10px; color:black;" >{{a.name_slot}} <span *ngIf="!a._available " >{{mappingData(a.name_slot).name_customer}}</span></mat-card-subtitle>
         </mat-card-title-group>
       </mat-card-header>
       <mat-card-content *ngIf="!a._available ">  
-        KH: {{mappingData(a.name_slot).name_customer}}<br>
-        SĐT: {{mappingData(a.name_slot).number_phone}}<br>
-        {{mappingData(a.name_slot).address}}   
+        <p style="font-size: 10px;">
+          SĐT: {{mappingData(a.name_slot).number_phone}}<br>
+          {{mappingData(a.name_slot).address}}
+        </p>  
       </mat-card-content>
     </mat-card> 
   </div>
@@ -72,13 +73,14 @@
       <mat-card-header>
         <mat-card-title-group>
           <!-- <mat-card-title>Shiba Inu</mat-card-title> -->
-          <mat-card-subtitle style="font-size: 10px; color:black;" >{{a.name_slot}}</mat-card-subtitle>
+          <mat-card-subtitle style="font-size: 10px; color:black;" >{{a.name_slot}} <span *ngIf="!a._available " >{{mappingData(a.name_slot).name_customer}}</span></mat-card-subtitle>
         </mat-card-title-group>
       </mat-card-header>
       <mat-card-content *ngIf="!a._available ">  
-        KH: {{mappingData(a.name_slot).name_customer}}<br>
-        SĐT: {{mappingData(a.name_slot).number_phone}}<br>
-        {{mappingData(a.name_slot).address}}   
+        <p style="font-size: 10px;">
+          SĐT: {{mappingData(a.name_slot).number_phone}}<br>
+          {{mappingData(a.name_slot).address}}
+        </p>
       </mat-card-content>
     </mat-card> 
   </div>
@@ -88,50 +90,19 @@
           <mat-card-header>
             <mat-card-title-group>
               <!-- <mat-card-title>Shiba Inu</mat-card-title> -->
-              <mat-card-subtitle style="font-size: 10px;color:black">{{a.name_slot}}</mat-card-subtitle>
+              <mat-card-subtitle style="font-size: 10px;color:black">{{a.name_slot}} <span *ngIf="!a._available " >{{mappingData(a.name_slot).name_customer}}</span></mat-card-subtitle>
             </mat-card-title-group>
           </mat-card-header>
           <mat-card-content *ngIf="!a._available">
-            KH: {{mappingData(a.name_slot).name_customer}}<br>
-            SĐT: {{mappingData(a.name_slot).number_phone}}<br>
-            {{mappingData(a.name_slot).address}}   
+            <p style="font-size: 10px;">
+              SĐT: {{mappingData(a.name_slot).number_phone}}<br>
+              {{mappingData(a.name_slot).address}}
+            </p> 
           </mat-card-content>
         </mat-card>
     </div>
   </div>
 </div>
-    <!-- <div class=" d-flex align-items-end flex-column">
-      <mat-card class="example-card empty" *ngFor="let a of pagedSeatNo | slice:12:18 " [id] = "a.name_slot" (click)="IsChoose(a.name_slot)">
-        <mat-card-header>
-          <mat-card-title-group>
-            
-            <mat-card-subtitle style="font-size: 10px;color:black">{{a.name_slot}}</mat-card-subtitle>
-          </mat-card-title-group>
-        </mat-card-header>
-        <mat-card-content *ngIf="!a._available">
-          KH: {{mappingData(a.name_slot).name_customer}}<br>
-          SĐT: {{mappingData(a.name_slot).number_phone}}<br>
-          {{mappingData(a.name_slot).address}}   
-        </mat-card-content>
-      </mat-card>
-    </div> -->
-
-    <!-- <div class="">
-      <mat-card class="example-card empty" *ngFor="let a of pagedSeatNo | slice:18:24 " [id] = "a.name_slot" (click)="IsChoose(a.name_slot)">
-        <mat-card-header>
-          <mat-card-title-group>
-            
-            <mat-card-subtitle style="font-size: 10px;color:black">{{a.name_slot}}</mat-card-subtitle>
-
-          </mat-card-title-group>
-        </mat-card-header>
-        <mat-card-content *ngIf="!a._available">
-          KH: {{mappingData(a.name_slot).name_customer}}<br>
-          SĐT: {{mappingData(a.name_slot).number_phone}}<br>
-          {{mappingData(a.name_slot).address}}   
-        </mat-card-content>
-      </mat-card>
-    </div> -->
 
     <div class="col-md-12" id="seat-no-floor" *ngIf="!isTwoFloor">
       <div class="row d-flex col-md-10 cardArrange2">
@@ -139,13 +110,14 @@
         <mat-card class="example-card empty" *ngFor="let a of pagedSeatNo | slice:0:6" [id] = "a.name_slot"  (click)="IsChoose(a.name_slot)">
           <mat-card-header>
             <mat-card-title-group>
-              <mat-card-subtitle style="font-size: 10px; color:black;" >{{a.name_slot}}</mat-card-subtitle>
+              <mat-card-subtitle style="font-size: 10px; color:black;" >{{a.name_slot}} <span *ngIf="!a._available " >{{mappingData(a.name_slot).name_customer}}</span></mat-card-subtitle>
             </mat-card-title-group>
           </mat-card-header>
           <mat-card-content *ngIf="!a._available ">  
-            KH: {{mappingData(a.name_slot).name_customer}}<br>
-            SĐT: {{mappingData(a.name_slot).number_phone}}<br>
-            {{mappingData(a.name_slot).address}}   
+            <p style="font-size: 10px;">
+              SĐT: {{mappingData(a.name_slot).number_phone}}<br>
+              {{mappingData(a.name_slot).address}}
+            </p>
           </mat-card-content>
         </mat-card> 
       </div>
@@ -154,13 +126,15 @@
         <mat-card class="example-card empty" *ngFor="let a of pagedSeatNo | slice:6:12" [id] = "a.name_slot"  (click)="IsChoose(a.name_slot)">
           <mat-card-header>
             <mat-card-title-group>
-              <mat-card-subtitle style="font-size: 10px; color:black;" >{{a.name_slot}}</mat-card-subtitle>
+              <mat-card-subtitle style="font-size: 10px; color:black;" >{{a.name_slot}} <span *ngIf="!a._available " >{{mappingData(a.name_slot).name_customer}}</span></mat-card-subtitle>
             </mat-card-title-group>
           </mat-card-header>
           <mat-card-content *ngIf="!a._available ">  
-            KH: {{mappingData(a.name_slot).name_customer}}<br>
-            SĐT: {{mappingData(a.name_slot).number_phone}}<br>
-            {{mappingData(a.name_slot).address}}   
+            <p style="font-size: 10px;">
+
+              SĐT: {{mappingData(a.name_slot).number_phone}}<br>
+              {{mappingData(a.name_slot).address}}
+            </p>
           </mat-card-content>
         </mat-card> 
       </div>
@@ -169,13 +143,14 @@
         <mat-card class="example-card empty" *ngFor="let a of pagedSeatNo | slice:12:18" [id] = "a.name_slot"  (click)="IsChoose(a.name_slot)">
           <mat-card-header>
             <mat-card-title-group>
-              <mat-card-subtitle style="font-size: 10px; color:black;" >{{a.name_slot}}</mat-card-subtitle>
+              <mat-card-subtitle style="font-size: 10px; color:black;" >{{a.name_slot}} <span *ngIf="!a._available " >{{mappingData(a.name_slot).name_customer}}</span></mat-card-subtitle>
             </mat-card-title-group>
           </mat-card-header>
           <mat-card-content *ngIf="!a._available ">  
-            KH: {{mappingData(a.name_slot).name_customer}}<br>
-            SĐT: {{mappingData(a.name_slot).number_phone}}<br>
-            {{mappingData(a.name_slot).address}}   
+            <p style="font-size: 10px;">
+              SĐT: {{mappingData(a.name_slot).number_phone}}<br>
+              {{mappingData(a.name_slot).address}}
+            </p>
           </mat-card-content>
         </mat-card> 
       </div>
@@ -184,13 +159,14 @@
         <mat-card class="example-card empty" *ngFor="let a of pagedSeatNo | slice:18:24" [id] = "a.name_slot"  (click)="IsChoose(a.name_slot)">
           <mat-card-header>
             <mat-card-title-group>
-              <mat-card-subtitle style="font-size: 10px; color:black;" >{{a.name_slot}}</mat-card-subtitle>
+              <mat-card-subtitle style="font-size: 10px; color:black;" >{{a.name_slot}} <span *ngIf="!a._available " >{{mappingData(a.name_slot).name_customer}}</span></mat-card-subtitle>
             </mat-card-title-group>
           </mat-card-header>
           <mat-card-content *ngIf="!a._available ">  
-            KH: {{mappingData(a.name_slot).name_customer}}<br>
-            SĐT: {{mappingData(a.name_slot).number_phone}}<br>
-            {{mappingData(a.name_slot).address}}   
+            <p style="font-size: 10px;">
+              SĐT: {{mappingData(a.name_slot).number_phone}}<br>
+              {{mappingData(a.name_slot).address}}
+            </p>
           </mat-card-content>
         </mat-card> 
       </div>
@@ -211,7 +187,7 @@
 >
 </mat-paginator>
 </div>
-<app-print-templ  [trip]="trip" [pagedSeatNo]="seatNo" [ticket]="ticket" [isTwoFloor]="isTwoFloor"></app-print-templ>
+
 
 
 

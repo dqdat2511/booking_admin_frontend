@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input,OnInit } from '@angular/core';
 import {Sort} from '@angular/material/sort';
 import { Ticket } from 'src/app/Model/Ticket';
 import { TicketService } from 'src/app/Service/ticket.service';
@@ -21,35 +21,28 @@ export interface Ticket2 {
   styleUrls: ['./receipt.component.scss']
 })
 
-export class ReceiptComponent  {
+export class ReceiptComponent implements OnInit {
   @Input() receipt!:  Array<Ticket>;
-  ticket: Array<Ticket2> = [];
-  time!:  Date[]
+  ticket: Ticket2[] = [];
   isOn:boolean = false
   constructor(public appService: AppService, private ticketService: TicketService) {
     // Check if receipt is defined before using find
     
   }
-  ngOnInit(): void {
+  ngOnInit(){
     this.fetchTicketDetails()
   }
-   fetchTicketDetails() {
-    try {
-      let ticket2!: Ticket2
-      if (this.receipt) {  
-        for (let index = 0; index < this.receipt.length; index++) {
-          let element = this.receipt[index].id?.toString();
-          this.ticketService.getTicketByID(element!).subscribe((data :any)=>{
-           ticket2 = data 
-          })
-          this.ticket.push(ticket2)
-          console.log(this.ticket)
-        }
-       
-      }
-    } catch (error) {
-      console.error('Error fetching ticket details', error);
+   fetchTicketDetails(){
+    for (let index = 0; index < this.receipt.length; index++) {
+      const element = this.receipt[index];
+      let ticket2: Ticket2
+      this.ticketService.getTicketByID(element.id!).subscribe((data:any)=>{
+        ticket2 = data
+        this.ticket.push(ticket2)
+        
+      })
     }
+     
   }
 
 }

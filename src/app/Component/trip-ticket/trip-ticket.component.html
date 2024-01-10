@@ -1,13 +1,12 @@
-<ng-container [ngSwitch]="stepperOrientation | async">
-  
-  </ng-container>
   
   <mat-stepper [linear]=true #stepper
     class="example-stepper"
-    [orientation]="(stepperOrientation | async)!">
-    <mat-step [stepControl]="firstFormGroup" label="Danh sách chuyến đi" >
+    [orientation]="(stepperOrientation | async)!" id="showContent">
+    <mat-step [stepControl]="firstFormGroup" >
         <form [formGroup]="firstFormGroup">
-            <div class="row" id="showContent">
+          <div >
+            <ng-template matStepLabel>Danh sách chuyến đi</ng-template>
+            <div class="row" >
               <div class="col-md-3">
                 
                <mat-form-field >
@@ -43,10 +42,11 @@
               <button class="col-md-4 d-flex flex-end ms-5" mat-raised-button color="primary" (click)="Reload()">Tải lại</button>
   
             </div>
-              
+          </div>    
             <div class="row">   
               <div class="col-md-12"><app-trip-ticket-table *ngIf="search" [tripId]="selectTrip" (showSeatListEvent)="receiveEvent($event)" (putTicketEvent)="receiveTicket($event)"></app-trip-ticket-table></div>         
-              </div>         
+              </div>  
+               
           </form> 
     </mat-step>
    
@@ -54,7 +54,7 @@
 
     <mat-step [stepControl]="firstFormGroup2">
       <form [formGroup]="firstFormGroup2" >
-        <div class="row">
+        <div class="row" id="showContent">
           <div class="col-md-3">
             <mat-form-field class="py-3">
                 <mat-label>Số điện thoại</mat-label>
@@ -143,4 +143,4 @@
     
   </mat-step> -->
   </mat-stepper>
-  
+  <app-print-templ *ngIf="search" [trip]="trip" [pagedSeatNo]="seatNo" [ticket]="ticket2" [isTwoFloor]="isTwoFloor"></app-print-templ>

@@ -123,18 +123,7 @@
   }
   
   
-  app-print-templ{
-    display: none;
-  }
-
-  @media print{
-    #showContent{
-      display: none;
-    }
-    app-print-templ{
-      display: block;
-    }
-  }
+ 
 
   .cardArrange1{
     margin-left: 120px;

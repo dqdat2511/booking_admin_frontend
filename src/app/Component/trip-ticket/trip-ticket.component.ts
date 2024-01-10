@@ -42,21 +42,16 @@ export class TripTicketComponent {
 
   stepperOrientation: Observable<StepperOrientation>;
   ticket!:Ticket2
+  ticket2!:Ticket2[]
+  isTwoFloor:boolean = true
 //nqd1111 start
   idTicket!:string
   @Output() confirmEvent = new EventEmitter<string>();
   @Input() showSeatList!:Seat[];
   seatNo!:Seat[]
-  length= 0;
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
   pageSize = 24;
-  pagedSeatNo: Seat[] = [];
-  idChoose: boolean = false;
   client!:Client;
-  timeTrip:TimeTrip[] = []
-  typeBus: BusType[]=[]
   receiptNew!: string;
-  key : string =''
   idTrip?: number;
   ticketOn:boolean = false;
   options:string[] =[]
@@ -88,46 +83,34 @@ export class TripTicketComponent {
   ngOnInit(){
     this.getAllPhone();
     this.validation();
-    this.getData();
+ //   this.getData();
   }
-
   getData(){
     this.seatService.getSeatByTripID(this.selectTrip).subscribe((data :any)=>{
       this.seatNo = data   
-      this.length=this.seatNo.length
-      this.initializePaginator();
+      // this.length=this.seatNo.length
+      // this.initializePaginator();
     })
    this.tripService.getTripById(this.selectTrip).subscribe((data: any)=>{
     if(data){
+      this.isMoreThanOneFloor(data)
       this.trip = data
+      if(this.isTwoFloor){
+        this.pageSize = 23
+      }
     }
    })
    
   }
 
-  
   receiveTicket($event: Ticket2){
     this.ticket = $event
     this.getFieldFill(this.ticket)
   }
 
 
-  initializePaginator() {
-    if (this.paginator) {
-      this.paginator.firstPage(); 
-      this.handlePage({
-        pageIndex: 0,
-        pageSize: this.pageSize,
-        length: this.seatNo.length,
-      } as PageEvent);
-    }
-  }
 
-  handlePage(event: PageEvent) {
-    const startIndex = event.pageIndex * event.pageSize;
-    const endIndex = startIndex + event.pageSize;
-    this.pagedSeatNo = this.seatNo.slice(startIndex, endIndex);
-  }
+
 
   //nqd1111 end
 
@@ -169,6 +152,10 @@ export class TripTicketComponent {
    
   }
   searchTrip(){
+    this.getData();
+    this.seatService.getSeatListByTripID(this.selectTrip).subscribe((data=>{
+      this.ticket2 = data 
+    }))
     this.search = true;    
 }
 Reload(){
@@ -395,5 +382,14 @@ back(){
 }
 //nqd1111 end
 
+isMoreThanOneFloor(trip : Trip) {
+  // Find the bus floor with the given id
+  const busFloor = trip.seats.numbers_floor;
+  if( !!busFloor && busFloor >= 1 ){
+    this.isTwoFloor = true;
+  }else{
+    this.isTwoFloor = false;
+  }
+}
 
 }
