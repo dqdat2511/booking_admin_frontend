@@ -21,6 +21,7 @@ import { SeatService } from 'src/app/Service/seat.service';
 import { Ticket2 } from '../receipt/receipt.component';
 import { PageEvent, MatPaginator } from '@angular/material/paginator';
 import { Ticket } from 'src/app/Model/Ticket';
+import { NgToastService } from 'ng-angular-popup';
 
 @Component({
   selector: 'app-trip-ticket',
@@ -75,7 +76,9 @@ export class TripTicketComponent {
     private tripService: TripService, 
     private clientService: ClientService,
     private addressService: AddressService,
-    private ticketService: TicketService, private seatService: SeatService) {
+    private ticketService: TicketService, 
+    private seatService: SeatService,
+    private toast: NgToastService) {
     this.stepperOrientation = breakpointObserver
       .observe('(min-width: 800px)')
       .pipe(map(({matches}) => (matches ? 'horizontal' : 'vertical')));
@@ -306,7 +309,7 @@ seatNum= this.showSeatList.map(iteam=>{
 if(seats.length == 0){
   window.alert("Bạn chưa chọn vé")
   }else{
-  window.alert("Bạn đã đặt thành công vé: "+ seatNum  );
+  //window.alert("Bạn đã đặt thành công vé: "+ seatNum  );
   for (let index = 0; index < seatNum.length; index++) {
     const element = seatNum[index];
     this.changeColorBookTicket(element)  
@@ -314,7 +317,11 @@ if(seats.length == 0){
   }
   this.createReceipt(seats);
   this.search = true;
+  this.showSuccess(seatNum);
+}
 
+showSuccess(seatNum:any[]) {
+  this.toast.success({detail:"SUCCESS",summary:'Đặt ghế '+ seatNum +' thành công',duration:3000});
 }
 
 

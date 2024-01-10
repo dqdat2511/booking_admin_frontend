@@ -2,7 +2,7 @@
 <div class="container-fluid pt-5 mb-5" >
   <div *ngIf="!isStarted || !isEnough"class="alert alert-danger" >{{message}}</div>
     <div class="row justify-content-center" *ngIf="isStarted && isEnough">
-      <div class="col-md-9 ">
+      <div class="col-md-10 ">
       <div class="seat_plan_wrap" >
         <div *ngIf="alert"class="alert alert-danger" >{{message}}</div>
         <div class="row col-md-12">
@@ -70,7 +70,7 @@
               <div class="row nofloor" >                        
                 <!-- <div  >{{ seat.name_slot }}</div> -->
               
-                <mat-card *ngFor="let seat of seatNo1;let i = index"  [id]="seat.name_slot" [title]="seat.name_slot" (click)="IsChoose(seat.name_slot)" class="seat">
+                <mat-card class="seat" *ngFor="let seat of seatNo1;let i = index"  [id]="seat.name_slot" [title]="seat.name_slot" (click)="IsChoose(seat.name_slot)">
                   <mat-card-header>
                     <mat-card-title-group>
                       <mat-card-subtitle class="text-center" style="font-size: 10px; color:black; text-align: center" >{{seat.name_slot}}</mat-card-subtitle>
@@ -86,7 +86,7 @@
             <h6>Lầu trên </h6>
             <div class="seats" >         
               <div class="row d-flex" >
-                <div class="row d-flex align-items-center flex-column col-md-4">                        
+                <div class="d-flex align-items-center flex-column col-md-4">                        
                   <mat-card class="seat-card" *ngFor="let seat of seatNo1 | slice:23:29 ;let i = index"  [id]="seat.name_slot" [title]="seat.name_slot" (click)="IsChoose(seat.name_slot)">
                     <mat-card-header>
                       <mat-card-title-group>
@@ -98,7 +98,7 @@
                   </mat-card>
                 </div>
 
-                <div class="row d-flex align-items-center flex-column col-md-4">                        
+                <div class="d-flex align-items-center flex-column col-md-4">                        
                   <mat-card class="seat-card" *ngFor="let seat of seatNo1 | slice:29:35 ;let i = index"  [id]="seat.name_slot" [title]="seat.name_slot" (click)="IsChoose(seat.name_slot)">
                     <mat-card-header>
                       <mat-card-title-group>
@@ -110,7 +110,7 @@
                   </mat-card>
                 </div>
 
-                <div class="row d-flex align-items-center flex-column col-md-4">                        
+                <div class="d-flex align-items-center flex-column col-md-4">                        
                   <mat-card class="seat-card" *ngFor="let seat of seatNo1 | slice:35:41 ;let i = index"  [id]="seat.name_slot" [title]="seat.name_slot" (click)="IsChoose(seat.name_slot)">
                     <mat-card-header>
                       <mat-card-title-group>
@@ -123,13 +123,14 @@
                 </div>
               </div> 
               <div class="row d-flex" >                        
-                <mat-card class="seat-card" *ngFor="let seat of seatNo1 | slice:41:46 ;let i = index"  [id]="seat.name_slot" [title]="seat.name_slot" (click)="IsChoose(seat.name_slot)">
+                <mat-card class="seat-card" *ngFor="let seat of seatNo1 | slice:41:46 ;let i = index"  [id]="seat.name_slot" [title]="seat.name_slot" (click)="IsChoose(seat.name_slot)" class="seat last" >
                   <mat-card-header>
                     <mat-card-title-group>
                       <mat-card-subtitle class="text-center" style="font-size: 10px; color:black; text-align: center" >{{seat.name_slot}}</mat-card-subtitle>
                     </mat-card-title-group>
                   </mat-card-header>
                   <mat-card-content >  
+                      
                   </mat-card-content>
                 </mat-card>
               </div>                   
@@ -138,14 +139,16 @@
         </div>
       </div>
       <div class="row" >
-        <div class="col-md-6 d-flex justify-content-center" *ngIf="isTwoFloor">
+        <div class="col-md-5 d-flex justify-content-center" *ngIf="isTwoFloor">
 
           <button class="btn mt-3 lauTren btn-sm btn-block px-5 py-2" (click)="onFloor2()">Lầu trên</button>
         </div>
-      </div>
-        <div class="col-md-6 d-flex justify-content-center ">
+
+        <div class="col-md-5 d-flex justify-content-center ">
           <button (click)="confirmJourney()"class="btn mt-3 btn-sm confirm btn-block px-5 py-2">Xác nhận</button>
       </div>
+      </div>
+        
       
       <hr>
         <div class="row ">
